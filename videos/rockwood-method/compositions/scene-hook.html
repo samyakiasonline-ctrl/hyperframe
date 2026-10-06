@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+  </head>
+  <body>
+    <template>
+      <style>
+        #root {
+          position: absolute;
+          inset: 0;
+        }
+      </style>
+      <div id="root" data-composition-id="scene-hook" data-width="1080" data-height="1920"></div>
+      <script>
+        window.__timelines["scene-hook"] = gsap.timeline({ paused: true });
+      </script>
+    </template>
+  </body>
+</html>
