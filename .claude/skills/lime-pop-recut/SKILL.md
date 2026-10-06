@@ -183,7 +183,21 @@ Each beat gets **one** new prop. Never reuse a prop in the next beat.
 6. `npm run check` → fix everything → `npx hyperframes snapshot --at <beats>` and compare with the
    reference frames → `npm run render` after approval.
 
-## 10. Do / Don't checklist
+## 9b. Bright / high-key footage (learned on the "AI photo shoots" edit)
+
+The reference is shot dark. On a white wall or light clothing, lime has almost no contrast. Don't regrade
+the person dark (that's a stylization the footage didn't ask for). Instead:
+
+- Keep the palette and give every caption word a **dark halo** instead of the glow-only shadow:
+  white words `0 0 3px rgba(0,0,0,.55), 0 2px 10px rgba(0,0,0,.6), 0 0 34px rgba(0,0,0,.45)`, lime
+  words the same plus a faint lime glow `0 0 22px rgba(220,248,80,.35)`.
+- Place chest captions under the chin of *this* subject (≈ 65 % height when the chin sits at 52 %).
+  Avoid the head-top zone if it's a bright wall.
+- HUD text on a bright wall (`● REC`) gets a small dark capsule backing (`rgba(0,0,0,.55)`, radius 10), and
+  brackets get a soft dark drop-shadow.
+- Keep bass hits short (≤ 0.8 s, volume ≈ 0.3) so their tail doesn't fill the speech gaps after the cut.
+
+
 
 - ✅ one lime hero per screen; small words white; tight, edge-pinned stack
 - ✅ words land on the voice onset (±1 frame); groups die on the cut
