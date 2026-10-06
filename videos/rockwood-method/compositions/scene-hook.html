@@ -217,12 +217,13 @@
           justify-content: center;
           gap: 20px;
         }
-        /* Rows span y 172-328 (head top ~348 at the 1.06x camera). Row 1 is ~840 px wide. */
+        /* Rows span y 172-327, so even the 1.066 pop overshoot stays inside 170-330 (head top
+           ~348 at the 1.06x camera). Row 1 is ~840 px wide. */
         #hook-row1 {
           top: 172px;
         }
         #hook-row2 {
-          top: 256px;
+          top: 255px;
         }
         .hook-chip {
           flex: none;
@@ -372,7 +373,7 @@
               <span class="hook-chip-label">Finance magic</span>
             </div>
           </div>
-          <!-- sparkle burst around FINANCE MAGIC (fixed positions, no randomness) -->
+          <!-- sparkle burst around FINANCE MAGIC (chip x 316-763, y 255-327): fixed positions, no randomness, all inside y 244-326 -->
           <svg id="hook-star-1" class="hook-star" viewBox="0 0 40 40" style="left: 252px; top: 246px; width: 44px; height: 44px" aria-hidden="true"><path d="M20 0 C 21.6 13.4, 26.6 18.4, 40 20 C 26.6 21.6, 21.6 26.6, 20 40 C 18.4 26.6, 13.4 21.6, 0 20 C 13.4 18.4, 18.4 13.4, 20 0 Z" fill="#D9AD6C" /></svg>
           <svg id="hook-star-2" class="hook-star" viewBox="0 0 40 40" style="left: 241px; top: 300px; width: 26px; height: 26px" aria-hidden="true"><path d="M20 0 C 21.6 13.4, 26.6 18.4, 40 20 C 26.6 21.6, 21.6 26.6, 20 40 C 18.4 26.6, 13.4 21.6, 0 20 C 13.4 18.4, 18.4 13.4, 20 0 Z" fill="#FFF4E6" /></svg>
           <svg id="hook-star-3" class="hook-star" viewBox="0 0 40 40" style="left: 290px; top: 306px; width: 18px; height: 18px" aria-hidden="true"><path d="M20 0 C 21.6 13.4, 26.6 18.4, 40 20 C 26.6 21.6, 21.6 26.6, 20 40 C 18.4 26.6, 13.4 21.6, 0 20 C 13.4 18.4, 18.4 13.4, 20 0 Z" fill="#D9AD6C" /></svg>
