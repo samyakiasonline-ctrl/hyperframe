@@ -6,14 +6,606 @@
   <body>
     <template>
       <style>
+        @font-face { font-family: "Montserrat"; src: url("assets/fonts/montserrat-latin-700-normal.woff2") format("woff2"); font-weight: 700; font-display: block; }
+        @font-face { font-family: "Montserrat"; src: url("assets/fonts/montserrat-latin-800-normal.woff2") format("woff2"); font-weight: 800; font-display: block; }
+        @font-face { font-family: "Montserrat"; src: url("assets/fonts/montserrat-latin-900-normal.woff2") format("woff2"); font-weight: 900; font-display: block; }
+        @font-face { font-family: "Instrument Serif"; src: url("assets/fonts/instrument-serif-latin-400-normal.woff2") format("woff2"); font-weight: 400; font-style: normal; font-display: block; }
+        @font-face { font-family: "Instrument Serif"; src: url("assets/fonts/instrument-serif-latin-400-italic.woff2") format("woff2"); font-weight: 400; font-style: italic; font-display: block; }
+
         #root {
           position: absolute;
           inset: 0;
+          overflow: hidden;
+        }
+
+        /* Every top-band group is a 1080 x 400 layer in canvas coordinates. */
+        #benefits-found,
+        #benefits-indep,
+        #benefits-call,
+        #benefits-outcome {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 1080px;
+          height: 400px;
+        }
+
+        /* Type on the wall: cream or gold, soft shadow only. */
+        .benefits-wall {
+          color: #fff4e6;
+          text-shadow: 0 2px 12px rgba(0, 0, 0, 0.35);
+          white-space: nowrap;
+        }
+        .benefits-word {
+          display: inline-block;
+        }
+
+        /* ---- Beat 6: foundation ---- */
+        #benefits-rock {
+          position: absolute;
+          left: 0;
+          top: 178px;
+          width: 1080px;
+          text-align: center;
+          font-family: "Montserrat";
+          font-weight: 900;
+          font-size: 96px;
+          line-height: 96px;
+          letter-spacing: -0.01em;
+          opacity: 0;
+        }
+        #benefits-fin {
+          position: absolute;
+          left: 0;
+          top: 274px;
+          width: 1080px;
+          text-align: center;
+          font-family: "Montserrat";
+          font-weight: 800;
+          font-size: 40px;
+          line-height: 40px;
+          opacity: 0;
+        }
+        #benefits-stones {
+          position: absolute;
+          left: 70px;
+          top: 600px;
+          width: 220px;
+          height: 280px;
+        }
+        #benefits-stack {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 220px;
+          height: 280px;
+        }
+        .benefits-stone {
+          position: absolute;
+          border-radius: 14px;
+          box-shadow: inset 0 5px 0 rgba(255, 255, 255, 0.22), inset 0 -6px 0 rgba(0, 0, 0, 0.14), 0 2px 12px rgba(0, 0, 0, 0.35);
+          opacity: 0;
+        }
+        #benefits-stone-1 {
+          left: 5px;
+          top: 204px;
+          width: 210px;
+          height: 64px;
+          background: #9c8579;
+        }
+        #benefits-stone-2 {
+          left: 26px;
+          top: 144px;
+          width: 168px;
+          height: 58px;
+          background: #fff4e6;
+        }
+        #benefits-stone-3 {
+          left: 47px;
+          top: 90px;
+          width: 126px;
+          height: 52px;
+          background: #d9ad6c;
+        }
+
+        /* ---- Beat 7: independence ---- */
+        #benefits-noline {
+          position: absolute;
+          left: 0;
+          top: 192px;
+          width: 1080px;
+          text-align: center;
+          font-family: "Montserrat";
+          font-weight: 900;
+          font-size: 72px;
+          line-height: 72px;
+          letter-spacing: -0.01em;
+        }
+        #benefits-no {
+          color: #d9ad6c;
+          opacity: 0;
+        }
+        #benefits-hh {
+          opacity: 0;
+        }
+        #benefits-needed {
+          position: absolute;
+          left: 0;
+          top: 272px;
+          width: 1080px;
+          text-align: center;
+          font-family: "Montserrat";
+          font-weight: 800;
+          font-size: 40px;
+          line-height: 40px;
+          opacity: 0;
+        }
+        #benefits-hands {
+          position: absolute;
+          left: 840px;
+          top: 470px;
+          width: 160px;
+          height: 160px;
+          overflow: visible;
+          filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.3));
+          opacity: 0;
+        }
+        .benefits-hand {
+          fill: none;
+          stroke: #fff4e6;
+          stroke-width: 6;
+          stroke-linecap: round;
+          stroke-linejoin: round;
+        }
+        #benefits-slash {
+          fill: none;
+          stroke: #d9ad6c;
+          stroke-width: 10;
+          stroke-linecap: round;
+          stroke-dasharray: 1 1;
+          stroke-dashoffset: 1;
+          opacity: 0;
+        }
+
+        /* ---- Beat 8: callback (camera at 1.12x: everything ends by y 315) ---- */
+        #benefits-row1 {
+          position: absolute;
+          left: 0;
+          top: 178px;
+          width: 1080px;
+          height: 64px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
+        #benefits-unit {
+          flex: none;
+          display: flex;
+          align-items: center;
+          height: 64px;
+          opacity: 0;
+        }
+        #benefits-stamp {
+          position: relative;
+          z-index: 2;
+          flex: none;
+          display: flex;
+          align-items: center;
+          height: 66px;
+          margin-right: -16px;
+          padding: 0 20px;
+          border-radius: 14px;
+          background: #d9ad6c;
+          color: #2a1714;
+          outline: 3px solid #2a1714;
+          outline-offset: -8px;
+          font-family: "Montserrat";
+          font-weight: 900;
+          font-size: 38px;
+          line-height: 38px;
+          white-space: nowrap;
+          box-shadow: 0 10px 28px rgba(0, 0, 0, 0.28);
+          opacity: 0;
+        }
+        /* Shared CHIP style (identical to scene-hook's .hook-chip). */
+        .benefits-chip {
+          flex: none;
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          height: 64px;
+          padding: 0 26px;
+          border-radius: 999px;
+          background: #fff4e6;
+          color: #2a1714;
+          font-family: "Montserrat";
+          font-weight: 800;
+          font-size: 30px;
+          line-height: 30px;
+          letter-spacing: 0.06em;
+          text-transform: uppercase;
+          white-space: nowrap;
+          box-shadow: 0 10px 28px rgba(0, 0, 0, 0.28);
+        }
+        .benefits-chip-label {
+          display: block;
+          margin-right: -0.06em;
+        }
+        #benefits-chip {
+          position: relative;
+          z-index: 1;
+          padding-left: 34px;
+        }
+        #benefits-row2 {
+          position: absolute;
+          left: 0;
+          top: 254px;
+          width: 1080px;
+          height: 64px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          gap: 18px;
+          font-family: "Montserrat";
+          font-weight: 900;
+          font-size: 64px;
+          line-height: 64px;
+          letter-spacing: -0.01em;
+        }
+        #benefits-zero,
+        #benefits-hassle {
+          display: block;
+          opacity: 0;
+        }
+        #benefits-check-svg {
+          flex: none;
+          display: block;
+          width: 58px;
+          height: 52px;
+          overflow: visible;
+          filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.3));
+        }
+        #benefits-check {
+          fill: none;
+          stroke: #d9ad6c;
+          stroke-width: 10;
+          stroke-linecap: round;
+          stroke-linejoin: round;
+          stroke-dasharray: 1 1;
+          stroke-dashoffset: 1;
+          opacity: 0;
+        }
+
+        /* ---- Beat 9: outcome ---- */
+        #benefits-head {
+          position: absolute;
+          left: 0;
+          top: 192px;
+          width: 1080px;
+          display: flex;
+          justify-content: center;
+          align-items: baseline;
+          gap: 14px;
+        }
+        #benefits-life {
+          display: block;
+          font-family: "Montserrat";
+          font-weight: 800;
+          font-size: 60px;
+          line-height: 60px;
+          letter-spacing: 0.02em;
+          opacity: 0;
+        }
+        #benefits-rockwood {
+          display: block;
+          padding-right: 8px;
+          font-family: "Instrument Serif";
+          font-style: italic;
+          font-weight: 400;
+          font-size: 118px;
+          line-height: 118px;
+          color: #d9ad6c;
+          opacity: 0;
+        }
+        #benefits-under-svg {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 1080px;
+          height: 400px;
+          overflow: visible;
+          filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.3));
+        }
+        #benefits-under {
+          fill: none;
+          stroke: #d9ad6c;
+          stroke-width: 7;
+          stroke-linecap: round;
+          stroke-dasharray: 1 1;
+          stroke-dashoffset: 1;
+          opacity: 0;
+        }
+        #benefits-card {
+          position: absolute;
+          left: 60px;
+          top: 1150px;
+          width: 880px;
+          height: 274px;
+          border-radius: 32px;
+          background: #fff4e6;
+          box-shadow: 0 14px 40px rgba(0, 0, 0, 0.28);
+          opacity: 0;
+        }
+        .benefits-crow {
+          position: absolute;
+          left: 40px;
+          width: 800px;
+          height: 90px;
+          opacity: 0;
+        }
+        #benefits-r1 {
+          top: 32px;
+        }
+        #benefits-r2 {
+          top: 152px;
+        }
+        .benefits-cline {
+          position: absolute;
+          left: 0;
+          top: 0;
+          height: 48px;
+          display: flex;
+          align-items: center;
+          gap: 16px;
+        }
+        .benefits-badge {
+          flex: none;
+          display: block;
+          width: 48px;
+          height: 48px;
+          overflow: visible;
+        }
+        .benefits-clabel {
+          display: block;
+          font-family: "Montserrat";
+          font-weight: 800;
+          font-size: 44px;
+          line-height: 44px;
+          letter-spacing: 0.01em;
+          color: #2a1714;
+          white-space: nowrap;
+        }
+        .benefits-track {
+          position: absolute;
+          left: 0;
+          top: 64px;
+          width: 800px;
+          height: 26px;
+          border-radius: 13px;
+          background: rgba(156, 133, 121, 0.2);
+        }
+        .benefits-bar {
+          position: absolute;
+          left: 0;
+          top: 0;
+          height: 26px;
+          border-radius: 13px;
+        }
+        #benefits-bar-1 {
+          width: 800px;
+          background: #9c8579;
+        }
+        #benefits-bar-2 {
+          width: 176px;
+          background: #d9ad6c;
         }
       </style>
-      <div id="root" data-composition-id="scene-benefits" data-width="1080" data-height="1920"></div>
+
+      <div id="root" data-composition-id="scene-benefits" data-width="1080" data-height="1920">
+        <!-- Beat 6 (13.62-15.80): foundation -->
+        <div id="benefits-found">
+          <div id="benefits-rock" class="benefits-wall">ROCK-SOLID</div>
+          <div id="benefits-fin" class="benefits-wall">financial foundation</div>
+        </div>
+        <div id="benefits-stones">
+          <div id="benefits-stack">
+            <div id="benefits-stone-1" class="benefits-stone"></div>
+            <div id="benefits-stone-2" class="benefits-stone"></div>
+            <div id="benefits-stone-3" class="benefits-stone"></div>
+          </div>
+        </div>
+
+        <!-- Beat 7 (15.80-17.25): independence -->
+        <div id="benefits-indep">
+          <div id="benefits-noline" class="benefits-wall"><span id="benefits-no" class="benefits-word">NO</span> <span id="benefits-hh" class="benefits-word">HAND-HOLDING</span></div>
+          <div id="benefits-needed" class="benefits-wall">needed.</div>
+        </div>
+        <svg id="benefits-hands" viewBox="0 0 160 160" aria-hidden="true">
+          <g id="benefits-hand-l">
+            <rect class="benefits-hand" x="14" y="62" width="14" height="38" rx="5" />
+            <path class="benefits-hand" d="M28 67 C 40 63, 52 61, 62 63 L 70 64 C 78 65, 80 75, 73 77 L 58 78 C 64 81, 65 88, 59 91 C 50 95, 38 95, 28 95" />
+          </g>
+          <g id="benefits-hand-r">
+            <rect class="benefits-hand" x="132" y="62" width="14" height="38" rx="5" />
+            <path class="benefits-hand" d="M132 67 C 120 63, 108 61, 98 63 L 90 64 C 82 65, 80 75, 87 77 L 102 78 C 96 81, 95 88, 101 91 C 110 95, 122 95, 132 95" />
+          </g>
+          <path id="benefits-slash" d="M116 30 L 44 130" pathLength="1" />
+        </svg>
+
+        <!-- Beat 8 (17.25-19.57): callback -->
+        <div id="benefits-call">
+          <div id="benefits-row1">
+            <div id="benefits-unit">
+              <div id="benefits-stamp">100%</div>
+              <div id="benefits-chip" class="benefits-chip"><span class="benefits-chip-label">Self-guided</span></div>
+            </div>
+          </div>
+          <div id="benefits-row2" class="benefits-wall">
+            <svg id="benefits-check-svg" viewBox="0 0 58 52" aria-hidden="true">
+              <path id="benefits-check" d="M7 27 L 22 42 L 51 9" pathLength="1" />
+            </svg>
+            <span id="benefits-zero">ZERO</span>
+            <span id="benefits-hassle">HASSLE</span>
+          </div>
+        </div>
+
+        <!-- Beat 9 (19.68-22.50): outcome -->
+        <div id="benefits-outcome">
+          <div id="benefits-head" class="benefits-wall">
+            <span id="benefits-life">LIFE POST-</span>
+            <span id="benefits-rockwood">Rockwood</span>
+          </div>
+          <svg id="benefits-under-svg" viewBox="0 0 1080 400" aria-hidden="true">
+            <path id="benefits-under" d="M560 318 C 640 310, 730 308, 816 312" pathLength="1" />
+          </svg>
+        </div>
+        <div id="benefits-card">
+          <div id="benefits-r1" class="benefits-crow">
+            <div class="benefits-cline">
+              <svg class="benefits-badge" viewBox="0 0 48 48" aria-hidden="true">
+                <circle cx="24" cy="24" r="24" fill="#9C8579" />
+                <g id="benefits-arrow-1">
+                  <path d="M24 12 V 34" fill="none" stroke="#FFF4E6" stroke-width="5" stroke-linecap="round" />
+                  <path d="M15 26 L 24 35 L 33 26" fill="none" stroke="#FFF4E6" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" />
+                </g>
+              </svg>
+              <span class="benefits-clabel">LESS STRESS</span>
+            </div>
+            <div class="benefits-track"><div id="benefits-bar-1" class="benefits-bar"></div></div>
+          </div>
+          <div id="benefits-r2" class="benefits-crow">
+            <div class="benefits-cline">
+              <svg id="benefits-badge-2" class="benefits-badge" viewBox="0 0 48 48" aria-hidden="true">
+                <circle cx="24" cy="24" r="24" fill="#D9AD6C" />
+                <g id="benefits-arrow-2">
+                  <path d="M24 36 V 14" fill="none" stroke="#2A1714" stroke-width="5" stroke-linecap="round" />
+                  <path d="M15 22 L 24 13 L 33 22" fill="none" stroke="#2A1714" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" />
+                </g>
+              </svg>
+              <span class="benefits-clabel">MORE SAVINGS</span>
+            </div>
+            <div class="benefits-track"><div id="benefits-bar-2" class="benefits-bar"></div></div>
+          </div>
+        </div>
+      </div>
+
       <script>
-        window.__timelines["scene-benefits"] = gsap.timeline({ paused: true });
+        (function () {
+          // Host data-start is 13.6: L() turns a GLOBAL time into a local one on the 25 fps grid.
+          const q = (t) => Math.round(t * 25) / 25;
+          const L = (g) => q(g - 13.6);
+          const tl = gsap.timeline({ paused: true });
+
+          // ---------- Beat 6: foundation (13.62-15.80) ----------
+          // ROCK-SOLID drops and lands on the bass thud (14.00): stretch on the fall, squash, settle.
+          tl.fromTo("#benefits-rock", { opacity: 0 }, { opacity: 1, duration: 0.04, ease: "none" }, L(13.82));
+          tl.fromTo(
+            "#benefits-rock",
+            { y: -90, scaleX: 0.94, scaleY: 1.1, transformOrigin: "50% 100%" },
+            { y: 0, scaleX: 0.96, scaleY: 1.06, duration: 0.16, ease: "power2.in" },
+            L(13.82)
+          );
+          tl.to("#benefits-rock", { scaleX: 1.05, scaleY: 0.88, duration: 0.06, ease: "power2.out" }, L(13.98));
+          tl.to("#benefits-rock", { scaleX: 1, scaleY: 1, duration: 0.28, ease: "back.out(2)" }, L(14.04));
+          // "financial foundation" joins on "financial" (14.64).
+          tl.fromTo("#benefits-fin", { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: 0.2, ease: "power3.out" }, L(14.56));
+
+          // Three stone blocks drop and stack in the left column, landing 13.95 / 14.30 / 14.64.
+          [
+            ["#benefits-stone-1", 13.96],
+            ["#benefits-stone-2", 14.32],
+            ["#benefits-stone-3", 14.64],
+          ].forEach(function (s) {
+            const id = s[0];
+            const land = s[1];
+            tl.fromTo(id, { opacity: 0 }, { opacity: 1, duration: 0.04, ease: "none" }, L(land - 0.16));
+            tl.fromTo(
+              id,
+              { y: -240, scaleX: 0.94, scaleY: 1.08, transformOrigin: "50% 100%" },
+              { y: 0, scaleX: 0.96, scaleY: 1.04, duration: 0.16, ease: "power2.in" },
+              L(land - 0.16)
+            );
+            tl.to(id, { scaleX: 1.08, scaleY: 0.84, duration: 0.06, ease: "power2.out" }, L(land));
+            tl.to(id, { scaleX: 1, scaleY: 1, duration: 0.26, ease: "back.out(2.2)" }, L(land + 0.06));
+            // The whole stack gives a little on each impact.
+            tl.fromTo("#benefits-stack", { y: 0 }, { y: 5, duration: 0.06, ease: "power2.out", immediateRender: false }, L(land));
+            tl.to("#benefits-stack", { y: 0, duration: 0.2, ease: "power2.out" }, L(land + 0.06));
+          });
+
+          // Exit 15.70-15.80.
+          tl.to("#benefits-found", { y: -30, opacity: 0, duration: 0.1, ease: "power2.in" }, L(15.7));
+          tl.to("#benefits-stones", { y: 24, opacity: 0, duration: 0.12, ease: "power2.in" }, L(15.7));
+
+          // ---------- Beat 7: independence (15.80-17.25) ----------
+          tl.fromTo("#benefits-no", { opacity: 0, scale: 0.5 }, { opacity: 1, scale: 1, duration: 0.2, ease: "back.out(2)" }, L(15.82));
+          tl.fromTo("#benefits-hh", { opacity: 0, scale: 0.5 }, { opacity: 1, scale: 1, duration: 0.22, ease: "back.out(2)" }, L(15.96));
+          tl.fromTo("#benefits-needed", { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.2, ease: "power3.out" }, L(16.56));
+          // Two hands, fingertips touching; a gold slash cuts between them and they pull apart.
+          tl.fromTo(
+            "#benefits-hands",
+            { opacity: 0, scale: 0.6, transformOrigin: "50% 50%" },
+            { opacity: 1, scale: 1, duration: 0.24, ease: "back.out(1.8)" },
+            L(15.96)
+          );
+          tl.fromTo("#benefits-slash", { opacity: 0 }, { opacity: 1, duration: 0.04, ease: "none" }, L(16.16));
+          tl.fromTo("#benefits-slash", { strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: 0.18, ease: "power2.out" }, L(16.16));
+          tl.fromTo("#benefits-hand-l", { x: 0, rotation: 0, svgOrigin: "21 80" }, { x: -12, rotation: -10, svgOrigin: "21 80", duration: 0.32, ease: "power3.out" }, L(16.3));
+          tl.fromTo("#benefits-hand-r", { x: 0, rotation: 0, svgOrigin: "139 80" }, { x: 12, rotation: 10, svgOrigin: "139 80", duration: 0.32, ease: "power3.out" }, L(16.3));
+
+          // Exit 17.00-17.08 (camera hard-steps to 1.12x at 17.05).
+          tl.to("#benefits-indep", { y: -30, opacity: 0, duration: 0.08, ease: "power2.in" }, L(17.0));
+          tl.to("#benefits-hands", { scale: 0.8, opacity: 0, duration: 0.08, ease: "power2.in" }, L(17.0));
+
+          // ---------- Beat 8: callback (17.25-19.57) ----------
+          // SELF-GUIDED chip flies back in; the 100% stamp slaps onto it at 17.10 (ping ~17.11).
+          tl.fromTo(
+            "#benefits-unit",
+            { opacity: 0, x: -40, y: -60, rotation: -6, scale: 0.8 },
+            { opacity: 1, x: 0, y: 0, rotation: 0, scale: 1, duration: 0.14, ease: "power3.out" },
+            L(17.04)
+          );
+          tl.fromTo("#benefits-stamp", { opacity: 0 }, { opacity: 1, duration: 0.04, ease: "none" }, L(17.08));
+          tl.fromTo("#benefits-stamp", { scale: 1.12, rotation: -6 }, { scale: 1, rotation: -6, duration: 0.24, ease: "back.out(2.2)" }, L(17.08));
+          tl.fromTo("#benefits-chip", { y: 0 }, { y: 4, duration: 0.04, ease: "power2.out", immediateRender: false }, L(17.12));
+          tl.to("#benefits-chip", { y: 0, duration: 0.2, ease: "back.out(2)" }, L(17.16));
+
+          // ZERO HASSLE with a drawn gold check (round caps: hidden until the draw starts).
+          tl.fromTo("#benefits-zero", { opacity: 0, y: 22, scale: 0.9 }, { opacity: 1, y: 0, scale: 1, duration: 0.2, ease: "power3.out" }, L(18.72));
+          tl.fromTo("#benefits-check", { opacity: 0 }, { opacity: 1, duration: 0.04, ease: "none" }, L(18.84));
+          tl.fromTo("#benefits-check", { strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: 0.2, ease: "power2.out" }, L(18.84));
+          tl.fromTo("#benefits-hassle", { opacity: 0, y: 22, scale: 0.9 }, { opacity: 1, y: 0, scale: 1, duration: 0.2, ease: "power3.out" }, L(18.96));
+
+          // Exit 19.56-19.64 (camera back to 1.00x at 19.60).
+          tl.to("#benefits-call", { y: -30, opacity: 0, duration: 0.08, ease: "power2.in" }, L(19.56));
+
+          // ---------- Beat 9: outcome (19.68-22.50) ----------
+          tl.fromTo("#benefits-life", { opacity: 0, x: 70 }, { opacity: 1, x: 0, duration: 0.2, ease: "power3.out" }, L(19.62));
+          tl.fromTo("#benefits-rockwood", { opacity: 0, x: 90 }, { opacity: 1, x: 0, duration: 0.22, ease: "power3.out" }, L(19.64));
+          // Gold underline sweeps under "Rockwood" as she says it.
+          tl.fromTo("#benefits-under", { opacity: 0 }, { opacity: 1, duration: 0.04, ease: "none" }, L(20.08));
+          tl.fromTo("#benefits-under", { strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: 0.32, ease: "power2.inOut" }, L(20.08));
+
+          // Lower-stage card.
+          tl.fromTo("#benefits-card", { opacity: 0, y: 70 }, { opacity: 1, y: 0, duration: 0.24, ease: "power3.out" }, L(20.84));
+          // Row 1 pops on the 20.93 pop; the taupe stress bar shrinks full -> short.
+          tl.fromTo("#benefits-r1", { opacity: 0, scale: 0.85, transformOrigin: "0% 50%" }, { opacity: 1, scale: 1, duration: 0.2, ease: "back.out(1.8)" }, L(20.9));
+          tl.fromTo("#benefits-bar-1", { width: 800 }, { width: 176, duration: 0.66, ease: "power2.inOut" }, L(21.02));
+          tl.fromTo("#benefits-arrow-1", { y: 0 }, { y: 5, duration: 0.24, ease: "power2.out" }, L(21.04));
+          tl.to("#benefits-arrow-1", { y: 0, duration: 0.3, ease: "power2.inOut" }, L(21.28));
+          // Row 2 pops on the 21.69 pop; the gold savings bar grows short -> full.
+          tl.fromTo("#benefits-r2", { opacity: 0, scale: 0.85, transformOrigin: "0% 50%" }, { opacity: 1, scale: 1, duration: 0.2, ease: "back.out(1.8)" }, L(21.66));
+          tl.fromTo("#benefits-bar-2", { width: 176 }, { width: 800, duration: 0.62, ease: "power2.inOut" }, L(21.74));
+          tl.fromTo("#benefits-arrow-2", { y: 0 }, { y: -5, duration: 0.24, ease: "power2.out" }, L(21.76));
+          tl.to("#benefits-arrow-2", { y: 0, duration: 0.3, ease: "power2.inOut" }, L(22.0));
+          tl.fromTo("#benefits-badge-2", { scale: 1, transformOrigin: "50% 50%" }, { scale: 1.12, duration: 0.08, ease: "power2.out" }, L(22.32));
+          tl.to("#benefits-badge-2", { scale: 1, duration: 0.12, ease: "power2.inOut" }, L(22.4));
+
+          // Exit: header gone by 22.48 (the CTA split lifts her face at 22.50), card 22.45-22.57.
+          tl.to("#benefits-outcome", { y: -30, opacity: 0, duration: 0.08, ease: "power2.in" }, L(22.4));
+          tl.to("#benefits-card", { y: 60, opacity: 0, duration: 0.12, ease: "power2.in" }, L(22.45));
+
+          window.__timelines["scene-benefits"] = tl;
+        })();
       </script>
     </template>
   </body>
