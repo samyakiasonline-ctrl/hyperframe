@@ -145,12 +145,13 @@
           line-height: 40px;
           opacity: 0;
         }
+        /* Left side column (x 70-290, y 600-880): two open hands that let go. */
         #benefits-hands {
           position: absolute;
-          left: 840px;
-          top: 470px;
-          width: 160px;
-          height: 160px;
+          left: 68px;
+          top: 624px;
+          width: 224px;
+          height: 224px;
           overflow: visible;
           filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.3));
           opacity: 0;
@@ -158,12 +159,9 @@
         .benefits-hand {
           fill: none;
           stroke: #fff4e6;
-          stroke-width: 5;
+          stroke-width: 6.4;
           stroke-linecap: round;
           stroke-linejoin: round;
-        }
-        .benefits-crease {
-          stroke-width: 4;
         }
         #benefits-slash {
           fill: none;
@@ -295,13 +293,18 @@
           align-items: baseline;
           gap: 6px;
         }
-        #benefits-life {
+        /* "LIFE POST-" keeps its full width from frame one (each word only fades/slides),
+           so the centred header never re-flows as the words arrive. */
+        #benefits-lp {
           display: block;
           font-family: "Montserrat";
           font-weight: 800;
           font-size: 60px;
           line-height: 60px;
           letter-spacing: 0.02em;
+        }
+        #benefits-life,
+        #benefits-post {
           opacity: 0;
         }
         #benefits-rockwood {
@@ -439,20 +442,19 @@
           <div id="benefits-noline" class="benefits-wall"><span id="benefits-no" class="benefits-word">NO</span> <span id="benefits-hh" class="benefits-word">HAND-HOLDING</span></div>
           <div id="benefits-needed" class="benefits-wall">needed.</div>
         </div>
-        <svg id="benefits-hands" viewBox="-6 -6 172 172" aria-hidden="true">
+        <svg id="benefits-hands" viewBox="0 0 240 240" aria-hidden="true">
+          <!-- Open hand, palm out, four fingers up, thumb reaching to the centre; the thumb tips meet at x 120. -->
           <g id="benefits-hand-l">
-            <rect class="benefits-hand" x="8" y="62" width="12" height="42" rx="4" />
-            <path class="benefits-hand" d="M20 66 L 34 64 C 35 54, 40 44, 47 44 C 53 44, 54 52, 51 60 L 71 60 A 5 5 0 0 1 71 70 L 75 70 A 5 5 0 0 1 75 80 L 73 80 A 5 5 0 0 1 73 90 L 68 90 A 5 5 0 0 1 68 100 L 44 100 C 34 104, 26 104, 20 102" />
-            <path class="benefits-hand benefits-crease" d="M52 70 H 66 M 54 80 H 69 M 52 90 H 64" />
+            <path class="benefits-hand" d="M34 196 C 28 176, 24 156, 24 134 V 100 A 8 8 0 0 1 40 100 V 74 A 8 8 0 0 1 56 74 V 64 A 8 8 0 0 1 72 64 V 76 A 8 8 0 0 1 88 76 V 132 C 92 124, 97 115, 102 108 A 8 8 0 0 1 115 117 C 107 132, 98 148, 90 162 C 86 172, 84 184, 84 196" />
+            <path class="benefits-hand" d="M40 100 V 122 M 56 74 V 120 M 72 76 V 120" />
           </g>
           <g id="benefits-hand-r">
-            <g transform="matrix(-1 0 0 1 160 0)">
-              <rect class="benefits-hand" x="8" y="62" width="12" height="42" rx="4" />
-              <path class="benefits-hand" d="M20 66 L 34 64 C 35 54, 40 44, 47 44 C 53 44, 54 52, 51 60 L 71 60 A 5 5 0 0 1 71 70 L 75 70 A 5 5 0 0 1 75 80 L 73 80 A 5 5 0 0 1 73 90 L 68 90 A 5 5 0 0 1 68 100 L 44 100 C 34 104, 26 104, 20 102" />
-              <path class="benefits-hand benefits-crease" d="M52 70 H 66 M 54 80 H 69 M 52 90 H 64" />
+            <g transform="matrix(-1 0 0 1 240 0)">
+              <path class="benefits-hand" d="M34 196 C 28 176, 24 156, 24 134 V 100 A 8 8 0 0 1 40 100 V 74 A 8 8 0 0 1 56 74 V 64 A 8 8 0 0 1 72 64 V 76 A 8 8 0 0 1 88 76 V 132 C 92 124, 97 115, 102 108 A 8 8 0 0 1 115 117 C 107 132, 98 148, 90 162 C 86 172, 84 184, 84 196" />
+              <path class="benefits-hand" d="M40 100 V 122 M 56 74 V 120 M 72 76 V 120" />
             </g>
           </g>
-          <path id="benefits-slash" d="M104 24 L 56 142" pathLength="1" />
+          <path id="benefits-slash" d="M138 50 L 102 192" pathLength="1" />
         </svg>
 
         <!-- Beat 8 (17.25-19.57): callback -->
@@ -475,7 +477,7 @@
         <!-- Beat 9 (19.68-22.50): outcome -->
         <div id="benefits-outcome">
           <div id="benefits-head" class="benefits-wall">
-            <span id="benefits-life">LIFE POST-</span>
+            <span id="benefits-lp"><span id="benefits-life" class="benefits-word">LIFE</span> <span id="benefits-post" class="benefits-word">POST-</span></span>
             <span id="benefits-rockwood">Rockwood</span>
           </div>
           <svg id="benefits-under-svg" viewBox="0 0 1080 400" aria-hidden="true">
@@ -564,7 +566,8 @@
           tl.fromTo("#benefits-no", { opacity: 0, scale: 0.5, transformOrigin: "100% 60%" }, { opacity: 1, scale: 1, duration: 0.2, ease: "back.out(2)" }, L(15.8));
           tl.fromTo("#benefits-hh", { opacity: 0, scale: 0.5, transformOrigin: "0% 60%" }, { opacity: 1, scale: 1, duration: 0.22, ease: "back.out(2)" }, L(15.96));
           tl.fromTo("#benefits-needed", { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.2, ease: "power3.out" }, L(16.56));
-          // Two hands, fingertips touching; a gold slash cuts between them and they pull apart.
+          // Two open hands, thumb tips touching; a gold slash cuts between them and they let go,
+          // drifting apart and tipping outward from the wrists.
           tl.fromTo(
             "#benefits-hands",
             { opacity: 0, scale: 0.6, transformOrigin: "50% 50%" },
@@ -575,8 +578,8 @@
           // autoRound:false: CSSPlugin rounds px values to integers by default, which snaps a
           // pathLength=1 dash offset from 1 to 0 halfway through instead of drawing it.
           tl.fromTo("#benefits-slash", { strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: 0.18, ease: "power2.out", autoRound: false }, L(16.16));
-          tl.fromTo("#benefits-hand-l", { x: 0, rotation: 0, svgOrigin: "14 83" }, { x: -8, rotation: -9, svgOrigin: "14 83", duration: 0.32, ease: "power3.out" }, L(16.32));
-          tl.fromTo("#benefits-hand-r", { x: 0, rotation: 0, svgOrigin: "146 83" }, { x: 8, rotation: 9, svgOrigin: "146 83", duration: 0.32, ease: "power3.out" }, L(16.32));
+          tl.fromTo("#benefits-hand-l", { x: 0, rotation: 0, svgOrigin: "59 196" }, { x: -8, rotation: -7, svgOrigin: "59 196", duration: 0.32, ease: "power3.out" }, L(16.32));
+          tl.fromTo("#benefits-hand-r", { x: 0, rotation: 0, svgOrigin: "181 196" }, { x: 8, rotation: 7, svgOrigin: "181 196", duration: 0.32, ease: "power3.out" }, L(16.32));
 
           // Exit 17.00-17.08 (camera hard-steps to 1.12x at 17.05).
           tl.to("#benefits-indep", { y: -30, opacity: 0, duration: 0.08, ease: "power2.in" }, L(17.0));
@@ -609,11 +612,13 @@
           tl.to("#benefits-call", { y: -30, opacity: 0, duration: 0.08, ease: "power2.in" }, L(19.56));
 
           // ---------- Beat 9: outcome (19.68-22.50) ----------
+          // Word by word on the voice: "Life" 19.76, "post-" ~20.0-20.4, "Rockwood" ~20.4-20.97.
           tl.fromTo("#benefits-life", { opacity: 0, x: 70 }, { opacity: 1, x: 0, duration: 0.2, ease: "power3.out" }, L(19.6));
-          tl.fromTo("#benefits-rockwood", { opacity: 0, x: 90 }, { opacity: 1, x: 0, duration: 0.22, ease: "power3.out" }, L(19.64));
+          tl.fromTo("#benefits-post", { opacity: 0, x: 50 }, { opacity: 1, x: 0, duration: 0.2, ease: "power3.out" }, L(20.0));
+          tl.fromTo("#benefits-rockwood", { opacity: 0, x: 90 }, { opacity: 1, x: 0, duration: 0.22, ease: "power3.out" }, L(20.32));
           // Gold underline sweeps under "Rockwood" as she says it.
-          tl.fromTo("#benefits-under", { opacity: 0 }, { opacity: 1, duration: 0.04, ease: "none" }, L(20.08));
-          tl.fromTo("#benefits-under", { strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: 0.32, ease: "power2.inOut", autoRound: false }, L(20.08));
+          tl.fromTo("#benefits-under", { opacity: 0 }, { opacity: 1, duration: 0.04, ease: "none" }, L(20.36));
+          tl.fromTo("#benefits-under", { strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: 0.32, ease: "power2.inOut", autoRound: false }, L(20.36));
 
           // Lower-stage card.
           tl.fromTo("#benefits-card", { opacity: 0 }, { opacity: 1, duration: 0.08, ease: "none" }, L(20.84));
@@ -623,9 +628,13 @@
           tl.fromTo("#benefits-bar-1", { width: 800 }, { width: 176, duration: 0.68, ease: "power2.inOut" }, L(21.0));
           tl.fromTo("#benefits-arrow-1", { y: 0 }, { y: 5, duration: 0.24, ease: "power2.out" }, L(21.04));
           tl.to("#benefits-arrow-1", { y: 0, duration: 0.3, ease: "power2.inOut" }, L(21.28));
-          // Row 2 pops on the 21.69 pop; the gold savings bar grows short -> full.
-          tl.fromTo("#benefits-r2", { opacity: 0, scale: 0.85, transformOrigin: "0% 50%" }, { opacity: 1, scale: 1, duration: 0.2, ease: "back.out(1.8)" }, L(21.64));
-          tl.fromTo("#benefits-bar-2", { width: 176 }, { width: 800, duration: 0.64, ease: "power2.inOut" }, L(21.72));
+          // Row 2 arrives with the card, dimmed, so the card never shows an empty lower half.
+          tl.fromTo("#benefits-r2", { opacity: 0, scale: 0.85, transformOrigin: "0% 50%" }, { opacity: 0.42, scale: 1, duration: 0.2, ease: "back.out(1.8)" }, L(20.92));
+          // It brightens with a small pop on the 21.69 pop; the gold savings bar grows on "savings".
+          tl.fromTo("#benefits-r2", { opacity: 0.42 }, { opacity: 1, duration: 0.12, ease: "power2.out", immediateRender: false }, L(21.64));
+          tl.fromTo("#benefits-r2", { scale: 1 }, { scale: 1.03, duration: 0.08, ease: "power2.out", immediateRender: false }, L(21.64));
+          tl.to("#benefits-r2", { scale: 1, duration: 0.2, ease: "back.out(2)" }, L(21.72));
+          tl.fromTo("#benefits-bar-2", { width: 176 }, { width: 800, duration: 0.48, ease: "power2.inOut" }, L(21.88));
           tl.fromTo("#benefits-arrow-2", { y: 0 }, { y: -5, duration: 0.24, ease: "power2.out" }, L(21.76));
           tl.to("#benefits-arrow-2", { y: 0, duration: 0.3, ease: "power2.inOut" }, L(22.0));
           tl.fromTo("#benefits-badge-2", { scale: 1, transformOrigin: "50% 50%" }, { scale: 1.12, duration: 0.08, ease: "power2.out" }, L(22.32));

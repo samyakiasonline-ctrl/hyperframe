@@ -20,7 +20,9 @@
           color: #2a1714;
         }
 
-        /* Cream split panel: canvas y 960-1920 (same look as the products split).
+        /* Split panel: canvas y 960-1920 (same look as the products split). Cream down
+           to canvas y 1450, a 100 px blend, then an ink footer (canvas 1550-1920) under the
+           platform caption / username UI, so their white text never sits on cream.
            Children are positioned in panel space (panel y = canvas y - 960). */
         #cta-panel {
           position: absolute;
@@ -28,7 +30,7 @@
           top: 960px;
           width: 1080px;
           height: 960px;
-          background: #fff4e6;
+          background: linear-gradient(to bottom, #fff4e6 0, #fff4e6 490px, #2a1714 590px, #2a1714 100%);
         }
         #cta-shade {
           position: absolute;
@@ -48,12 +50,14 @@
           transform-origin: 50% 50%;
         }
 
-        /* Headline slot: canvas x 60-940, y 985-1095. A mask, so the two headlines
+        /* Stack (ink extents, equal ~50 px gaps across the content zone): headline
+           1005-1062, URL 1112-1171, pill 1220-1340, wordmark 1390-1432.
+           Headline slot: canvas x 60-940, y 980-1090. A mask, so the two headlines
            swap like a ticker (old slides up and out, new slides up and in). */
         #cta-slot {
           position: absolute;
           left: 60px;
-          top: 25px;
+          top: 20px;
           width: 880px;
           height: 110px;
           overflow: hidden;
@@ -97,13 +101,13 @@
           overflow: visible;
         }
 
-        /* URL: canvas x 60-940, y 1100-1200; text baseline at canvas y 1172.
+        /* URL: canvas x 60-940, y 1092-1192; text baseline at canvas y 1164.
            The wrapper is the mask for the left-to-right reveal (and a stacking
            context, so the highlighter bars sit behind the glyphs). */
         #cta-url-wrap {
           position: absolute;
           left: 60px;
-          top: 140px;
+          top: 132px;
           width: 880px;
           height: 100px;
         }
@@ -194,12 +198,12 @@
           background-clip: text;
         }
 
-        /* /shop pill: canvas x 300-700, y 1215-1335. Ink pill with cream text; the gold
+        /* /shop pill: canvas x 300-700, y 1220-1340. Ink pill with cream text; the gold
            layer (ink text) wipes in when she says "shop". */
         #cta-pill {
           position: absolute;
           left: 300px;
-          top: 255px;
+          top: 260px;
           width: 400px;
           height: 120px;
           border-radius: 60px;
@@ -249,11 +253,11 @@
           color: #2a1714;
         }
 
-        /* End wordmark: canvas y ~1377-1418 (baseline 1418), centred on x 500. */
+        /* End wordmark: canvas y ~1390-1432 (baseline 1432), centred on x 500. */
         #cta-mark {
           position: absolute;
           left: 60px;
-          top: 409px;
+          top: 424px;
           width: 880px;
           height: 60px;
           display: flex;
@@ -416,9 +420,11 @@
 
         // Cursor glides in from the lower right (24.40), lands just right of the label,
         // presses with the pill in lockstep (click SFX ~24.90), ripple, then leaves.
+        // It starts at tip y 1420, so by its first visible frame the whole arrow sits on
+        // the cream, above the ink footer (canvas y 1450+).
         tl.fromTo("#cta-cursor", { opacity: 0 }, { opacity: 1, duration: 0.12, ease: "none" }, at(24.4));
         tl.fromTo("#cta-cursor", { x: 862 }, { x: 660, duration: 0.4, ease: "power2.out" }, at(24.4));
-        tl.fromTo("#cta-cursor", { y: 1540 }, { y: 1290, duration: 0.4, ease: "power3.out" }, at(24.4));
+        tl.fromTo("#cta-cursor", { y: 1420 }, { y: 1295, duration: 0.4, ease: "power3.out" }, at(24.4));
         tl.fromTo("#cta-cursor", { scale: 1 }, { scale: 0.86, duration: 0.08, ease: "power2.in" }, at(24.82));
         tl.fromTo("#cta-cursor", { scale: 0.86 }, { scale: 1, duration: 0.24, ease: "back.out(2)", immediateRender: false }, at(24.9));
         tl.fromTo("#cta-pill", { scale: 1 }, { scale: 0.94, duration: 0.08, ease: "power2.in", immediateRender: false }, at(24.82));
@@ -427,7 +433,7 @@
         tl.fromTo("#cta-ripple", { opacity: 1 }, { opacity: 0, duration: 0.28, ease: "power2.out", immediateRender: false }, at(24.94));
         tl.fromTo("#cta-ripple", { scale: 0.08 }, { scale: 1, duration: 0.36, ease: "power2.out" }, at(24.86));
         tl.fromTo("#cta-cursor", { opacity: 1 }, { opacity: 0, duration: 0.2, ease: "power2.in", immediateRender: false }, at(25.33));
-        tl.fromTo("#cta-cursor", { x: 660, y: 1290 }, { x: 676, y: 1306, duration: 0.2, ease: "power2.in", immediateRender: false }, at(25.33));
+        tl.fromTo("#cta-cursor", { x: 660, y: 1295 }, { x: 676, y: 1311, duration: 0.2, ease: "power2.in", immediateRender: false }, at(25.33));
 
         // ---- Beat 11: URGENCY (24.98-25.95) ----
         // Ticker swap inside the 24.89-25.03 gap ("Don't" 24.98).
