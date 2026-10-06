@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+  </head>
+  <body>
+    <template>
+      <style>
+        #broll-summit-root {
+          position: absolute;
+          inset: 0;
+          overflow: hidden;
+        }
+        #summit-cam {
+          position: absolute;
+          inset: 0;
+          width: 100%;
+          height: 100%;
+          display: block;
+        }
+      </style>
+
+      <!-- B-roll: more confident: a figure raises their arms on the summit at sunrise. Illustrated in SVG; swap for a stock clip by
+           replacing the <svg> with <video class="clip" src="assets/broll/..." muted>. -->
+      <div id="broll-summit-root" data-composition-id="broll-summit" data-width="1080" data-height="1920" data-duration="2.4">
+        <svg id="summit-cam" data-layout-allow-overflow viewBox="0 0 1080 1920">
+          <defs>
+            <linearGradient id="summit-sky" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#1c2147" />
+              <stop offset="0.38" stop-color="#7a4f86" />
+              <stop offset="0.55" stop-color="#f08a6b" />
+              <stop offset="0.66" stop-color="#ffd08a" />
+            </linearGradient>
+            <radialGradient id="summit-sun" cx="0.5" cy="0.5" r="0.5">
+              <stop offset="0" stop-color="#fff6d6" />
+              <stop offset="0.3" stop-color="#ffd780" />
+              <stop offset="1" stop-color="#ff9f5a" stop-opacity="0" />
+            </radialGradient>
+          </defs>
+          <rect width="1080" height="1920" fill="url(#summit-sky)" />
+          <g id="summit-rays" opacity="0.28" fill="#fff1c7">
+            <polygon points="540,1000 470,0 610,0" /><polygon points="540,1000 120,80 230,0" />
+            <polygon points="540,1000 960,80 850,0" /><polygon points="540,1000 0,420 0,560" />
+            <polygon points="540,1000 1080,420 1080,560" />
+          </g>
+          <g id="summit-sunwrap">
+            <circle cx="540" cy="1000" r="300" fill="url(#summit-sun)" />
+            <circle cx="540" cy="1000" r="95" fill="#fff4cf" />
+          </g>
+          <path id="summit-far" d="M-40 1180 L180 940 L330 1060 L520 880 L700 1040 L880 900 L1120 1150 L1120 1920 L-40 1920 Z" fill="#b8708a" opacity="0.85" />
+          <path id="summit-mid" d="M-40 1300 L150 1130 L300 1220 L460 1080 L640 1250 L860 1100 L1120 1290 L1120 1920 L-40 1920 Z" fill="#5b4a72" />
+          <path id="summit-near" d="M-40 1920 L-40 1420 L250 1240 L440 1120 L540 1035 L640 1110 L860 1270 L1120 1420 L1120 1920 Z" fill="#1f2340" />
+          <g id="summit-figure" fill="#12142a">
+            <circle cx="540" cy="930" r="17" />
+            <path d="M524 948 L556 948 L560 1010 L520 1010 Z" />
+            <path d="M524 1008 L534 1008 L532 1042 L520 1042 Z" /><path d="M546 1008 L556 1008 L560 1042 L548 1042 Z" />
+            <rect id="summit-arm-l" x="519" y="952" width="11" height="52" rx="5" />
+            <rect id="summit-arm-r" x="550" y="952" width="11" height="52" rx="5" />
+          </g>
+        </svg>
+      </div>
+
+      <script>
+        const tl = gsap.timeline({ paused: true });
+
+        // Whip-in zoom, slow settle, quick fade out.
+        function brollInOut(cam, start, dur) {
+          tl.fromTo(cam, { opacity: 0, scale: 1.18 }, { opacity: 1, scale: 1.04, duration: 0.28, ease: "power3.out" }, start);
+          tl.fromTo(cam, { scale: 1.04 }, { scale: 1.0, duration: dur - 0.28, ease: "none", immediateRender: false }, start + 0.28);
+          tl.fromTo(cam, { opacity: 1 }, { opacity: 0, duration: 0.18, ease: "power1.in", immediateRender: false }, start + dur - 0.18);
+        }
+
+      brollInOut("#summit-cam", 0, 2.4);
+      tl.fromTo("#summit-sunwrap", { y: 140 }, { y: -40, duration: 2.4, ease: "sine.out" }, 0);
+      tl.fromTo("#summit-rays", { rotation: -6, svgOrigin: "540 1000", opacity: 0 }, { rotation: 6, opacity: 0.28, duration: 2.4, ease: "none" }, 0);
+      tl.fromTo("#summit-far", { y: 30 }, { y: 0, duration: 2.4, ease: "none" }, 0);
+      tl.fromTo("#summit-mid", { y: 60 }, { y: 0, duration: 2.4, ease: "none" }, 0);
+      // Arms lift on the word "confident" (7.44s in the main timeline).
+      tl.fromTo("#summit-arm-l", { rotation: 0, svgOrigin: "524 956" }, { rotation: 150, duration: 0.45, ease: "back.out(1.4)" }, 0.35);
+      tl.fromTo("#summit-arm-r", { rotation: 0, svgOrigin: "556 956" }, { rotation: -150, duration: 0.45, ease: "back.out(1.4)" }, 0.35);
+
+        window.__timelines["broll-summit"] = tl;
+      </script>
+    </template>
+  </body>
+</html>

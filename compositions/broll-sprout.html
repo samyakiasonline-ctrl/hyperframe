@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+  </head>
+  <body>
+    <template>
+      <style>
+        #broll-sprout-root {
+          position: absolute;
+          inset: 0;
+          overflow: hidden;
+        }
+        #sprout-cam {
+          position: absolute;
+          inset: 0;
+          width: 100%;
+          height: 100%;
+          display: block;
+        }
+      </style>
+
+      <!-- B-roll: outgrow old patterns: a seedling breaks through the soil. Illustrated in SVG; swap for a stock clip by
+           replacing the <svg> with <video class="clip" src="assets/broll/..." muted>. -->
+      <div id="broll-sprout-root" data-composition-id="broll-sprout" data-width="1080" data-height="1920" data-duration="2.5">
+        <svg id="sprout-cam" data-layout-allow-overflow viewBox="0 0 1080 1920">
+          <defs>
+            <linearGradient id="sprout-sky" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#232a52" />
+              <stop offset="0.45" stop-color="#e7896a" />
+              <stop offset="0.6" stop-color="#ffcf8a" />
+            </linearGradient>
+            <radialGradient id="sprout-sun" cx="0.5" cy="0.5" r="0.5">
+              <stop offset="0" stop-color="#fff3c4" />
+              <stop offset="0.35" stop-color="#ffd27a" stop-opacity="0.8" />
+              <stop offset="1" stop-color="#ffb35c" stop-opacity="0" />
+            </radialGradient>
+            <linearGradient id="sprout-soil" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#4a3226" />
+              <stop offset="1" stop-color="#1a110c" />
+            </linearGradient>
+            <linearGradient id="leaf-fill" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0" stop-color="#9be15d" />
+              <stop offset="1" stop-color="#3f9b3a" />
+            </linearGradient>
+          </defs>
+          <rect width="1080" height="1920" fill="url(#sprout-sky)" />
+          <circle id="sprout-sunglow" cx="540" cy="980" r="520" fill="url(#sprout-sun)" />
+          <g id="sprout-motes" fill="#fff4cf">
+            <circle cx="300" cy="900" r="5" /><circle cx="760" cy="820" r="4" /><circle cx="420" cy="700" r="3" />
+            <circle cx="680" cy="1000" r="5" /><circle cx="210" cy="1040" r="3" /><circle cx="880" cy="930" r="4" />
+            <circle cx="560" cy="620" r="3" /><circle cx="350" cy="560" r="4" />
+          </g>
+          <path d="M0 1120 Q 270 1080 540 1110 T 1080 1100 L1080 1920 L0 1920 Z" fill="url(#sprout-soil)" />
+          <g fill="#2a1b13" opacity="0.7">
+            <ellipse cx="180" cy="1300" rx="34" ry="12" /><ellipse cx="820" cy="1260" rx="26" ry="10" />
+            <ellipse cx="420" cy="1520" rx="40" ry="14" /><ellipse cx="900" cy="1600" rx="30" ry="11" />
+            <ellipse cx="650" cy="1380" rx="22" ry="8" />
+          </g>
+          <path id="sprout-stem" d="M540 1115 C 545 1000, 520 900, 540 760" fill="none" stroke="#5cb848" stroke-width="20" stroke-linecap="round" />
+          <path id="sprout-leaf-l" d="M540 770 C 470 690, 380 690, 330 730 C 390 800, 480 800, 540 770 Z" fill="url(#leaf-fill)" />
+          <path id="sprout-leaf-r" d="M540 790 C 610 700, 710 690, 770 720 C 720 810, 620 830, 540 790 Z" fill="url(#leaf-fill)" />
+          <path id="sprout-leaf-l-vein" d="M540 770 C 470 745, 410 735, 345 730" fill="none" stroke="#2f7d2b" stroke-width="4" />
+          <path id="sprout-leaf-r-vein" d="M540 790 C 610 765, 690 735, 755 722" fill="none" stroke="#2f7d2b" stroke-width="4" />
+        </svg>
+      </div>
+
+      <script>
+        const tl = gsap.timeline({ paused: true });
+
+        // Whip-in zoom, slow settle, quick fade out.
+        function brollInOut(cam, start, dur) {
+          tl.fromTo(cam, { opacity: 0, scale: 1.18 }, { opacity: 1, scale: 1.04, duration: 0.28, ease: "power3.out" }, start);
+          tl.fromTo(cam, { scale: 1.04 }, { scale: 1.0, duration: dur - 0.28, ease: "none", immediateRender: false }, start + 0.28);
+          tl.fromTo(cam, { opacity: 1 }, { opacity: 0, duration: 0.18, ease: "power1.in", immediateRender: false }, start + dur - 0.18);
+        }
+
+      brollInOut("#sprout-cam", 0, 2.5);
+      const stem = document.getElementById("sprout-stem");
+      const stemLen = stem.getTotalLength();
+      tl.fromTo(stem, { strokeDasharray: stemLen, strokeDashoffset: stemLen }, { strokeDashoffset: 0, duration: 1.0, ease: "power2.out" }, 0.1);
+      tl.fromTo(["#sprout-leaf-l", "#sprout-leaf-l-vein"], { scale: 0, svgOrigin: "540 770" }, { scale: 1, duration: 0.7, ease: "back.out(1.6)" }, 0.85);
+      tl.fromTo(["#sprout-leaf-r", "#sprout-leaf-r-vein"], { scale: 0, svgOrigin: "540 790" }, { scale: 1, duration: 0.7, ease: "back.out(1.6)" }, 1.0);
+      tl.fromTo("#sprout-motes", { y: 60, opacity: 0 }, { y: -140, opacity: 0.9, duration: 2.4, ease: "none" }, 0);
+      tl.fromTo("#sprout-sunglow", { scale: 0.85, svgOrigin: "540 980" }, { scale: 1.1, duration: 2.5, ease: "sine.out" }, 0);
+
+        window.__timelines["broll-sprout"] = tl;
+      </script>
+    </template>
+  </body>
+</html>
