@@ -32,13 +32,23 @@
           height: 960px;
           background: linear-gradient(to bottom, #fff4e6 0, #fff4e6 490px, #2a1714 590px, #2a1714 100%);
         }
+        /* Thin gold rule where the blend meets the ink footer (canvas y 1550-1553),
+           identical to scene-products. */
+        #cta-footer-rule {
+          position: absolute;
+          left: 0;
+          top: 590px;
+          width: 1080px;
+          height: 3px;
+          background: #d9ad6c;
+        }
         #cta-shade {
           position: absolute;
           left: 0;
           top: -40px;
           width: 1080px;
           height: 40px;
-          background: linear-gradient(to top, rgba(0, 0, 0, 0.26), rgba(0, 0, 0, 0));
+          background: linear-gradient(to top, rgba(0, 0, 0, 0.16), rgba(0, 0, 0, 0));
         }
         #cta-accent {
           position: absolute;
@@ -327,6 +337,7 @@
         <div id="cta-panel">
           <div id="cta-shade"></div>
           <div id="cta-accent"></div>
+          <div id="cta-footer-rule"></div>
 
           <div id="cta-slot">
             <div id="cta-grab" class="cta-head" data-layout-allow-overflow data-layout-allow-overlap>GRAB YOURS NOW</div>
