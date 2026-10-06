@@ -1,0 +1,246 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1080, height=1920" />
+    <script src="assets/vendor/gsap.min.js"></script>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        width: 1080px;
+        height: 1920px;
+        overflow: hidden;
+        background: #000;
+      }
+      #root {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        background: #000;
+      }
+      /* Camera wrapper: push-ins and the split-screen lift move this, never the
+         timed <video>. Scale origin is her face (canvas 560, 660). */
+      #cam {
+        position: absolute;
+        inset: 0;
+        z-index: 0;
+        transform-origin: 560px 660px;
+      }
+      #speaker {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+      #scene-hook,
+      #scene-products,
+      #scene-benefits,
+      #scene-cta {
+        z-index: 2;
+      }
+    </style>
+  </head>
+  <body>
+    <div
+      id="root"
+      data-composition-id="main"
+      data-start="0"
+      data-duration="27.6"
+      data-fps="25"
+      data-width="1080"
+      data-height="1920"
+    >
+      <!-- A-roll: 1080x1920 re-encode of assets/source.mp4 (keyframe every 1 s).
+           100 Hz high-pass tames the plosives (9.15, 10.08, 13.77, 20.09 s);
+           +3 dB on the quieter last line "Don't sleep on this" (25.0-26.0 s). -->
+      <div id="cam">
+        <video
+          id="speaker"
+          src="assets/speaker.mp4"
+          playsinline
+          data-start="0"
+          data-duration="27.6"
+          data-has-audio="true"
+          data-track-index="0"
+          data-fx-chain="{&quot;version&quot;:1,&quot;nodes&quot;:[{&quot;type&quot;:&quot;highpass&quot;,&quot;id&quot;:&quot;n1&quot;,&quot;label&quot;:&quot;Plosive cut&quot;,&quot;params&quot;:{&quot;frequency&quot;:100,&quot;q&quot;:0.707,&quot;poles&quot;:&quot;2&quot;}},{&quot;type&quot;:&quot;gain&quot;,&quot;id&quot;:&quot;n2&quot;,&quot;label&quot;:&quot;Last-line lift&quot;,&quot;params&quot;:{&quot;gain&quot;:0}}]}"
+          data-automation="{&quot;version&quot;:1,&quot;lanes&quot;:[{&quot;target&quot;:&quot;fx.n2.gain&quot;,&quot;points&quot;:[{&quot;t&quot;:0,&quot;v&quot;:0},{&quot;t&quot;:24.98,&quot;v&quot;:0},{&quot;t&quot;:25.03,&quot;v&quot;:3},{&quot;t&quot;:25.95,&quot;v&quot;:3},{&quot;t&quot;:26.0,&quot;v&quot;:0}]}]}"
+        ></video>
+      </div>
+
+      <!-- Scenes: one per section of the script. -->
+      <div
+        id="scene-hook"
+        class="clip"
+        data-composition-id="scene-hook"
+        data-composition-src="compositions/scene-hook.html"
+        data-start="0"
+        data-duration="8.1"
+        data-track-index="1"
+        data-track-kind="graphics"
+        data-width="1080"
+        data-height="1920"
+      ></div>
+      <div
+        id="scene-products"
+        class="clip"
+        data-composition-id="scene-products"
+        data-composition-src="compositions/scene-products.html"
+        data-start="7.95"
+        data-duration="5.9"
+        data-track-index="1"
+        data-track-kind="graphics"
+        data-width="1080"
+        data-height="1920"
+      ></div>
+      <div
+        id="scene-benefits"
+        class="clip"
+        data-composition-id="scene-benefits"
+        data-composition-src="compositions/scene-benefits.html"
+        data-start="13.6"
+        data-duration="9.02"
+        data-track-index="1"
+        data-track-kind="graphics"
+        data-width="1080"
+        data-height="1920"
+      ></div>
+      <div
+        id="scene-cta"
+        class="clip"
+        data-composition-id="scene-cta"
+        data-composition-src="compositions/scene-cta.html"
+        data-start="22.45"
+        data-duration="5.15"
+        data-track-index="1"
+        data-track-kind="graphics"
+        data-width="1080"
+        data-height="1920"
+      ></div>
+
+      <!-- Sound effects: bundled Pixabay library (assets/sfx/CREDITS.md). Each cue sits in a
+           measured speech gap; levels are per cue because the files differ by ~37 LU.
+           data-start = on-screen hit − the file's transient offset. All cues share one bus. -->
+      <hf-audio-group
+        id="sfx"
+        data-label="SFX"
+        data-fx-chain="{&quot;version&quot;:1,&quot;nodes&quot;:[{&quot;type&quot;:&quot;limiter&quot;,&quot;id&quot;:&quot;g1&quot;,&quot;label&quot;:&quot;SFX ceiling&quot;,&quot;params&quot;:{&quot;limit&quot;:-6,&quot;attack&quot;:5,&quot;release&quot;:50,&quot;level_out&quot;:0}}]}"
+      ></hf-audio-group>
+
+      <!-- Pops: text and card hits -->
+      <audio id="sfx-pop-bros" data-audio-group="sfx" src="assets/sfx/pop.mp3" data-start="1.77" data-duration="0.72" data-track-index="10" data-volume="0.82"></audio>
+      <audio id="sfx-pop-potato" data-audio-group="sfx" src="assets/sfx/pop.mp3" data-start="3.48" data-duration="0.72" data-track-index="10" data-volume="0.82"></audio>
+      <audio id="sfx-pop-card-1" data-audio-group="sfx" src="assets/sfx/pop.mp3" data-start="7.95" data-duration="0.72" data-track-index="10" data-volume="0.82"></audio>
+      <audio id="sfx-pop-card-2" data-audio-group="sfx" src="assets/sfx/pop.mp3" data-start="9.51" data-duration="0.72" data-track-index="10" data-volume="0.82"></audio>
+      <audio id="sfx-pop-card-3" data-audio-group="sfx" src="assets/sfx/pop.mp3" data-start="10.89" data-duration="0.72" data-track-index="10" data-volume="0.82"></audio>
+      <audio id="sfx-pop-stress" data-audio-group="sfx" src="assets/sfx/pop.mp3" data-start="20.82" data-duration="0.72" data-track-index="10" data-volume="0.65"></audio>
+      <audio id="sfx-pop-savings" data-audio-group="sfx" src="assets/sfx/pop.mp3" data-start="21.58" data-duration="0.72" data-track-index="10" data-volume="0.65"></audio>
+      <!-- Whooshes: section changes -->
+      <audio id="sfx-whoosh-joke" data-audio-group="sfx" src="assets/sfx/whoosh.mp3" data-start="2.17" data-duration="0.57" data-track-index="11" data-volume="0.33"></audio>
+      <audio id="sfx-whoosh-reveal" data-audio-group="sfx" src="assets/sfx/whoosh.mp3" data-start="4.0" data-duration="0.57" data-track-index="11" data-volume="0.33"></audio>
+      <audio id="sfx-whoosh-benefits" data-audio-group="sfx" src="assets/sfx/whoosh.mp3" data-start="13.46" data-duration="0.57" data-track-index="11" data-volume="0.41"></audio>
+      <audio id="sfx-whoosh-outcome" data-audio-group="sfx" src="assets/sfx/whoosh.mp3" data-start="19.52" data-duration="0.57" data-track-index="11" data-volume="0.41"></audio>
+      <!-- Bass impacts: brand reveal, "rock-solid", end card. Saturated so they read on phone
+           speakers; trimmed with a fade so the 2 s sustain never rumbles under speech. -->
+      <audio
+        id="sfx-impact-reveal"
+        data-audio-group="sfx"
+        src="assets/sfx/impact-bass-1.mp3"
+        data-start="4.55"
+        data-duration="0.9"
+        data-track-index="12"
+        data-fx-chain="{&quot;version&quot;:1,&quot;nodes&quot;:[{&quot;type&quot;:&quot;saturate&quot;,&quot;id&quot;:&quot;n1&quot;,&quot;label&quot;:&quot;Phone-speaker bite&quot;,&quot;params&quot;:{&quot;type&quot;:&quot;tanh&quot;,&quot;threshold&quot;:-12}}]}"
+        data-automation="{&quot;version&quot;:1,&quot;lanes&quot;:[{&quot;target&quot;:&quot;volume&quot;,&quot;points&quot;:[{&quot;t&quot;:0,&quot;v&quot;:0.14},{&quot;t&quot;:0.35,&quot;v&quot;:0.14},{&quot;t&quot;:0.88,&quot;v&quot;:0}]}]}"
+      ></audio>
+      <audio
+        id="sfx-impact-rock"
+        data-audio-group="sfx"
+        src="assets/sfx/impact-bass-1.mp3"
+        data-start="13.98"
+        data-duration="0.9"
+        data-track-index="12"
+        data-fx-chain="{&quot;version&quot;:1,&quot;nodes&quot;:[{&quot;type&quot;:&quot;saturate&quot;,&quot;id&quot;:&quot;n1&quot;,&quot;label&quot;:&quot;Phone-speaker bite&quot;,&quot;params&quot;:{&quot;type&quot;:&quot;tanh&quot;,&quot;threshold&quot;:-12}}]}"
+        data-automation="{&quot;version&quot;:1,&quot;lanes&quot;:[{&quot;target&quot;:&quot;volume&quot;,&quot;points&quot;:[{&quot;t&quot;:0,&quot;v&quot;:0.09},{&quot;t&quot;:0.35,&quot;v&quot;:0.09},{&quot;t&quot;:0.88,&quot;v&quot;:0}]}]}"
+      ></audio>
+      <audio
+        id="sfx-impact-end"
+        data-audio-group="sfx"
+        src="assets/sfx/impact-bass-1.mp3"
+        data-start="25.92"
+        data-duration="1.6"
+        data-track-index="12"
+        data-fx-chain="{&quot;version&quot;:1,&quot;nodes&quot;:[{&quot;type&quot;:&quot;saturate&quot;,&quot;id&quot;:&quot;n1&quot;,&quot;label&quot;:&quot;Phone-speaker bite&quot;,&quot;params&quot;:{&quot;type&quot;:&quot;tanh&quot;,&quot;threshold&quot;:-12}}]}"
+        data-automation="{&quot;version&quot;:1,&quot;lanes&quot;:[{&quot;target&quot;:&quot;volume&quot;,&quot;points&quot;:[{&quot;t&quot;:0,&quot;v&quot;:0.14},{&quot;t&quot;:0.5,&quot;v&quot;:0.14},{&quot;t&quot;:1.55,&quot;v&quot;:0}]}]}"
+      ></audio>
+      <!-- Shimmers: "magic", the product payoff, the 100% stamp, the savings payoff, the end card -->
+      <audio
+        id="sfx-sparkle-magic"
+        data-audio-group="sfx"
+        src="assets/sfx/sparkle.mp3"
+        data-start="7.55"
+        data-duration="0.45"
+        data-track-index="13"
+        data-automation="{&quot;version&quot;:1,&quot;lanes&quot;:[{&quot;target&quot;:&quot;volume&quot;,&quot;points&quot;:[{&quot;t&quot;:0,&quot;v&quot;:0.05},{&quot;t&quot;:0.25,&quot;v&quot;:0.05},{&quot;t&quot;:0.45,&quot;v&quot;:0}]}]}"
+      ></audio>
+      <audio
+        id="sfx-ping-game-changer"
+        data-audio-group="sfx"
+        src="assets/sfx/ping.mp3"
+        data-start="12.19"
+        data-duration="0.62"
+        data-track-index="13"
+        data-automation="{&quot;version&quot;:1,&quot;lanes&quot;:[{&quot;target&quot;:&quot;volume&quot;,&quot;points&quot;:[{&quot;t&quot;:0,&quot;v&quot;:0.43},{&quot;t&quot;:0.42,&quot;v&quot;:0.43},{&quot;t&quot;:0.62,&quot;v&quot;:0}]}]}"
+      ></audio>
+      <audio
+        id="sfx-ping-100"
+        data-audio-group="sfx"
+        src="assets/sfx/ping.mp3"
+        data-start="16.79"
+        data-duration="0.62"
+        data-track-index="13"
+        data-automation="{&quot;version&quot;:1,&quot;lanes&quot;:[{&quot;target&quot;:&quot;volume&quot;,&quot;points&quot;:[{&quot;t&quot;:0,&quot;v&quot;:0.54},{&quot;t&quot;:0.42,&quot;v&quot;:0.54},{&quot;t&quot;:0.62,&quot;v&quot;:0}]}]}"
+      ></audio>
+      <audio
+        id="sfx-chime-savings"
+        data-audio-group="sfx"
+        src="assets/sfx/chime.mp3"
+        data-start="22.14"
+        data-duration="0.75"
+        data-track-index="13"
+        data-automation="{&quot;version&quot;:1,&quot;lanes&quot;:[{&quot;target&quot;:&quot;volume&quot;,&quot;points&quot;:[{&quot;t&quot;:0,&quot;v&quot;:0.79},{&quot;t&quot;:0.55,&quot;v&quot;:0.79},{&quot;t&quot;:0.75,&quot;v&quot;:0}]}]}"
+      ></audio>
+      <audio
+        id="sfx-sparkle-end"
+        data-audio-group="sfx"
+        src="assets/sfx/sparkle.mp3"
+        data-start="25.98"
+        data-duration="1.6"
+        data-track-index="13"
+        data-automation="{&quot;version&quot;:1,&quot;lanes&quot;:[{&quot;target&quot;:&quot;volume&quot;,&quot;points&quot;:[{&quot;t&quot;:0,&quot;v&quot;:0.12},{&quot;t&quot;:1.2,&quot;v&quot;:0.12},{&quot;t&quot;:1.5,&quot;v&quot;:0}]}]}"
+      ></audio>
+      <!-- Click: the cursor presses the /shop pill after the URL is spoken -->
+      <audio id="sfx-click-shop" data-audio-group="sfx" src="assets/sfx/click-soft.mp3" data-start="24.86" data-duration="0.37" data-track-index="14" data-volume="0.99"></audio>
+    </div>
+
+    <script>
+      // Camera: an eased push on the brand reveal, lifts into the two split-panel
+      // sections, and a hard punch-in for "100% self-guided". Scenes slide their
+      // cream panels with the same timing and ease (7.99 in, 13.52 out, 22.50 in).
+      const tl = gsap.timeline({ paused: true });
+      tl.fromTo("#cam", { scale: 1, y: 0 }, { scale: 1.06, y: 0, duration: 1.28, ease: "power2.inOut" }, 4.22);
+      tl.to("#cam", { scale: 1, y: -180, duration: 0.31, ease: "power3.inOut" }, 7.99);
+      tl.to("#cam", { y: 0, duration: 0.28, ease: "power3.inOut" }, 13.52);
+      tl.set("#cam", { scale: 1.12 }, 17.05);
+      tl.set("#cam", { scale: 1 }, 19.6);
+      tl.to("#cam", { y: -180, duration: 0.31, ease: "power3.inOut" }, 22.5);
+
+      window.__timelines["main"] = tl;
+    </script>
+  </body>
+</html>
