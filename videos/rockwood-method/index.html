@@ -134,11 +134,11 @@
       ></hf-audio-group>
 
       <!-- Pops: text and card hits -->
-      <audio id="sfx-pop-bros" data-audio-group="sfx" src="assets/sfx/pop.mp3" data-start="1.77" data-duration="0.72" data-track-index="10" data-volume="0.82"></audio>
-      <audio id="sfx-pop-potato" data-audio-group="sfx" src="assets/sfx/pop.mp3" data-start="3.48" data-duration="0.72" data-track-index="10" data-volume="0.82"></audio>
-      <audio id="sfx-pop-card-1" data-audio-group="sfx" src="assets/sfx/pop.mp3" data-start="7.95" data-duration="0.72" data-track-index="10" data-volume="0.82"></audio>
-      <audio id="sfx-pop-card-2" data-audio-group="sfx" src="assets/sfx/pop.mp3" data-start="9.51" data-duration="0.72" data-track-index="10" data-volume="0.82"></audio>
-      <audio id="sfx-pop-card-3" data-audio-group="sfx" src="assets/sfx/pop.mp3" data-start="10.89" data-duration="0.72" data-track-index="10" data-volume="0.82"></audio>
+      <audio id="sfx-pop-bros" data-audio-group="sfx" src="assets/sfx/pop.mp3" data-start="1.77" data-duration="0.72" data-track-index="10" data-volume="0.45"></audio>
+      <audio id="sfx-pop-potato" data-audio-group="sfx" src="assets/sfx/pop.mp3" data-start="3.48" data-duration="0.72" data-track-index="10" data-volume="0.45"></audio>
+      <audio id="sfx-pop-card-1" data-audio-group="sfx" src="assets/sfx/pop.mp3" data-start="7.95" data-duration="0.72" data-track-index="10" data-volume="0.6"></audio>
+      <audio id="sfx-pop-card-2" data-audio-group="sfx" src="assets/sfx/pop.mp3" data-start="9.51" data-duration="0.72" data-track-index="10" data-volume="0.6"></audio>
+      <audio id="sfx-pop-card-3" data-audio-group="sfx" src="assets/sfx/pop.mp3" data-start="10.89" data-duration="0.72" data-track-index="10" data-volume="0.6"></audio>
       <audio id="sfx-pop-stress" data-audio-group="sfx" src="assets/sfx/pop.mp3" data-start="20.82" data-duration="0.72" data-track-index="10" data-volume="0.65"></audio>
       <audio id="sfx-pop-savings" data-audio-group="sfx" src="assets/sfx/pop.mp3" data-start="21.58" data-duration="0.72" data-track-index="10" data-volume="0.65"></audio>
       <!-- Whooshes: section changes -->
@@ -146,38 +146,31 @@
       <audio id="sfx-whoosh-reveal" data-audio-group="sfx" src="assets/sfx/whoosh.mp3" data-start="4.0" data-duration="0.57" data-track-index="11" data-volume="0.33"></audio>
       <audio id="sfx-whoosh-benefits" data-audio-group="sfx" src="assets/sfx/whoosh.mp3" data-start="13.46" data-duration="0.57" data-track-index="11" data-volume="0.41"></audio>
       <audio id="sfx-whoosh-outcome" data-audio-group="sfx" src="assets/sfx/whoosh.mp3" data-start="19.52" data-duration="0.57" data-track-index="11" data-volume="0.41"></audio>
-      <!-- Bass impacts: brand reveal, "rock-solid", end card. Saturated so they read on phone
-           speakers; trimmed with a fade so the 2 s sustain never rumbles under speech. -->
+      <!-- Bass impacts: brand reveal and "rock-solid". Hard tanh saturation adds 130-400 Hz
+           harmonics so they read on phone speakers; 0.3 s envelopes so the 66 Hz sustain never
+           drones under speech. -->
       <audio
         id="sfx-impact-reveal"
         data-audio-group="sfx"
         src="assets/sfx/impact-bass-1.mp3"
         data-start="4.55"
-        data-duration="0.9"
+        data-duration="0.32"
         data-track-index="12"
-        data-fx-chain="{&quot;version&quot;:1,&quot;nodes&quot;:[{&quot;type&quot;:&quot;saturate&quot;,&quot;id&quot;:&quot;n1&quot;,&quot;label&quot;:&quot;Phone-speaker bite&quot;,&quot;params&quot;:{&quot;type&quot;:&quot;tanh&quot;,&quot;threshold&quot;:-12}}]}"
-        data-automation="{&quot;version&quot;:1,&quot;lanes&quot;:[{&quot;target&quot;:&quot;volume&quot;,&quot;points&quot;:[{&quot;t&quot;:0,&quot;v&quot;:0.14},{&quot;t&quot;:0.35,&quot;v&quot;:0.14},{&quot;t&quot;:0.88,&quot;v&quot;:0}]}]}"
+        data-fx-chain="{&quot;version&quot;:1,&quot;nodes&quot;:[{&quot;type&quot;:&quot;saturate&quot;,&quot;id&quot;:&quot;n1&quot;,&quot;label&quot;:&quot;Phone-speaker bite&quot;,&quot;params&quot;:{&quot;type&quot;:&quot;tanh&quot;,&quot;threshold&quot;:-30}}]}"
+        data-automation="{&quot;version&quot;:1,&quot;lanes&quot;:[{&quot;target&quot;:&quot;volume&quot;,&quot;points&quot;:[{&quot;t&quot;:0,&quot;v&quot;:0.16},{&quot;t&quot;:0.12,&quot;v&quot;:0.16},{&quot;t&quot;:0.3,&quot;v&quot;:0}]}]}"
       ></audio>
       <audio
         id="sfx-impact-rock"
         data-audio-group="sfx"
         src="assets/sfx/impact-bass-1.mp3"
         data-start="13.98"
-        data-duration="0.9"
+        data-duration="0.32"
         data-track-index="12"
-        data-fx-chain="{&quot;version&quot;:1,&quot;nodes&quot;:[{&quot;type&quot;:&quot;saturate&quot;,&quot;id&quot;:&quot;n1&quot;,&quot;label&quot;:&quot;Phone-speaker bite&quot;,&quot;params&quot;:{&quot;type&quot;:&quot;tanh&quot;,&quot;threshold&quot;:-12}}]}"
-        data-automation="{&quot;version&quot;:1,&quot;lanes&quot;:[{&quot;target&quot;:&quot;volume&quot;,&quot;points&quot;:[{&quot;t&quot;:0,&quot;v&quot;:0.09},{&quot;t&quot;:0.35,&quot;v&quot;:0.09},{&quot;t&quot;:0.88,&quot;v&quot;:0}]}]}"
+        data-fx-chain="{&quot;version&quot;:1,&quot;nodes&quot;:[{&quot;type&quot;:&quot;saturate&quot;,&quot;id&quot;:&quot;n1&quot;,&quot;label&quot;:&quot;Phone-speaker bite&quot;,&quot;params&quot;:{&quot;type&quot;:&quot;tanh&quot;,&quot;threshold&quot;:-30}}]}"
+        data-automation="{&quot;version&quot;:1,&quot;lanes&quot;:[{&quot;target&quot;:&quot;volume&quot;,&quot;points&quot;:[{&quot;t&quot;:0,&quot;v&quot;:0.12},{&quot;t&quot;:0.12,&quot;v&quot;:0.12},{&quot;t&quot;:0.3,&quot;v&quot;:0}]}]}"
       ></audio>
-      <audio
-        id="sfx-impact-end"
-        data-audio-group="sfx"
-        src="assets/sfx/impact-bass-1.mp3"
-        data-start="25.92"
-        data-duration="1.6"
-        data-track-index="12"
-        data-fx-chain="{&quot;version&quot;:1,&quot;nodes&quot;:[{&quot;type&quot;:&quot;saturate&quot;,&quot;id&quot;:&quot;n1&quot;,&quot;label&quot;:&quot;Phone-speaker bite&quot;,&quot;params&quot;:{&quot;type&quot;:&quot;tanh&quot;,&quot;threshold&quot;:-12}}]}"
-        data-automation="{&quot;version&quot;:1,&quot;lanes&quot;:[{&quot;target&quot;:&quot;volume&quot;,&quot;points&quot;:[{&quot;t&quot;:0,&quot;v&quot;:0.14},{&quot;t&quot;:0.5,&quot;v&quot;:0.14},{&quot;t&quot;:1.55,&quot;v&quot;:0}]}]}"
-      ></audio>
+      <!-- End card: a pop as the wordmark lands (a sub-bass hit droned on earbuds). -->
+      <audio id="sfx-pop-end" data-audio-group="sfx" src="assets/sfx/pop.mp3" data-start="25.85" data-duration="0.72" data-track-index="10" data-volume="0.5"></audio>
       <!-- Shimmers: "magic", the product payoff, the 100% stamp, the savings payoff, the end card -->
       <audio
         id="sfx-sparkle-magic"
@@ -186,16 +179,16 @@
         data-start="7.55"
         data-duration="0.45"
         data-track-index="13"
-        data-automation="{&quot;version&quot;:1,&quot;lanes&quot;:[{&quot;target&quot;:&quot;volume&quot;,&quot;points&quot;:[{&quot;t&quot;:0,&quot;v&quot;:0.05},{&quot;t&quot;:0.25,&quot;v&quot;:0.05},{&quot;t&quot;:0.45,&quot;v&quot;:0}]}]}"
+        data-automation="{&quot;version&quot;:1,&quot;lanes&quot;:[{&quot;target&quot;:&quot;volume&quot;,&quot;points&quot;:[{&quot;t&quot;:0,&quot;v&quot;:0.1},{&quot;t&quot;:0.25,&quot;v&quot;:0.1},{&quot;t&quot;:0.45,&quot;v&quot;:0}]}]}"
       ></audio>
       <audio
         id="sfx-ping-game-changer"
         data-audio-group="sfx"
         src="assets/sfx/ping.mp3"
-        data-start="12.19"
+        data-start="12.48"
         data-duration="0.62"
         data-track-index="13"
-        data-automation="{&quot;version&quot;:1,&quot;lanes&quot;:[{&quot;target&quot;:&quot;volume&quot;,&quot;points&quot;:[{&quot;t&quot;:0,&quot;v&quot;:0.43},{&quot;t&quot;:0.42,&quot;v&quot;:0.43},{&quot;t&quot;:0.62,&quot;v&quot;:0}]}]}"
+        data-automation="{&quot;version&quot;:1,&quot;lanes&quot;:[{&quot;target&quot;:&quot;volume&quot;,&quot;points&quot;:[{&quot;t&quot;:0,&quot;v&quot;:0.7},{&quot;t&quot;:0.42,&quot;v&quot;:0.7},{&quot;t&quot;:0.62,&quot;v&quot;:0}]}]}"
       ></audio>
       <audio
         id="sfx-ping-100"
@@ -204,7 +197,7 @@
         data-start="16.79"
         data-duration="0.62"
         data-track-index="13"
-        data-automation="{&quot;version&quot;:1,&quot;lanes&quot;:[{&quot;target&quot;:&quot;volume&quot;,&quot;points&quot;:[{&quot;t&quot;:0,&quot;v&quot;:0.54},{&quot;t&quot;:0.42,&quot;v&quot;:0.54},{&quot;t&quot;:0.62,&quot;v&quot;:0}]}]}"
+        data-automation="{&quot;version&quot;:1,&quot;lanes&quot;:[{&quot;target&quot;:&quot;volume&quot;,&quot;points&quot;:[{&quot;t&quot;:0,&quot;v&quot;:0.8},{&quot;t&quot;:0.42,&quot;v&quot;:0.8},{&quot;t&quot;:0.62,&quot;v&quot;:0}]}]}"
       ></audio>
       <audio
         id="sfx-chime-savings"
@@ -222,7 +215,7 @@
         data-start="25.98"
         data-duration="1.6"
         data-track-index="13"
-        data-automation="{&quot;version&quot;:1,&quot;lanes&quot;:[{&quot;target&quot;:&quot;volume&quot;,&quot;points&quot;:[{&quot;t&quot;:0,&quot;v&quot;:0.12},{&quot;t&quot;:1.2,&quot;v&quot;:0.12},{&quot;t&quot;:1.5,&quot;v&quot;:0}]}]}"
+        data-automation="{&quot;version&quot;:1,&quot;lanes&quot;:[{&quot;target&quot;:&quot;volume&quot;,&quot;points&quot;:[{&quot;t&quot;:0,&quot;v&quot;:0.18},{&quot;t&quot;:1.2,&quot;v&quot;:0.18},{&quot;t&quot;:1.5,&quot;v&quot;:0}]}]}"
       ></audio>
       <!-- Click: the cursor presses the /shop pill after the URL is spoken -->
       <audio id="sfx-click-shop" data-audio-group="sfx" src="assets/sfx/click-soft.mp3" data-start="24.86" data-duration="0.37" data-track-index="14" data-volume="0.99"></audio>
@@ -237,7 +230,7 @@
       tl.to("#cam", { scale: 1, y: -180, duration: 0.31, ease: "power3.inOut" }, 7.99);
       tl.to("#cam", { y: 0, duration: 0.28, ease: "power3.inOut" }, 13.52);
       tl.set("#cam", { scale: 1.12 }, 17.05);
-      tl.set("#cam", { scale: 1 }, 19.6);
+      tl.set("#cam", { scale: 1 }, 19.64);
       tl.to("#cam", { y: -180, duration: 0.31, ease: "power3.inOut" }, 22.5);
 
       window.__timelines["main"] = tl;
