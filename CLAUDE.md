@@ -15,6 +15,10 @@ This repo is a HyperFrames project for editing videos: HTML compositions in, MP4
   `scripts/update-skills.sh`.
 - **`.claude/hooks/session-start.sh`** downloads Chrome Headless Shell in cloud sessions
   so `npm run render` works immediately.
+- **House style: `/lime-pop-recut`** (`.claude/skills/lime-pop-recut/`), learned from a reference
+  talking-head ad: lime hero-word stacked captions, UI props, blur-through cuts, sparse SFX, plus a
+  tested template. Use it when the user asks for "that style" or a punchy talking-head ad / reel.
+  Not an upstream skill, so `scripts/update-skills.sh` leaves it alone.
 - Transcription (captions) needs `whisper-cpp`, which is not installed; `npx hyperframes doctor`
   lists optional tools.
 
