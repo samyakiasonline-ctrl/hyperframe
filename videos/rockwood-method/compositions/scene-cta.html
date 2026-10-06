@@ -77,22 +77,23 @@
           line-height: 80px;
         }
         #cta-sleep {
-          gap: 16px;
+          gap: 14px;
         }
+        /* 68 px (spec ~72): text ~794 px + 14 gap + 58 clock = ~866 px, inside 880. */
         #cta-sleep-text {
-          font-size: 66px;
-          line-height: 66px;
+          font-size: 68px;
+          line-height: 68px;
         }
         #cta-clock {
           flex: 0 0 auto;
-          width: 62px;
-          height: 62px;
+          width: 58px;
+          height: 58px;
           transform-origin: 50% 56%;
         }
         #cta-clock svg {
           display: block;
-          width: 62px;
-          height: 62px;
+          width: 58px;
+          height: 58px;
           overflow: visible;
         }
 
@@ -160,21 +161,35 @@
           right: -8px;
           border-radius: 0 9px 9px 0;
         }
-        /* One soft shine: a glyph-clipped duplicate of the URL with a moving band. */
+        /* One soft shine, two layers driven by the same moving band (band centre at
+           background-position-x + 1100 px in line space):
+           - glint: a cream streak above the gold highlighter bars but under the glyphs,
+             so the bars gleam (cream on the cream panel is invisible);
+           - sheen: a glyph-clipped duplicate that warms the ink letters to bronze. The
+             band core stays >= 3.6:1 on cream, so the URL never washes out. */
+        .cta-url-sweep {
+          background-size: 2200px 100%;
+          background-repeat: no-repeat;
+          background-position: -1250px 0px;
+        }
+        #cta-url-glint {
+          z-index: 0;
+          background-image: linear-gradient(
+            105deg,
+            rgba(255, 248, 236, 0) 45%,
+            rgba(255, 248, 236, 0.95) 50%,
+            rgba(255, 248, 236, 0) 55%
+          );
+        }
         #cta-url-shine {
           z-index: 2;
           color: transparent;
           background-image: linear-gradient(
             105deg,
-            rgba(217, 173, 108, 0) 43%,
-            rgba(217, 173, 108, 0.95) 47.5%,
-            rgba(244, 214, 160, 1) 50%,
-            rgba(217, 173, 108, 0.95) 52.5%,
-            rgba(217, 173, 108, 0) 57%
+            rgba(176, 126, 72, 0) 45%,
+            rgba(176, 126, 72, 0.92) 50%,
+            rgba(176, 126, 72, 0) 55%
           );
-          background-size: 250% 100%;
-          background-repeat: no-repeat;
-          background-position: 100% 0%;
           -webkit-background-clip: text;
           background-clip: text;
         }
@@ -192,7 +207,8 @@
           box-shadow: 0 14px 36px rgba(42, 23, 20, 0.26), 0 3px 8px rgba(42, 23, 20, 0.12);
           transform-origin: 50% 50%;
         }
-        /* Tap ripple, clipped by the pill; centred on the click point (pill 360, 75). */
+        /* Tap ripple inside the gold face, painted under the label so "/shop" stays crisp
+           ink; clipped by the pill; centred on the click point (pill 360, 75). */
         #cta-ripple {
           position: absolute;
           left: 220px;
@@ -334,14 +350,14 @@
           <div id="cta-url-wrap">
             <div id="cta-url">
               <div id="cta-url-text" class="cta-url-line"><span class="cta-part"><span id="cta-hl-1" class="cta-hl"></span><span class="cta-word">rockwood</span></span><span class="cta-part"><span id="cta-hl-2" class="cta-hl"></span><span class="cta-word">method</span></span><span class="cta-part"><span id="cta-hl-3" class="cta-hl"></span><span class="cta-word">.com</span></span></div>
-              <div id="cta-url-shine" class="cta-url-line" aria-hidden="true" data-layout-allow-overlap>rockwoodmethod.com</div>
+              <div id="cta-url-glint" class="cta-url-line cta-url-sweep" aria-hidden="true" data-layout-allow-overlap></div>
+              <div id="cta-url-shine" class="cta-url-line cta-url-sweep" aria-hidden="true" data-layout-allow-overlap>rockwoodmethod.com</div>
             </div>
           </div>
 
           <div id="cta-pill">
             <div id="cta-pill-base" class="cta-pill-face"><span id="cta-pill-base-label" data-layout-allow-overlap>/shop</span></div>
-            <div id="cta-pill-gold" class="cta-pill-face" aria-hidden="true" data-layout-allow-overlap><span data-layout-allow-overlap>/shop</span></div>
-            <div id="cta-ripple"></div>
+            <div id="cta-pill-gold" class="cta-pill-face" aria-hidden="true" data-layout-allow-overlap><div id="cta-ripple"></div><span data-layout-allow-overlap>/shop</span></div>
           </div>
 
           <div id="cta-mark">
@@ -388,7 +404,8 @@
         // /shop pill arrives under the URL, settled by 23.70.
         tl.fromTo("#cta-pill", { opacity: 0 }, { opacity: 1, duration: 0.12, ease: "power2.out" }, at(23.49));
         tl.fromTo("#cta-pill", { scale: 0.86, y: 18 }, { scale: 1, y: 0, duration: 0.2, ease: "back.out(1.6)" }, at(23.49));
-        tl.fromTo("#cta-pill-gold", { clipPath: "inset(0% 100% 0% 0%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 0.24, ease: "power2.inOut" }, at(24.63));
+        // Gold wipe on "shop" (24.61-24.81): complete before the cursor press starts at 24.81.
+        tl.fromTo("#cta-pill-gold", { clipPath: "inset(0% 100% 0% 0%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 0.2, ease: "power2.inOut" }, at(24.63));
         // Once the gold face fully covers it, retire the hidden cream label (no visible change).
         tl.fromTo("#cta-pill-base-label", { opacity: 1 }, { opacity: 0, duration: 0.04, ease: "none" }, at(24.86));
 
@@ -407,8 +424,8 @@
         tl.fromTo("#cta-pill", { scale: 1 }, { scale: 0.94, duration: 0.08, ease: "power2.in", immediateRender: false }, at(24.82));
         tl.fromTo("#cta-pill", { scale: 0.94 }, { scale: 1, duration: 0.28, ease: "back.out(2)", immediateRender: false }, at(24.9));
         tl.fromTo("#cta-ripple", { opacity: 0 }, { opacity: 1, duration: 0.04, ease: "none" }, at(24.86));
-        tl.fromTo("#cta-ripple", { opacity: 1 }, { opacity: 0, duration: 0.4, ease: "power2.out", immediateRender: false }, at(24.94));
-        tl.fromTo("#cta-ripple", { scale: 0.08 }, { scale: 1, duration: 0.44, ease: "power2.out" }, at(24.86));
+        tl.fromTo("#cta-ripple", { opacity: 1 }, { opacity: 0, duration: 0.28, ease: "power2.out", immediateRender: false }, at(24.94));
+        tl.fromTo("#cta-ripple", { scale: 0.08 }, { scale: 1, duration: 0.36, ease: "power2.out" }, at(24.86));
         tl.fromTo("#cta-cursor", { opacity: 1 }, { opacity: 0, duration: 0.2, ease: "power2.in", immediateRender: false }, at(25.33));
         tl.fromTo("#cta-cursor", { x: 660, y: 1290 }, { x: 676, y: 1306, duration: 0.2, ease: "power2.in", immediateRender: false }, at(25.33));
 
@@ -425,8 +442,10 @@
         // ---- Beat 12: END HOLD (25.95-27.60), no exit ----
         tl.fromTo("#cta-mark-text", { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.24, ease: "power3.out" }, at(25.93));
         tl.fromTo(["#cta-rule-l", "#cta-rule-r"], { scaleX: 0 }, { scaleX: 1, duration: 0.32, ease: "power3.out" }, at(25.97));
-        // One shine across the URL (sparkle SFX), 26.00.
-        tl.fromTo("#cta-url-shine", { backgroundPosition: "100% 0%" }, { backgroundPosition: "0% 0%", duration: 0.7, ease: "power2.inOut" }, at(26.0));
+        // One shine across the URL on the sparkle SFX (26.00). The band (~215 px wide) waits
+        // just off the left end (centre x -150) and clears the ".com" end (centre x 1000);
+        // starting 1 frame early with power1.out puts it on the first letters at the hit.
+        tl.fromTo(["#cta-url-glint", "#cta-url-shine"], { backgroundPosition: "-1250px 0px" }, { backgroundPosition: "-100px 0px", duration: 0.52, ease: "power1.out" }, at(25.97));
         // One pill pulse, 26.40.
         tl.fromTo("#cta-pill", { scale: 1 }, { scale: 1.06, duration: 0.16, ease: "power2.out", immediateRender: false }, at(26.4));
         tl.fromTo("#cta-pill", { scale: 1.06 }, { scale: 1, duration: 0.28, ease: "power2.inOut", immediateRender: false }, at(26.56));

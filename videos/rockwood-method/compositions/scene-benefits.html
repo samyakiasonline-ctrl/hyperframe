@@ -587,13 +587,17 @@
           tl.fromTo(
             "#benefits-unit",
             { opacity: 0, x: -40, y: -60, rotation: -6, scale: 0.8 },
-            { opacity: 1, x: 0, y: 0, rotation: 0, scale: 1, duration: 0.12, ease: "power3.out" },
+            { opacity: 1, x: 0, y: 36, rotation: 0, scale: 1.4, duration: 0.12, ease: "power3.out" },
             L(17.04)
           );
           tl.fromTo("#benefits-stamp", { opacity: 0 }, { opacity: 1, duration: 0.04, ease: "none" }, L(17.04));
           tl.fromTo("#benefits-stamp", { scale: 1.12, rotation: -6 }, { scale: 1, rotation: -6, duration: 0.2, ease: "back.out(2.2)" }, L(17.04));
           tl.fromTo("#benefits-chip", { y: 0 }, { y: 4, duration: 0.04, ease: "power2.out", immediateRender: false }, L(17.12));
           tl.to("#benefits-chip", { y: 0, duration: 0.2, ease: "back.out(2)" }, L(17.16));
+
+          // The callback lands large while she says it (1.4x, centred in the band:
+          // y 201-291), then settles to row 1 before ZERO HASSLE enters.
+          tl.to("#benefits-unit", { y: 0, scale: 1, duration: 0.14, ease: "power3.inOut" }, L(18.56));
 
           // ZERO HASSLE with a drawn gold check (round caps: hidden until the draw starts).
           tl.fromTo("#benefits-zero", { opacity: 0, y: 22, scale: 0.9 }, { opacity: 1, y: 0, scale: 1, duration: 0.2, ease: "power3.out" }, L(18.72));
@@ -627,9 +631,9 @@
           tl.fromTo("#benefits-badge-2", { scale: 1, transformOrigin: "50% 50%" }, { scale: 1.12, duration: 0.08, ease: "power2.out" }, L(22.32));
           tl.to("#benefits-badge-2", { scale: 1, duration: 0.12, ease: "power2.inOut" }, L(22.4));
 
-          // Exit: header gone by 22.48 (the CTA split lifts her face at 22.50), card 22.45-22.57.
+          // Exit: header gone by 22.48 (the CTA split lifts her face at 22.50), card gone by 22.52.
           tl.to("#benefits-outcome", { y: -30, opacity: 0, duration: 0.08, ease: "power2.in" }, L(22.4));
-          tl.to("#benefits-card", { y: 60, opacity: 0, duration: 0.12, ease: "power2.in" }, L(22.44));
+          tl.to("#benefits-card", { y: 60, opacity: 0, duration: 0.08, ease: "power2.in" }, L(22.44));
 
           window.__timelines["scene-benefits"] = tl;
         })();
