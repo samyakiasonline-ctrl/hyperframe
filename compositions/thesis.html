@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+  </head>
+  <body>
+    <template>
+      <style>
+        @font-face {
+          font-family: "Montserrat";
+          src: url("assets/fonts/montserrat-latin-900-normal.woff2") format("woff2");
+          font-weight: 900;
+          font-display: block;
+        }
+        @font-face {
+          font-family: "Instrument Serif";
+          src: url("assets/fonts/instrument-serif-latin-400-italic.woff2") format("woff2");
+          font-weight: 400;
+          font-style: italic;
+          font-display: block;
+        }
+        #root {
+          position: absolute;
+          inset: 0;
+          color: #fff4e0;
+        }
+        #thesis-panel {
+          position: absolute;
+          top: 128px;
+          left: 56px;
+          width: 968px;
+          height: 184px;
+          border-radius: 40px;
+          background: rgba(18, 14, 10, 0.68);
+          border: 2px solid rgba(255, 244, 224, 0.18);
+          box-shadow: 0 14px 40px rgba(0, 0, 0, 0.4);
+        }
+        #thesis-eq {
+          position: absolute;
+          top: 128px;
+          left: 56px;
+          width: 968px;
+          height: 184px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 30px;
+        }
+        #thesis-past {
+          font-family: "Instrument Serif", serif;
+          font-style: italic;
+          font-weight: 400;
+          font-size: 136px;
+          line-height: 1;
+          color: #e9dcc6;
+          padding-bottom: 10px;
+        }
+        #thesis-neq {
+          width: 96px;
+          height: 96px;
+          flex: none;
+          overflow: visible;
+        }
+        #thesis-future {
+          display: flex;
+          font-family: "Montserrat", sans-serif;
+          font-weight: 900;
+          font-size: 98px;
+          line-height: 1;
+          letter-spacing: 0.01em;
+          color: #ffc94a;
+          text-shadow:
+            0 0 28px rgba(255, 201, 74, 0.45),
+            0 4px 14px rgba(0, 0, 0, 0.55);
+        }
+        .thesis-ch {
+          display: inline-block;
+        }
+      </style>
+
+      <div id="root" data-composition-id="thesis" data-width="1080" data-height="1920">
+        <div id="thesis-panel"></div>
+        <div id="thesis-eq">
+          <span id="thesis-past">Past</span>
+          <svg id="thesis-neq" viewBox="0 0 96 96">
+            <line id="thesis-bar-1" x1="14" y1="36" x2="82" y2="36" stroke="#ffc94a" stroke-width="10" stroke-linecap="round" />
+            <line id="thesis-bar-2" x1="14" y1="62" x2="82" y2="62" stroke="#ffc94a" stroke-width="10" stroke-linecap="round" />
+            <line id="thesis-slash" x1="64" y1="8" x2="32" y2="90" stroke="#fff4e0" stroke-width="10" stroke-linecap="round" />
+          </svg>
+          <span id="thesis-future">
+            <span class="thesis-ch">F</span><span class="thesis-ch">U</span><span class="thesis-ch">T</span><span class="thesis-ch">U</span><span class="thesis-ch">R</span><span class="thesis-ch">E</span>
+          </span>
+        </div>
+      </div>
+
+      <script>
+        (function () {
+          // Local time; the host starts at 9.45s. Word cues from transcript.json:
+          // "past" 9.92, "does" 10.40, "not" 10.72, "future" 12.00.
+          const AT = function (globalSec) {
+            return Math.round((globalSec - 9.45) * 25) / 25;
+          };
+          const SLASH_LEN = 88;
+          const tl = gsap.timeline({ paused: true });
+
+          tl.fromTo("#thesis-panel", { opacity: 0, scaleX: 0.3 }, { opacity: 1, scaleX: 1, duration: 0.38, ease: "power3.out" }, 0);
+          tl.fromTo("#thesis-past", { opacity: 0, y: 26, filter: "blur(10px)" }, { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.42, ease: "power2.out" }, AT(9.92));
+
+          // "does" draws the equals sign, "not" slashes it into ≠.
+          tl.fromTo(["#thesis-bar-1", "#thesis-bar-2"], { opacity: 0, scaleX: 0, transformOrigin: "50% 50%" }, { opacity: 1, scaleX: 1, duration: 0.24, ease: "power3.out", stagger: 0.06 }, AT(10.4));
+          // Round line caps paint a dot even at full dash offset, so each stroke stays
+          // hidden until its draw begins.
+          tl.fromTo("#thesis-slash", { opacity: 0, strokeDasharray: SLASH_LEN, strokeDashoffset: SLASH_LEN }, { opacity: 1, strokeDashoffset: 0, duration: 0.18, ease: "power2.out" }, AT(10.74));
+          tl.fromTo("#thesis-neq", { rotation: 0, scale: 1 }, { rotation: -8, scale: 1.18, duration: 0.1, ease: "power2.out", yoyo: true, repeat: 1, immediateRender: false }, AT(10.78));
+          tl.to("#thesis-past", { opacity: 0.6, duration: 0.4, ease: "power1.out" }, AT(10.9));
+
+          // "future" lands with a staggered pop.
+          tl.fromTo(
+            "#thesis-future .thesis-ch",
+            { opacity: 0, y: 34, scale: 0.6 },
+            { opacity: 1, y: 0, scale: 1, duration: 0.42, ease: "back.out(2.2)", stagger: 0.035 },
+            AT(12.04),
+          );
+
+          // Clear the band just before the flash cut at 12.5s.
+          tl.to(["#thesis-eq", "#thesis-panel"], { opacity: 0, y: -36, duration: 0.2, ease: "power2.in" }, AT(12.42));
+
+          window.__timelines["thesis"] = tl;
+        })();
+      </script>
+    </template>
+  </body>
+</html>

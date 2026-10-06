@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+  </head>
+  <body>
+    <template>
+      <style>
+        @font-face {
+          font-family: "Montserrat";
+          src: url("assets/fonts/montserrat-latin-800-normal.woff2") format("woff2");
+          font-weight: 800;
+          font-display: block;
+        }
+        @font-face {
+          font-family: "Instrument Serif";
+          src: url("assets/fonts/instrument-serif-latin-400-italic.woff2") format("woff2");
+          font-weight: 400;
+          font-style: italic;
+          font-display: block;
+        }
+        #root {
+          position: absolute;
+          inset: 0;
+        }
+        #cap-box {
+          position: absolute;
+          left: 0;
+          right: 0;
+          top: 1196px;
+          height: 250px;
+        }
+        .cap-group {
+          position: absolute;
+          inset: 0;
+          display: flex;
+          flex-wrap: wrap;
+          align-content: center;
+          align-items: baseline;
+          justify-content: center;
+          gap: 0 22px;
+          padding: 0 96px;
+          opacity: 0;
+          text-align: center;
+        }
+        .cap-w {
+          display: inline-block;
+          font-family: "Montserrat", sans-serif;
+          font-weight: 800;
+          font-size: 66px;
+          line-height: 1.18;
+          color: #ffffff;
+          text-shadow:
+            0 4px 18px rgba(0, 0, 0, 0.85),
+            0 0 3px rgba(0, 0, 0, 0.9);
+        }
+        .cap-w.cap-key {
+          font-family: "Instrument Serif", serif;
+          font-style: italic;
+          font-weight: 400;
+          font-size: 92px;
+          line-height: 1;
+          color: #ffc94a;
+        }
+      </style>
+
+      <div id="root" data-composition-id="captions" data-width="1080" data-height="1920">
+        <div id="cap-box"></div>
+      </div>
+
+      <script>
+        (function () {
+          // Word timings from transcript.json (Parakeet ASR).
+          const WORDS = [["You", 0, 0.32], ["are", 0.32, 0.48], ["allowed", 0.48, 0.72], ["to", 0.72, 0.88], ["reinvent", 0.88, 1.52], ["yourself,", 1.52, 2.32], ["you", 2.32, 2.48], ["are", 2.48, 2.72], ["allowed", 2.72, 3.12], ["to", 3.12, 3.36], ["outgrow", 3.36, 4.16], ["old", 4.16, 4.64], ["patterns,", 4.64, 5.76], ["and", 5.76, 5.92], ["you", 5.92, 6.08], ["are", 6.08, 6.32], ["allowed", 6.32, 6.64], ["to", 6.64, 6.8], ["become", 6.8, 7.2], ["more", 7.2, 7.44], ["confident", 7.44, 8.08], ["than", 8.08, 8.32], ["you", 8.32, 8.56], ["used", 8.56, 8.8], ["to", 8.8, 8.96], ["be.", 8.96, 9.52], ["Your", 9.52, 9.92], ["past", 9.92, 10.4], ["does", 10.4, 10.72], ["not", 10.72, 10.96], ["have", 10.96, 11.12], ["to", 11.12, 11.28], ["define", 11.28, 11.76], ["your", 11.76, 12], ["future.", 12, 12.88], ["Growth", 12.88, 13.52], ["is", 13.52, 13.76], ["possible", 13.76, 14.64], ["at", 14.64, 14.96], ["any", 14.96, 15.28], ["stage", 15.28, 15.84], ["of", 15.84, 16.08], ["life.", 16.08, 16.4]];
+          // Caption groups as [firstWordIndex, lastWordIndex], broken on phrases.
+          const GROUPS = [
+            [0, 2], [3, 5], [6, 8], [9, 12], [13, 16], [17, 20],
+            [21, 25], [26, 29], [30, 34], [35, 37], [38, 42],
+          ];
+          // Key words set in gold serif italic.
+          const KEY = new Set([4, 10, 20, 27, 34, 35, 39, 40]);
+          const END = 16.4;
+          const DIM = 0.5;
+
+          const tl = gsap.timeline({ paused: true });
+          const host = document.getElementById("cap-box");
+
+          GROUPS.forEach(([a, b], gi) => {
+            const g = document.createElement("div");
+            g.className = "cap-group";
+            g.id = "cap-g-" + gi;
+            for (let i = a; i <= b; i++) {
+              const s = document.createElement("span");
+              s.className = KEY.has(i) ? "cap-w cap-key" : "cap-w";
+              s.id = "cap-w-" + i;
+              s.textContent = WORDS[i][0];
+              g.appendChild(s);
+            }
+            host.appendChild(g);
+
+            const start = WORDS[a][1];
+            const end = gi + 1 < GROUPS.length ? WORDS[GROUPS[gi + 1][0]][1] : END;
+            tl.fromTo(g, { opacity: 0, y: 26, scale: 0.96 }, { opacity: 1, y: 0, scale: 1, duration: 0.18, ease: "power2.out" }, start);
+
+            // Karaoke: the group appears dimmed and each word lights up as it is spoken.
+            for (let i = a; i <= b; i++) {
+              const el = document.getElementById("cap-w-" + i);
+              const ws = WORDS[i][1];
+              const peak = KEY.has(i) ? 1.08 : 1.04;
+              tl.set(el, { opacity: i === a ? 1 : DIM }, start);
+              tl.fromTo(el, { opacity: i === a ? 1 : DIM, scale: 1 }, { opacity: 1, scale: peak, duration: 0.08, ease: "power1.out", immediateRender: false }, ws);
+              tl.to(el, { scale: 1, duration: 0.14, ease: "power1.inOut" }, ws + 0.1);
+            }
+
+            if (gi + 1 < GROUPS.length) {
+              tl.to(g, { opacity: 0, duration: 0.08, ease: "power2.in" }, end - 0.08);
+              tl.set(g, { opacity: 0, visibility: "hidden" }, end);
+            }
+          });
+
+          window.__timelines["captions"] = tl;
+        })();
+      </script>
+    </template>
+  </body>
+</html>

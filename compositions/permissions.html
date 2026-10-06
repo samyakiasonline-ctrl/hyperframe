@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+  </head>
+  <body>
+    <template>
+      <style>
+        @font-face {
+          font-family: "Montserrat";
+          src: url("assets/fonts/montserrat-latin-800-normal.woff2") format("woff2");
+          font-weight: 800;
+          font-display: block;
+        }
+        @font-face {
+          font-family: "Montserrat";
+          src: url("assets/fonts/montserrat-latin-900-normal.woff2") format("woff2");
+          font-weight: 900;
+          font-display: block;
+        }
+        #root {
+          position: absolute;
+          inset: 0;
+          font-family: "Montserrat", sans-serif;
+          color: #fff4e0;
+        }
+        #perm-kicker {
+          position: absolute;
+          top: 128px;
+          left: 0;
+          right: 0;
+          display: flex;
+          justify-content: center;
+        }
+        #perm-kicker-pill {
+          display: flex;
+          align-items: center;
+          gap: 14px;
+          padding: 10px 26px;
+          border-radius: 999px;
+          background: rgba(18, 14, 10, 0.62);
+          font-weight: 800;
+          font-size: 26px;
+          letter-spacing: 0.22em;
+          text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+        }
+        #perm-kicker-dot {
+          width: 12px;
+          height: 12px;
+          border-radius: 999px;
+          background: #ffc94a;
+        }
+        #perm-row {
+          position: absolute;
+          top: 196px;
+          left: 0;
+          right: 0;
+          display: flex;
+          justify-content: center;
+          gap: 16px;
+        }
+        .perm-chip {
+          position: relative;
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          height: 88px;
+          padding: 0 26px 0 16px;
+          border-radius: 999px;
+          background: rgba(18, 14, 10, 0.66);
+          border: 2px solid rgba(255, 244, 224, 0.22);
+          box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+          overflow: hidden;
+        }
+        .perm-fill {
+          position: absolute;
+          inset: 0;
+          background: #ffc94a;
+          transform-origin: left center;
+        }
+        .perm-badge {
+          position: relative;
+          width: 56px;
+          height: 56px;
+          flex: none;
+        }
+        .perm-badge svg {
+          position: absolute;
+          inset: 0;
+          width: 56px;
+          height: 56px;
+          overflow: visible;
+        }
+        .perm-num {
+          position: absolute;
+          inset: 0;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-weight: 900;
+          font-size: 26px;
+          color: rgba(255, 244, 224, 0.75);
+        }
+        .perm-label {
+          position: relative;
+          font-weight: 900;
+          font-size: 28px;
+          letter-spacing: 0.03em;
+          color: #15110c;
+          white-space: nowrap;
+        }
+      </style>
+
+      <div id="root" data-composition-id="permissions" data-width="1080" data-height="1920">
+        <div id="perm-kicker">
+          <div id="perm-kicker-pill">
+            <span id="perm-kicker-dot"></span>
+            <span id="perm-kicker-text">YOU ARE ALLOWED TO</span>
+          </div>
+        </div>
+
+        <div id="perm-row">
+          <div class="perm-chip" id="perm-chip-1">
+            <div class="perm-fill" id="perm-fill-1"></div>
+            <div class="perm-badge">
+              <svg viewBox="0 0 56 56">
+                <circle id="perm-ring-1" cx="28" cy="28" r="25" fill="none" stroke="rgba(255,244,224,0.45)" stroke-width="3" />
+                <circle id="perm-dot-1" cx="28" cy="28" r="25" fill="#15110c" />
+                <path id="perm-tick-1" d="M16 29l8 8 16-17" fill="none" stroke="#ffc94a" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+              <span class="perm-num" id="perm-num-1">1</span>
+            </div>
+            <span class="perm-label" id="perm-label-1">REINVENT</span>
+          </div>
+          <div class="perm-chip" id="perm-chip-2">
+            <div class="perm-fill" id="perm-fill-2"></div>
+            <div class="perm-badge">
+              <svg viewBox="0 0 56 56">
+                <circle id="perm-ring-2" cx="28" cy="28" r="25" fill="none" stroke="rgba(255,244,224,0.45)" stroke-width="3" />
+                <circle id="perm-dot-2" cx="28" cy="28" r="25" fill="#15110c" />
+                <path id="perm-tick-2" d="M16 29l8 8 16-17" fill="none" stroke="#ffc94a" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+              <span class="perm-num" id="perm-num-2">2</span>
+            </div>
+            <span class="perm-label" id="perm-label-2">OUTGROW</span>
+          </div>
+          <div class="perm-chip" id="perm-chip-3">
+            <div class="perm-fill" id="perm-fill-3"></div>
+            <div class="perm-badge">
+              <svg viewBox="0 0 56 56">
+                <circle id="perm-ring-3" cx="28" cy="28" r="25" fill="none" stroke="rgba(255,244,224,0.45)" stroke-width="3" />
+                <circle id="perm-dot-3" cx="28" cy="28" r="25" fill="#15110c" />
+                <path id="perm-tick-3" d="M16 29l8 8 16-17" fill="none" stroke="#ffc94a" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+              <span class="perm-num" id="perm-num-3">3</span>
+            </div>
+            <span class="perm-label" id="perm-label-3">CONFIDENT</span>
+          </div>
+        </div>
+      </div>
+
+      <script>
+        (function () {
+          // Each permission unlocks on the spoken keyword (transcript.json):
+          // "reinvent" 0.88s, "outgrow" 3.36s, "confident" 7.44s.
+          const UNLOCK = [0.92, 3.4, 7.48];
+          const TICK_LEN = 36;
+          const tl = gsap.timeline({ paused: true });
+
+          // Intro: kicker drops in, three empty numbered slots pop in.
+          tl.fromTo("#perm-kicker-pill", { opacity: 0, y: -24 }, { opacity: 1, y: 0, duration: 0.4, ease: "power3.out" }, 0.02);
+          [1, 2, 3].forEach(function (n, i) {
+            tl.set("#perm-fill-" + n, { scaleX: 0 }, 0);
+            tl.set("#perm-dot-" + n, { opacity: 0, scale: 0.4, transformOrigin: "50% 50%" }, 0);
+            // Hidden until drawn: a round cap paints a dot even at full dash offset.
+            tl.set("#perm-tick-" + n, { opacity: 0, strokeDasharray: TICK_LEN, strokeDashoffset: TICK_LEN }, 0);
+            tl.set("#perm-label-" + n, { opacity: 0.32, color: "#fff4e0" }, 0);
+            tl.fromTo("#perm-chip-" + n, { opacity: 0, y: -18, scale: 0.9 }, { opacity: 1, y: 0, scale: 1, duration: 0.42, ease: "back.out(1.6)" }, 0.14 + i * 0.09);
+          });
+
+          // Unlock: gold sweep fills the chip, the number becomes a drawn tick,
+          // the label turns ink, and the active chip lifts while it is spoken.
+          UNLOCK.forEach(function (t, i) {
+            const n = i + 1;
+            tl.to("#perm-fill-" + n, { scaleX: 1, duration: 0.32, ease: "power3.inOut" }, t);
+            tl.to("#perm-label-" + n, { opacity: 1, color: "#15110c", duration: 0.2, ease: "power1.out" }, t + 0.12);
+            tl.to("#perm-num-" + n, { opacity: 0, scale: 0.5, duration: 0.14, ease: "power2.in" }, t);
+            tl.to("#perm-ring-" + n, { opacity: 0, duration: 0.14 }, t);
+            tl.to("#perm-dot-" + n, { opacity: 1, scale: 1, duration: 0.26, ease: "back.out(2)" }, t + 0.06);
+            tl.set("#perm-tick-" + n, { opacity: 1 }, t + 0.16);
+            tl.to("#perm-tick-" + n, { strokeDashoffset: 0, duration: 0.3, ease: "power2.out" }, t + 0.16);
+            tl.fromTo("#perm-chip-" + n, { scale: 1 }, { scale: 1.08, duration: 0.18, ease: "power2.out", immediateRender: false }, t);
+            tl.to("#perm-chip-" + n, { scale: 1, duration: 0.35, ease: "power2.inOut" }, t + 1.1);
+          });
+
+          // All three unlocked: a small acknowledgement pulse on the kicker dot.
+          tl.fromTo("#perm-kicker-dot", { scale: 1 }, { scale: 1.6, duration: 0.18, ease: "power2.out", yoyo: true, repeat: 1, immediateRender: false }, 7.9);
+
+          // Exit before the thesis line ("Your past…" at 9.52s).
+          tl.to("#perm-kicker-pill", { opacity: 0, y: -30, duration: 0.3, ease: "power2.in" }, 9.3);
+          [1, 2, 3].forEach(function (n, i) {
+            tl.to("#perm-chip-" + n, { opacity: 0, y: -40, duration: 0.3, ease: "power2.in" }, 9.32 + i * 0.05);
+          });
+
+          window.__timelines["permissions"] = tl;
+        })();
+      </script>
+    </template>
+  </body>
+</html>
