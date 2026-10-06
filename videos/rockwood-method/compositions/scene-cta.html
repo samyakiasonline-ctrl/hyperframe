@@ -6,14 +6,432 @@
   <body>
     <template>
       <style>
+        @font-face { font-family: "Montserrat"; src: url("assets/fonts/montserrat-latin-700-normal.woff2") format("woff2"); font-weight: 700; font-display: block; }
+        @font-face { font-family: "Montserrat"; src: url("assets/fonts/montserrat-latin-800-normal.woff2") format("woff2"); font-weight: 800; font-display: block; }
+        @font-face { font-family: "Montserrat"; src: url("assets/fonts/montserrat-latin-900-normal.woff2") format("woff2"); font-weight: 900; font-display: block; }
+        @font-face { font-family: "Instrument Serif"; src: url("assets/fonts/instrument-serif-latin-400-normal.woff2") format("woff2"); font-weight: 400; font-style: normal; font-display: block; }
+        @font-face { font-family: "Instrument Serif"; src: url("assets/fonts/instrument-serif-latin-400-italic.woff2") format("woff2"); font-weight: 400; font-style: italic; font-display: block; }
+
         #root {
           position: absolute;
           inset: 0;
+          overflow: hidden;
+          font-family: "Montserrat", sans-serif;
+          color: #2a1714;
+        }
+
+        /* Cream split panel: canvas y 960-1920 (same look as the products split).
+           Children are positioned in panel space (panel y = canvas y - 960). */
+        #cta-panel {
+          position: absolute;
+          left: 0;
+          top: 960px;
+          width: 1080px;
+          height: 960px;
+          background: #fff4e6;
+        }
+        #cta-shade {
+          position: absolute;
+          left: 0;
+          top: -40px;
+          width: 1080px;
+          height: 40px;
+          background: linear-gradient(to top, rgba(0, 0, 0, 0.26), rgba(0, 0, 0, 0));
+        }
+        #cta-accent {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 1080px;
+          height: 6px;
+          background: #d9ad6c;
+          transform-origin: 50% 50%;
+        }
+
+        /* Headline slot: canvas x 60-940, y 985-1095. A mask, so the two headlines
+           swap like a ticker (old slides up and out, new slides up and in). */
+        #cta-slot {
+          position: absolute;
+          left: 60px;
+          top: 25px;
+          width: 880px;
+          height: 110px;
+          overflow: hidden;
+        }
+        .cta-head {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 880px;
+          height: 110px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-weight: 900;
+          letter-spacing: -0.01em;
+          white-space: nowrap;
+          color: #2a1714;
+        }
+        #cta-grab {
+          font-size: 80px;
+          line-height: 80px;
+        }
+        #cta-sleep {
+          gap: 16px;
+        }
+        #cta-sleep-text {
+          font-size: 66px;
+          line-height: 66px;
+        }
+        #cta-clock {
+          flex: 0 0 auto;
+          width: 62px;
+          height: 62px;
+          transform-origin: 50% 56%;
+        }
+        #cta-clock svg {
+          display: block;
+          width: 62px;
+          height: 62px;
+          overflow: visible;
+        }
+
+        /* URL: canvas x 60-940, y 1100-1200; text baseline at canvas y 1172.
+           The wrapper is the mask for the left-to-right reveal (and a stacking
+           context, so the highlighter bars sit behind the glyphs). */
+        #cta-url-wrap {
+          position: absolute;
+          left: 60px;
+          top: 140px;
+          width: 880px;
+          height: 100px;
+        }
+        #cta-url {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 880px;
+          height: 100px;
+        }
+        .cta-url-line {
+          position: absolute;
+          left: 0;
+          top: 12px;
+          width: 880px;
+          height: 70px;
+          text-align: center;
+          font-weight: 800;
+          font-size: 70px;
+          line-height: 70px;
+          letter-spacing: -0.01em;
+          white-space: nowrap;
+        }
+        #cta-url-text {
+          color: #2a1714;
+        }
+        .cta-part {
+          position: relative;
+        }
+        /* Glyphs paint above the highlighter bars by z-order (bars are z 0). */
+        .cta-word {
+          position: relative;
+          z-index: 1;
+        }
+        /* Gold highlighter: lower part of the x-height, baseline - 18 to baseline + 8. */
+        .cta-hl {
+          position: absolute;
+          left: 0;
+          right: 0;
+          bottom: 10px;
+          height: 26px;
+          background: #d9ad6c;
+          z-index: 0;
+          transform-origin: 0% 50%;
+        }
+        #cta-hl-1 {
+          left: -8px;
+          border-radius: 9px 0 0 9px;
+        }
+        #cta-hl-2 {
+          left: -1px;
+        }
+        #cta-hl-3 {
+          left: -1px;
+          right: -8px;
+          border-radius: 0 9px 9px 0;
+        }
+        /* One soft shine: a glyph-clipped duplicate of the URL with a moving band. */
+        #cta-url-shine {
+          z-index: 2;
+          color: transparent;
+          background-image: linear-gradient(
+            105deg,
+            rgba(217, 173, 108, 0) 43%,
+            rgba(217, 173, 108, 0.95) 47.5%,
+            rgba(244, 214, 160, 1) 50%,
+            rgba(217, 173, 108, 0.95) 52.5%,
+            rgba(217, 173, 108, 0) 57%
+          );
+          background-size: 250% 100%;
+          background-repeat: no-repeat;
+          background-position: 100% 0%;
+          -webkit-background-clip: text;
+          background-clip: text;
+        }
+
+        /* /shop pill: canvas x 300-700, y 1215-1335. Ink pill with cream text; the gold
+           layer (ink text) wipes in when she says "shop". */
+        #cta-pill {
+          position: absolute;
+          left: 300px;
+          top: 255px;
+          width: 400px;
+          height: 120px;
+          border-radius: 60px;
+          overflow: hidden;
+          box-shadow: 0 14px 36px rgba(42, 23, 20, 0.26), 0 3px 8px rgba(42, 23, 20, 0.12);
+          transform-origin: 50% 50%;
+        }
+        /* Tap ripple, clipped by the pill; centred on the click point (pill 360, 75). */
+        #cta-ripple {
+          position: absolute;
+          left: 220px;
+          top: -65px;
+          width: 280px;
+          height: 280px;
+          border-radius: 50%;
+          background: rgba(255, 244, 230, 0.5);
+          transform-origin: 50% 50%;
+        }
+        .cta-pill-face {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 400px;
+          height: 120px;
+          border-radius: 60px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-weight: 900;
+          font-size: 96px;
+          line-height: 96px;
+          letter-spacing: -0.01em;
+          white-space: nowrap;
+        }
+        .cta-pill-face span {
+          position: relative;
+          top: -4px;
+          left: -2px;
+        }
+        #cta-pill-base {
+          background: #2a1714;
+          color: #fff4e6;
+        }
+        #cta-pill-gold {
+          background: #d9ad6c;
+          color: #2a1714;
+        }
+
+        /* End wordmark: canvas y ~1377-1418 (baseline 1418), centred on x 500. */
+        #cta-mark {
+          position: absolute;
+          left: 60px;
+          top: 409px;
+          width: 880px;
+          height: 60px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 22px;
+        }
+        #cta-mark-text {
+          display: flex;
+          align-items: baseline;
+          gap: 12px;
+          white-space: nowrap;
+          color: #2a1714;
+        }
+        .cta-caps {
+          font-family: "Montserrat", sans-serif;
+          font-weight: 700;
+          font-size: 26px;
+          line-height: 26px;
+          letter-spacing: 0.2em;
+          margin-right: -0.2em;
+        }
+        .cta-serif {
+          font-family: "Instrument Serif", serif;
+          font-style: italic;
+          font-weight: 400;
+          font-size: 56px;
+          line-height: 56px;
+        }
+        .cta-rule {
+          position: relative;
+          top: 10px;
+          width: 56px;
+          height: 3px;
+          border-radius: 2px;
+          background: #d9ad6c;
+        }
+        #cta-rule-l {
+          transform-origin: 100% 50%;
+        }
+        #cta-rule-r {
+          transform-origin: 0% 50%;
+        }
+
+        /* Cursor, canvas coordinates. The cursor box's origin is the
+           arrow tip, so x/y place the tip and scale presses around it. */
+        #cta-cursor {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 2px;
+          height: 2px;
+          transform-origin: 0px 0px;
+        }
+        #cta-cursor svg {
+          position: absolute;
+          left: -4px;
+          top: -4px;
+          width: 56px;
+          height: 78px;
+          overflow: visible;
+          filter: drop-shadow(0 6px 10px rgba(42, 23, 20, 0.35));
         }
       </style>
-      <div id="root" data-composition-id="scene-cta" data-width="1080" data-height="1920"></div>
+
+      <div id="root" data-composition-id="scene-cta" data-width="1080" data-height="1920">
+        <div id="cta-panel">
+          <div id="cta-shade"></div>
+          <div id="cta-accent"></div>
+
+          <div id="cta-slot">
+            <div id="cta-grab" class="cta-head" data-layout-allow-overflow data-layout-allow-overlap>GRAB YOURS NOW</div>
+            <div id="cta-sleep" class="cta-head" data-layout-allow-overflow data-layout-allow-overlap>
+              <div id="cta-clock">
+                <svg viewBox="0 0 64 64" aria-hidden="true">
+                  <g fill="#2A1714">
+                    <path d="M5 19 A10 10 0 0 1 19 5 Z" />
+                    <path d="M45 5 A10 10 0 0 1 59 19 Z" />
+                  </g>
+                  <g fill="none" stroke="#2A1714" stroke-width="5" stroke-linecap="round">
+                    <path d="M19 51 L13 59 M45 51 L51 59" />
+                  </g>
+                  <circle cx="32" cy="35" r="20" fill="#D9AD6C" stroke="#2A1714" stroke-width="5" />
+                  <g fill="none" stroke="#2A1714" stroke-width="4" stroke-linecap="round">
+                    <path d="M32 35 L32 24 M32 35 L40 40" />
+                  </g>
+                  <circle cx="32" cy="35" r="3" fill="#2A1714" />
+                </svg>
+              </div>
+              <span id="cta-sleep-text">DON’T SLEEP ON THIS</span>
+            </div>
+          </div>
+
+          <div id="cta-url-wrap">
+            <div id="cta-url">
+              <div id="cta-url-text" class="cta-url-line"><span class="cta-part"><span id="cta-hl-1" class="cta-hl"></span><span class="cta-word">rockwood</span></span><span class="cta-part"><span id="cta-hl-2" class="cta-hl"></span><span class="cta-word">method</span></span><span class="cta-part"><span id="cta-hl-3" class="cta-hl"></span><span class="cta-word">.com</span></span></div>
+              <div id="cta-url-shine" class="cta-url-line" aria-hidden="true" data-layout-allow-overlap>rockwoodmethod.com</div>
+            </div>
+          </div>
+
+          <div id="cta-pill">
+            <div id="cta-pill-base" class="cta-pill-face"><span id="cta-pill-base-label">/shop</span></div>
+            <div id="cta-pill-gold" class="cta-pill-face" aria-hidden="true" data-layout-allow-overlap><span>/shop</span></div>
+            <div id="cta-ripple"></div>
+          </div>
+
+          <div id="cta-mark">
+            <div id="cta-rule-l" class="cta-rule"></div>
+            <div id="cta-mark-text">
+              <span class="cta-caps">THE</span>
+              <span class="cta-serif">Rockwood</span>
+              <span class="cta-caps">METHOD</span>
+            </div>
+            <div id="cta-rule-r" class="cta-rule"></div>
+          </div>
+        </div>
+
+        <div id="cta-cursor">
+          <svg viewBox="0 0 40 56" aria-hidden="true">
+            <path d="M3 3 L3 43 L13 34 L20 50 L27 47 L20 31 L33 31 Z" fill="#2A1714" stroke="#FFF4E6" stroke-width="3.5" stroke-linejoin="round" />
+          </svg>
+        </div>
+      </div>
+
       <script>
-        window.__timelines["scene-cta"] = gsap.timeline({ paused: true });
+        // Local time = global - 22.45 (host data-start). Cue times are written in global
+        // seconds: at() converts to local and quantizes to 1/25 s; exact() is used only for
+        // the panel, so it matches the root camera lift (22.50, 0.31 s, power3.inOut).
+        const tl = gsap.timeline({ paused: true });
+        const HOST = 22.45;
+        const at = (g) => Math.round((g - HOST) * 25) / 25;
+        const exact = (g) => Math.round((g - HOST) * 1000) / 1000;
+
+        // ---- Beat 10: CTA (22.50-24.98) ----
+        // Panel rises with the footage lift; it travels its own height, so its top edge
+        // always leads the lifted footage's bottom edge: no black gap.
+        tl.fromTo("#cta-panel", { y: 960 }, { y: 0, duration: 0.31, ease: "power3.inOut" }, exact(22.5));
+        tl.fromTo("#cta-shade", { opacity: 0 }, { opacity: 1, duration: 0.2, ease: "power2.out" }, exact(22.5));
+        tl.fromTo("#cta-accent", { scaleX: 0 }, { scaleX: 1, duration: 0.36, ease: "power3.out" }, at(22.54));
+
+        // GRAB YOURS NOW rises into its slot with the panel ("Grab" 22.66).
+        tl.fromTo("#cta-grab", { y: 110 }, { y: 0, duration: 0.24, ease: "power3.out" }, at(22.57));
+
+        // URL mask-reveal left to right (23.45, 0.25 s), text settles by 23.70 and never moves again.
+        tl.fromTo("#cta-url-wrap", { clipPath: "inset(0% 100% 0% 0%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 0.24, ease: "power2.out" }, at(23.45));
+        tl.fromTo("#cta-url", { x: -28 }, { x: 0, duration: 0.24, ease: "power3.out" }, at(23.45));
+
+        // /shop pill arrives under the URL, settled by 23.70.
+        tl.fromTo("#cta-pill", { opacity: 0 }, { opacity: 1, duration: 0.12, ease: "power2.out" }, at(23.49));
+        tl.fromTo("#cta-pill", { scale: 0.86, y: 18 }, { scale: 1, y: 0, duration: 0.2, ease: "back.out(1.6)" }, at(23.49));
+        tl.fromTo("#cta-pill-gold", { clipPath: "inset(0% 100% 0% 0%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 0.24, ease: "power2.inOut" }, at(24.63));
+        // Once the gold face fully covers it, retire the hidden cream label (no visible change).
+        tl.fromTo("#cta-pill-base-label", { opacity: 1 }, { opacity: 0, duration: 0.04, ease: "none" }, at(24.86));
+
+        // Highlighter follows her words: rockwood 23.51-23.89, method 23.89-24.21, .com 24.21-24.62.
+        tl.fromTo("#cta-hl-1", { scaleX: 0 }, { scaleX: 1, duration: at(23.89) - at(23.51), ease: "none" }, at(23.51));
+        tl.fromTo("#cta-hl-2", { scaleX: 0 }, { scaleX: 1, duration: at(24.21) - at(23.89), ease: "none" }, at(23.89));
+        tl.fromTo("#cta-hl-3", { scaleX: 0 }, { scaleX: 1, duration: at(24.62) - at(24.21), ease: "none" }, at(24.21));
+
+        // Cursor glides in from the lower right (24.40), lands just right of the label,
+        // presses with the pill in lockstep (click SFX ~24.90), ripple, then leaves.
+        tl.fromTo("#cta-cursor", { opacity: 0 }, { opacity: 1, duration: 0.12, ease: "none" }, at(24.4));
+        tl.fromTo("#cta-cursor", { x: 862 }, { x: 660, duration: 0.4, ease: "power2.out" }, at(24.4));
+        tl.fromTo("#cta-cursor", { y: 1540 }, { y: 1290, duration: 0.4, ease: "power3.out" }, at(24.4));
+        tl.fromTo("#cta-cursor", { scale: 1 }, { scale: 0.86, duration: 0.08, ease: "power2.in" }, at(24.82));
+        tl.fromTo("#cta-cursor", { scale: 0.86 }, { scale: 1, duration: 0.24, ease: "back.out(2)", immediateRender: false }, at(24.9));
+        tl.fromTo("#cta-pill", { scale: 1 }, { scale: 0.94, duration: 0.08, ease: "power2.in", immediateRender: false }, at(24.82));
+        tl.fromTo("#cta-pill", { scale: 0.94 }, { scale: 1, duration: 0.28, ease: "back.out(2)", immediateRender: false }, at(24.9));
+        tl.fromTo("#cta-ripple", { opacity: 0 }, { opacity: 1, duration: 0.04, ease: "none" }, at(24.86));
+        tl.fromTo("#cta-ripple", { opacity: 1 }, { opacity: 0, duration: 0.4, ease: "power2.out", immediateRender: false }, at(24.94));
+        tl.fromTo("#cta-ripple", { scale: 0.08 }, { scale: 1, duration: 0.44, ease: "power2.out" }, at(24.86));
+        tl.fromTo("#cta-cursor", { opacity: 1 }, { opacity: 0, duration: 0.2, ease: "power2.in", immediateRender: false }, at(25.33));
+        tl.fromTo("#cta-cursor", { x: 660, y: 1290 }, { x: 676, y: 1306, duration: 0.2, ease: "power2.in", immediateRender: false }, at(25.33));
+
+        // ---- Beat 11: URGENCY (24.98-25.95) ----
+        // Ticker swap inside the 24.89-25.03 gap ("Don't" 24.98).
+        tl.fromTo("#cta-grab", { y: 0 }, { y: -110, duration: 0.12, ease: "power2.in", immediateRender: false }, at(24.89));
+        tl.fromTo("#cta-sleep", { y: 110 }, { y: 0, duration: 0.2, ease: "power3.out" }, at(24.93));
+        // Alarm clock wobble, 25.21-25.93: half-cycles of 0.2 s (2.5 Hz).
+        tl.fromTo("#cta-clock", { rotation: 0 }, { rotation: 12, duration: 0.12, ease: "sine.out" }, at(25.21));
+        tl.fromTo("#cta-clock", { rotation: 12 }, { rotation: -12, duration: 0.2, ease: "sine.inOut", immediateRender: false }, at(25.33));
+        tl.fromTo("#cta-clock", { rotation: -12 }, { rotation: 12, duration: 0.2, ease: "sine.inOut", immediateRender: false }, at(25.53));
+        tl.fromTo("#cta-clock", { rotation: 12 }, { rotation: 0, duration: 0.2, ease: "sine.inOut", immediateRender: false }, at(25.73));
+
+        // ---- Beat 12: END HOLD (25.95-27.60), no exit ----
+        tl.fromTo("#cta-mark-text", { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.24, ease: "power3.out" }, at(25.93));
+        tl.fromTo(["#cta-rule-l", "#cta-rule-r"], { scaleX: 0 }, { scaleX: 1, duration: 0.32, ease: "power3.out" }, at(25.97));
+        // One shine across the URL (sparkle SFX), 26.00.
+        tl.fromTo("#cta-url-shine", { backgroundPosition: "100% 0%" }, { backgroundPosition: "0% 0%", duration: 0.7, ease: "power2.inOut" }, at(26.0));
+        // One pill pulse, 26.40.
+        tl.fromTo("#cta-pill", { scale: 1 }, { scale: 1.06, duration: 0.16, ease: "power2.out", immediateRender: false }, at(26.4));
+        tl.fromTo("#cta-pill", { scale: 1.06 }, { scale: 1, duration: 0.28, ease: "power2.inOut", immediateRender: false }, at(26.56));
+
+        window.__timelines["scene-cta"] = tl;
       </script>
     </template>
   </body>

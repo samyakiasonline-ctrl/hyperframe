@@ -44,7 +44,7 @@
         #benefits-rock {
           position: absolute;
           left: 0;
-          top: 178px;
+          top: 168px;
           width: 1080px;
           text-align: center;
           font-family: "Montserrat";
@@ -57,7 +57,7 @@
         #benefits-fin {
           position: absolute;
           left: 0;
-          top: 274px;
+          top: 280px;
           width: 1080px;
           text-align: center;
           font-family: "Montserrat";
@@ -80,31 +80,36 @@
           width: 220px;
           height: 280px;
         }
+        .benefits-speck {
+          position: absolute;
+          border-radius: 50%;
+          background: rgba(42, 23, 20, 0.16);
+        }
         .benefits-stone {
           position: absolute;
-          border-radius: 14px;
+          border-radius: 16px;
           box-shadow: inset 0 5px 0 rgba(255, 255, 255, 0.22), inset 0 -6px 0 rgba(0, 0, 0, 0.14), 0 2px 12px rgba(0, 0, 0, 0.35);
           opacity: 0;
         }
         #benefits-stone-1 {
-          left: 5px;
-          top: 204px;
-          width: 210px;
-          height: 64px;
+          left: 2px;
+          top: 194px;
+          width: 216px;
+          height: 74px;
           background: #9c8579;
         }
         #benefits-stone-2 {
-          left: 26px;
-          top: 144px;
-          width: 168px;
-          height: 58px;
+          left: 22px;
+          top: 126px;
+          width: 176px;
+          height: 66px;
           background: #fff4e6;
         }
         #benefits-stone-3 {
-          left: 47px;
-          top: 90px;
-          width: 126px;
-          height: 52px;
+          left: 42px;
+          top: 66px;
+          width: 136px;
+          height: 58px;
           background: #d9ad6c;
         }
 
@@ -131,7 +136,7 @@
         #benefits-needed {
           position: absolute;
           left: 0;
-          top: 272px;
+          top: 278px;
           width: 1080px;
           text-align: center;
           font-family: "Montserrat";
@@ -153,9 +158,12 @@
         .benefits-hand {
           fill: none;
           stroke: #fff4e6;
-          stroke-width: 6;
+          stroke-width: 5;
           stroke-linecap: round;
           stroke-linejoin: round;
+        }
+        .benefits-crease {
+          stroke-width: 4;
         }
         #benefits-slash {
           fill: none;
@@ -409,9 +417,20 @@
         </div>
         <div id="benefits-stones">
           <div id="benefits-stack">
-            <div id="benefits-stone-1" class="benefits-stone"></div>
-            <div id="benefits-stone-2" class="benefits-stone"></div>
-            <div id="benefits-stone-3" class="benefits-stone"></div>
+            <div id="benefits-stone-1" class="benefits-stone">
+              <div class="benefits-speck" style="left: 34px; top: 22px; width: 9px; height: 7px"></div>
+              <div class="benefits-speck" style="left: 128px; top: 40px; width: 6px; height: 5px"></div>
+              <div class="benefits-speck" style="left: 176px; top: 20px; width: 7px; height: 6px"></div>
+            </div>
+            <div id="benefits-stone-2" class="benefits-stone">
+              <div class="benefits-speck" style="left: 28px; top: 34px; width: 6px; height: 5px"></div>
+              <div class="benefits-speck" style="left: 104px; top: 18px; width: 8px; height: 6px"></div>
+              <div class="benefits-speck" style="left: 146px; top: 38px; width: 5px; height: 4px"></div>
+            </div>
+            <div id="benefits-stone-3" class="benefits-stone">
+              <div class="benefits-speck" style="left: 24px; top: 18px; width: 7px; height: 6px"></div>
+              <div class="benefits-speck" style="left: 92px; top: 30px; width: 6px; height: 5px"></div>
+            </div>
           </div>
         </div>
 
@@ -420,16 +439,20 @@
           <div id="benefits-noline" class="benefits-wall"><span id="benefits-no" class="benefits-word">NO</span> <span id="benefits-hh" class="benefits-word">HAND-HOLDING</span></div>
           <div id="benefits-needed" class="benefits-wall">needed.</div>
         </div>
-        <svg id="benefits-hands" viewBox="0 0 160 160" aria-hidden="true">
+        <svg id="benefits-hands" viewBox="-6 -6 172 172" aria-hidden="true">
           <g id="benefits-hand-l">
-            <rect class="benefits-hand" x="14" y="62" width="14" height="38" rx="5" />
-            <path class="benefits-hand" d="M28 67 C 40 63, 52 61, 62 63 L 70 64 C 78 65, 80 75, 73 77 L 58 78 C 64 81, 65 88, 59 91 C 50 95, 38 95, 28 95" />
+            <rect class="benefits-hand" x="8" y="62" width="12" height="42" rx="4" />
+            <path class="benefits-hand" d="M20 66 L 34 64 C 35 54, 40 44, 47 44 C 53 44, 54 52, 51 60 L 71 60 A 5 5 0 0 1 71 70 L 75 70 A 5 5 0 0 1 75 80 L 73 80 A 5 5 0 0 1 73 90 L 68 90 A 5 5 0 0 1 68 100 L 44 100 C 34 104, 26 104, 20 102" />
+            <path class="benefits-hand benefits-crease" d="M52 70 H 66 M 54 80 H 69 M 52 90 H 64" />
           </g>
           <g id="benefits-hand-r">
-            <rect class="benefits-hand" x="132" y="62" width="14" height="38" rx="5" />
-            <path class="benefits-hand" d="M132 67 C 120 63, 108 61, 98 63 L 90 64 C 82 65, 80 75, 87 77 L 102 78 C 96 81, 95 88, 101 91 C 110 95, 122 95, 132 95" />
+            <g transform="matrix(-1 0 0 1 160 0)">
+              <rect class="benefits-hand" x="8" y="62" width="12" height="42" rx="4" />
+              <path class="benefits-hand" d="M20 66 L 34 64 C 35 54, 40 44, 47 44 C 53 44, 54 52, 51 60 L 71 60 A 5 5 0 0 1 71 70 L 75 70 A 5 5 0 0 1 75 80 L 73 80 A 5 5 0 0 1 73 90 L 68 90 A 5 5 0 0 1 68 100 L 44 100 C 34 104, 26 104, 20 102" />
+              <path class="benefits-hand benefits-crease" d="M52 70 H 66 M 54 80 H 69 M 52 90 H 64" />
+            </g>
           </g>
-          <path id="benefits-slash" d="M116 30 L 44 130" pathLength="1" />
+          <path id="benefits-slash" d="M104 24 L 56 142" pathLength="1" />
         </svg>
 
         <!-- Beat 8 (17.25-19.57): callback -->
@@ -456,7 +479,7 @@
             <span id="benefits-rockwood">Rockwood</span>
           </div>
           <svg id="benefits-under-svg" viewBox="0 0 1080 400" aria-hidden="true">
-            <path id="benefits-under" d="M560 318 C 640 310, 730 308, 816 312" pathLength="1" />
+            <path id="benefits-under" d="M524 312 C 640 302, 790 300, 914 307" pathLength="1" />
           </svg>
         </div>
         <div id="benefits-card">
@@ -537,8 +560,8 @@
           tl.to("#benefits-stones", { y: 24, opacity: 0, duration: 0.12, ease: "power2.in" }, L(15.7));
 
           // ---------- Beat 7: independence (15.80-17.25) ----------
-          tl.fromTo("#benefits-no", { opacity: 0, scale: 0.5 }, { opacity: 1, scale: 1, duration: 0.2, ease: "back.out(2)" }, L(15.82));
-          tl.fromTo("#benefits-hh", { opacity: 0, scale: 0.5 }, { opacity: 1, scale: 1, duration: 0.22, ease: "back.out(2)" }, L(15.96));
+          tl.fromTo("#benefits-no", { opacity: 0, scale: 0.5, transformOrigin: "100% 60%" }, { opacity: 1, scale: 1, duration: 0.2, ease: "back.out(2)" }, L(15.82));
+          tl.fromTo("#benefits-hh", { opacity: 0, scale: 0.5, transformOrigin: "0% 60%" }, { opacity: 1, scale: 1, duration: 0.22, ease: "back.out(2)" }, L(15.96));
           tl.fromTo("#benefits-needed", { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.2, ease: "power3.out" }, L(16.56));
           // Two hands, fingertips touching; a gold slash cuts between them and they pull apart.
           tl.fromTo(
@@ -549,8 +572,8 @@
           );
           tl.fromTo("#benefits-slash", { opacity: 0 }, { opacity: 1, duration: 0.04, ease: "none" }, L(16.16));
           tl.fromTo("#benefits-slash", { strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: 0.18, ease: "power2.out" }, L(16.16));
-          tl.fromTo("#benefits-hand-l", { x: 0, rotation: 0, svgOrigin: "21 80" }, { x: -12, rotation: -10, svgOrigin: "21 80", duration: 0.32, ease: "power3.out" }, L(16.3));
-          tl.fromTo("#benefits-hand-r", { x: 0, rotation: 0, svgOrigin: "139 80" }, { x: 12, rotation: 10, svgOrigin: "139 80", duration: 0.32, ease: "power3.out" }, L(16.3));
+          tl.fromTo("#benefits-hand-l", { x: 0, rotation: 0, svgOrigin: "14 83" }, { x: -8, rotation: -9, svgOrigin: "14 83", duration: 0.32, ease: "power3.out" }, L(16.3));
+          tl.fromTo("#benefits-hand-r", { x: 0, rotation: 0, svgOrigin: "146 83" }, { x: 8, rotation: 9, svgOrigin: "146 83", duration: 0.32, ease: "power3.out" }, L(16.3));
 
           // Exit 17.00-17.08 (camera hard-steps to 1.12x at 17.05).
           tl.to("#benefits-indep", { y: -30, opacity: 0, duration: 0.08, ease: "power2.in" }, L(17.0));
@@ -561,10 +584,10 @@
           tl.fromTo(
             "#benefits-unit",
             { opacity: 0, x: -40, y: -60, rotation: -6, scale: 0.8 },
-            { opacity: 1, x: 0, y: 0, rotation: 0, scale: 1, duration: 0.14, ease: "power3.out" },
+            { opacity: 1, x: 0, y: 0, rotation: 0, scale: 1, duration: 0.12, ease: "power3.out" },
             L(17.04)
           );
-          tl.fromTo("#benefits-stamp", { opacity: 0 }, { opacity: 1, duration: 0.04, ease: "none" }, L(17.08));
+          tl.fromTo("#benefits-stamp", { opacity: 0 }, { opacity: 1, duration: 0.04, ease: "none" }, L(17.04));
           tl.fromTo("#benefits-stamp", { scale: 1.12, rotation: -6 }, { scale: 1, rotation: -6, duration: 0.24, ease: "back.out(2.2)" }, L(17.08));
           tl.fromTo("#benefits-chip", { y: 0 }, { y: 4, duration: 0.04, ease: "power2.out", immediateRender: false }, L(17.12));
           tl.to("#benefits-chip", { y: 0, duration: 0.2, ease: "back.out(2)" }, L(17.16));
