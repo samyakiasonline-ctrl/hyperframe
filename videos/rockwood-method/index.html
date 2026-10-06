@@ -156,8 +156,8 @@
         data-start="4.55"
         data-duration="0.32"
         data-track-index="12"
-        data-fx-chain="{&quot;version&quot;:1,&quot;nodes&quot;:[{&quot;type&quot;:&quot;saturate&quot;,&quot;id&quot;:&quot;n1&quot;,&quot;label&quot;:&quot;Phone-speaker bite&quot;,&quot;params&quot;:{&quot;type&quot;:&quot;tanh&quot;,&quot;threshold&quot;:-30}}]}"
-        data-automation="{&quot;version&quot;:1,&quot;lanes&quot;:[{&quot;target&quot;:&quot;volume&quot;,&quot;points&quot;:[{&quot;t&quot;:0,&quot;v&quot;:0.16},{&quot;t&quot;:0.12,&quot;v&quot;:0.16},{&quot;t&quot;:0.3,&quot;v&quot;:0}]}]}"
+        data-fx-chain="{&quot;version&quot;:1,&quot;nodes&quot;:[{&quot;type&quot;:&quot;saturate&quot;,&quot;id&quot;:&quot;n1&quot;,&quot;label&quot;:&quot;Phone-speaker bite&quot;,&quot;params&quot;:{&quot;type&quot;:&quot;tanh&quot;,&quot;threshold&quot;:-18,&quot;output&quot;:6}}]}"
+        data-automation="{&quot;version&quot;:1,&quot;lanes&quot;:[{&quot;target&quot;:&quot;volume&quot;,&quot;points&quot;:[{&quot;t&quot;:0,&quot;v&quot;:0.45},{&quot;t&quot;:0.12,&quot;v&quot;:0.45},{&quot;t&quot;:0.3,&quot;v&quot;:0}]}]}"
       ></audio>
       <audio
         id="sfx-impact-rock"
@@ -166,9 +166,12 @@
         data-start="13.98"
         data-duration="0.32"
         data-track-index="12"
-        data-fx-chain="{&quot;version&quot;:1,&quot;nodes&quot;:[{&quot;type&quot;:&quot;saturate&quot;,&quot;id&quot;:&quot;n1&quot;,&quot;label&quot;:&quot;Phone-speaker bite&quot;,&quot;params&quot;:{&quot;type&quot;:&quot;tanh&quot;,&quot;threshold&quot;:-30}}]}"
-        data-automation="{&quot;version&quot;:1,&quot;lanes&quot;:[{&quot;target&quot;:&quot;volume&quot;,&quot;points&quot;:[{&quot;t&quot;:0,&quot;v&quot;:0.12},{&quot;t&quot;:0.12,&quot;v&quot;:0.12},{&quot;t&quot;:0.3,&quot;v&quot;:0}]}]}"
+        data-fx-chain="{&quot;version&quot;:1,&quot;nodes&quot;:[{&quot;type&quot;:&quot;saturate&quot;,&quot;id&quot;:&quot;n1&quot;,&quot;label&quot;:&quot;Phone-speaker bite&quot;,&quot;params&quot;:{&quot;type&quot;:&quot;tanh&quot;,&quot;threshold&quot;:-18,&quot;output&quot;:6}}]}"
+        data-automation="{&quot;version&quot;:1,&quot;lanes&quot;:[{&quot;target&quot;:&quot;volume&quot;,&quot;points&quot;:[{&quot;t&quot;:0,&quot;v&quot;:0.35},{&quot;t&quot;:0.12,&quot;v&quot;:0.35},{&quot;t&quot;:0.3,&quot;v&quot;:0}]}]}"
       ></audio>
+      <!-- A quiet pop layered on each bass hit gives it a transient that phone speakers can play. -->
+      <audio id="sfx-pop-reveal-layer" data-audio-group="sfx" src="assets/sfx/pop.mp3" data-start="4.49" data-duration="0.72" data-track-index="10" data-volume="0.28"></audio>
+      <audio id="sfx-pop-rock-layer" data-audio-group="sfx" src="assets/sfx/pop.mp3" data-start="13.89" data-duration="0.72" data-track-index="10" data-volume="0.28"></audio>
       <!-- End card: a pop as the wordmark lands (a sub-bass hit droned on earbuds). -->
       <audio id="sfx-pop-end" data-audio-group="sfx" src="assets/sfx/pop.mp3" data-start="25.85" data-duration="0.72" data-track-index="10" data-volume="0.5"></audio>
       <!-- Shimmers: "magic", the product payoff, the 100% stamp, the savings payoff, the end card -->

@@ -74,6 +74,28 @@ Guardrails:
 - All three products get equal weight.
 - Nothing is invented: no prices, offers, handles or disclaimers.
 
+### Build and QA
+
+- The four scene files were built in parallel against `DESIGN.md`. An independent reviewer
+  then snapshotted each scene and fixed its defects; the main one was GSAP's pixel rounding,
+  which made every line draw jump in rather than draw.
+- An adversarial QA pass on the rendered MP4 (visual, audio, text and sync, then a judge that
+  re-verified each finding on the file) confirmed 2 must-fix and 8 polish items. All 10 are fixed:
+  - The split panels now end in a cream-to-ink footer with a gold rule at y 1550, so platform
+    caption text never sits on cream.
+  - The bass impacts were a 66 Hz drone, inaudible on phones. They're now 0.3 s with saturation
+    plus a quiet pop layer, about 7 dB under the mix and about 13 dB under it above 300 Hz.
+  - SFX levels are rebalanced.
+  - "potato." now appears on its word.
+  - The GAME CHANGER stamp moved to the header and lands with its ping.
+  - The format chips are bigger.
+  - The hands icon is clearer.
+  - "POST-Rockwood" is timed to the speech.
+  - The outcome card shows both rows from the start.
+  - The punch-out and graphic swap now share a frame.
+- Final render: 27.6 s, 1080×1920, 25 fps, −14.8 LUFS, true peak ≤ −1 dBTP. `hyperframes check`
+  is clean, with 14/14 contrast checks passing.
+
 ### Open decisions (defaults in use)
 
 - **Rights.** Built as a draft; it shouldn't be published until rights are confirmed.
