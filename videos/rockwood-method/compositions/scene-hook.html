@@ -57,9 +57,11 @@
           text-align: center;
           font-family: "Montserrat";
           font-weight: 900;
-          font-size: 78px;
-          line-height: 78px;
+          font-size: 76px;
+          line-height: 76px;
           letter-spacing: -0.015em;
+          /* extra word gap so the 1.07 pops never close the space between words */
+          word-spacing: 0.12em;
         }
         .hook-word {
           display: inline-block;
@@ -261,7 +263,7 @@
           <div id="hook-l1" class="hook-wall">Think finance tools are just for</div>
           <div id="hook-l2" class="hook-wall"><span id="hook-w-wall" class="hook-word">WALL</span> <span id="hook-w-street" class="hook-word">STREET</span> <span id="hook-w-bros" class="hook-word">BROS?</span></div>
           <svg id="hook-strike-svg" viewBox="0 0 1080 400" aria-hidden="true">
-            <path id="hook-strike" d="M92 297 C 234 287, 362 300, 512 289 C 662 278, 790 290, 930 279" pathLength="1" />
+            <path id="hook-strike" d="M94 297 C 234 287, 360 300, 508 289 C 654 278, 782 290, 916 280" pathLength="1" />
           </svg>
         </div>
 
@@ -390,12 +392,14 @@
           ].forEach(function (pair) {
             const sel = pair[0];
             const hit = pair[1];
-            tl.fromTo(sel, { scale: 1, color: CREAM }, { scale: 1.08, color: GOLD, duration: 0.08, ease: "power3.out" }, q(hit - 0.08));
+            tl.fromTo(sel, { scale: 1, color: CREAM }, { scale: 1.07, color: GOLD, duration: 0.08, ease: "power3.out" }, q(hit - 0.08));
             tl.to(sel, { scale: 1, duration: 0.16, ease: "power2.out" }, q(hit));
           });
           // Marker strike across WALL STREET BROS (round caps: opacity 0 until the draw starts).
           tl.fromTo("#hook-strike", { opacity: 0 }, { opacity: 1, duration: 0.04, ease: "none" }, q(2.04));
-          tl.fromTo("#hook-strike", { strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: 0.2, ease: "power2.inOut" }, q(2.04));
+          // autoRound:false: CSSPlugin rounds px values by default, which snaps a pathLength=1
+          // dash offset straight from 1 to 0 (the strike popped in whole instead of drawing).
+          tl.fromTo("#hook-strike", { strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: 0.2, ease: "power2.inOut", autoRound: false }, q(2.04));
           // Whip out left.
           tl.to("#hook-hook", { x: -60, opacity: 0, duration: 0.12, ease: "power2.in" }, q(2.28));
 
@@ -418,7 +422,7 @@
           tl.to("#hook-card", { scaleX: 1, scaleY: 1, duration: 0.32, ease: "back.out(2.2)" }, q(3.68));
           // Wires zip in, then the calculator wakes up.
           tl.fromTo(".hook-wire", { opacity: 0 }, { opacity: 1, duration: 0.04, ease: "none", stagger: 0.04 }, q(3.64));
-          tl.fromTo(".hook-wire", { strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: 0.16, ease: "power2.out", stagger: 0.04 }, q(3.64));
+          tl.fromTo(".hook-wire", { strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: 0.16, ease: "power2.out", stagger: 0.04, autoRound: false }, q(3.64));
           tl.fromTo("#hook-screen-on", { opacity: 0 }, { opacity: 1, duration: 0.08, ease: "power2.out" }, q(3.84));
           tl.fromTo("#hook-ticks", { opacity: 0, scale: 0.4, transformOrigin: "0% 100%" }, { opacity: 1, scale: 1, duration: 0.16, ease: "back.out(2)" }, q(3.84));
           tl.to("#hook-ticks", { opacity: 0, duration: 0.08, ease: "power2.in" }, q(4.0));
@@ -427,7 +431,10 @@
           tl.to("#hook-eyes", { scaleY: 1, duration: 0.08, ease: "power2.out" }, q(3.96));
           // Whip out (whoosh peaks ~4.16).
           tl.to(["#hook-j1", "#hook-j2"], { x: -60, opacity: 0, duration: 0.12, ease: "power2.in" }, q(4.08));
-          tl.to("#hook-card", { x: -90, rotation: -8, opacity: 0, duration: 0.12, ease: "power2.in" }, q(4.08));
+          // The card travels further and stays opaque longer, so it reads as a whip rather than
+          // a dissolve that ghosts over her hands.
+          tl.to("#hook-card", { x: -150, rotation: -8, duration: 0.12, ease: "power2.in" }, q(4.08));
+          tl.to("#hook-card", { opacity: 0, duration: 0.12, ease: "power4.in" }, q(4.08));
 
           // ---------- Beat 3: wordmark reveal ----------
           tl.fromTo("#hook-the", { x: -16, opacity: 0 }, { x: 0, opacity: 1, duration: 0.2, ease: "power3.out" }, q(4.44));
@@ -442,7 +449,9 @@
           // Gold edge rides the wipe's leading edge.
           tl.fromTo("#hook-edge", { x: 98, rotation: 15 }, { x: 676, rotation: 15, duration: 0.4, ease: "power2.out" }, q(4.6));
           tl.fromTo("#hook-edge", { opacity: 0 }, { opacity: 1, duration: 0.04, ease: "none" }, q(4.6));
-          tl.to("#hook-edge", { opacity: 0, duration: 0.12, ease: "power2.in" }, q(4.84));
+          // Gone by the time the wipe reaches the end of the word, so no stray gold slash
+          // hangs in the gap where METHOD lands.
+          tl.to("#hook-edge", { opacity: 0, duration: 0.08, ease: "power2.in" }, q(4.8));
           // "METHOD" lands on 5.02.
           tl.fromTo("#hook-method", { y: -28, scale: 1.25, opacity: 0 }, { y: 0, scale: 1, opacity: 1, duration: 0.24, ease: "back.out(1.8)" }, q(4.96));
           tl.to("#hook-mark", { x: -60, opacity: 0, duration: 0.12, ease: "power2.in" }, q(5.44));

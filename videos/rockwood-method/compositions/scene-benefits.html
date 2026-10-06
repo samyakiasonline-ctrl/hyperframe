@@ -170,7 +170,7 @@
           stroke: #d9ad6c;
           stroke-width: 10;
           stroke-linecap: round;
-          stroke-dasharray: 1 1;
+          stroke-dasharray: 1 2;
           stroke-dashoffset: 1;
           opacity: 0;
         }
@@ -279,7 +279,7 @@
           stroke-width: 10;
           stroke-linecap: round;
           stroke-linejoin: round;
-          stroke-dasharray: 1 1;
+          stroke-dasharray: 1 2;
           stroke-dashoffset: 1;
           opacity: 0;
         }
@@ -293,7 +293,7 @@
           display: flex;
           justify-content: center;
           align-items: baseline;
-          gap: 14px;
+          gap: 2px;
         }
         #benefits-life {
           display: block;
@@ -329,7 +329,7 @@
           stroke: #d9ad6c;
           stroke-width: 7;
           stroke-linecap: round;
-          stroke-dasharray: 1 1;
+          stroke-dasharray: 1 2;
           stroke-dashoffset: 1;
           opacity: 0;
         }
@@ -479,7 +479,7 @@
             <span id="benefits-rockwood">Rockwood</span>
           </div>
           <svg id="benefits-under-svg" viewBox="0 0 1080 400" aria-hidden="true">
-            <path id="benefits-under" d="M524 312 C 640 302, 790 300, 914 307" pathLength="1" />
+            <path id="benefits-under" d="M518 315 C 634 305, 784 303, 908 310" pathLength="1" />
           </svg>
         </div>
         <div id="benefits-card">
@@ -515,20 +515,21 @@
       <script>
         (function () {
           // Host data-start is 13.6: L() turns a GLOBAL time into a local one on the 25 fps grid.
-          const q = (t) => Math.round(t * 25) / 25;
+          // Every time below is already a 0.04 multiple (global), so nothing lands on a half frame.
+          const q = (t) => Math.round(t * 25 + 1e-6) / 25;
           const L = (g) => q(g - 13.6);
           const tl = gsap.timeline({ paused: true });
 
           // ---------- Beat 6: foundation (13.62-15.80) ----------
           // ROCK-SOLID drops and lands on the bass thud (14.00): stretch on the fall, squash, settle.
-          tl.fromTo("#benefits-rock", { opacity: 0 }, { opacity: 1, duration: 0.04, ease: "none" }, L(13.82));
+          tl.fromTo("#benefits-rock", { opacity: 0 }, { opacity: 1, duration: 0.04, ease: "none" }, L(13.84));
           tl.fromTo(
             "#benefits-rock",
             { y: -90, scaleX: 0.94, scaleY: 1.1, transformOrigin: "50% 100%" },
             { y: 0, scaleX: 0.96, scaleY: 1.06, duration: 0.16, ease: "power2.in" },
-            L(13.82)
+            L(13.84)
           );
-          tl.to("#benefits-rock", { scaleX: 1.05, scaleY: 0.88, duration: 0.06, ease: "power2.out" }, L(13.98));
+          tl.to("#benefits-rock", { scaleX: 1.05, scaleY: 0.88, duration: 0.04, ease: "power2.out" }, L(14.0));
           tl.to("#benefits-rock", { scaleX: 1, scaleY: 1, duration: 0.28, ease: "back.out(2)" }, L(14.04));
           // "financial foundation" joins on "financial" (14.64).
           tl.fromTo("#benefits-fin", { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: 0.2, ease: "power3.out" }, L(14.56));
@@ -548,19 +549,19 @@
               { y: 0, scaleX: 0.96, scaleY: 1.04, duration: 0.16, ease: "power2.in" },
               L(land - 0.16)
             );
-            tl.to(id, { scaleX: 1.08, scaleY: 0.84, duration: 0.06, ease: "power2.out" }, L(land));
-            tl.to(id, { scaleX: 1, scaleY: 1, duration: 0.26, ease: "back.out(2.2)" }, L(land + 0.06));
+            tl.to(id, { scaleX: 1.08, scaleY: 0.84, duration: 0.04, ease: "power2.out" }, L(land));
+            tl.to(id, { scaleX: 1, scaleY: 1, duration: 0.28, ease: "back.out(2.2)" }, L(land + 0.04));
             // The whole stack gives a little on each impact.
-            tl.fromTo("#benefits-stack", { y: 0 }, { y: 5, duration: 0.06, ease: "power2.out", immediateRender: false }, L(land));
-            tl.to("#benefits-stack", { y: 0, duration: 0.2, ease: "power2.out" }, L(land + 0.06));
+            tl.fromTo("#benefits-stack", { y: 0 }, { y: 5, duration: 0.04, ease: "power2.out", immediateRender: false }, L(land));
+            tl.to("#benefits-stack", { y: 0, duration: 0.2, ease: "power2.out" }, L(land + 0.04));
           });
 
-          // Exit 15.70-15.80.
-          tl.to("#benefits-found", { y: -30, opacity: 0, duration: 0.1, ease: "power2.in" }, L(15.7));
-          tl.to("#benefits-stones", { y: 24, opacity: 0, duration: 0.12, ease: "power2.in" }, L(15.7));
+          // Exit 15.68-15.80.
+          tl.to("#benefits-found", { y: -30, opacity: 0, duration: 0.12, ease: "power2.in" }, L(15.68));
+          tl.to("#benefits-stones", { y: 24, opacity: 0, duration: 0.12, ease: "power2.in" }, L(15.68));
 
           // ---------- Beat 7: independence (15.80-17.25) ----------
-          tl.fromTo("#benefits-no", { opacity: 0, scale: 0.5, transformOrigin: "100% 60%" }, { opacity: 1, scale: 1, duration: 0.2, ease: "back.out(2)" }, L(15.82));
+          tl.fromTo("#benefits-no", { opacity: 0, scale: 0.5, transformOrigin: "100% 60%" }, { opacity: 1, scale: 1, duration: 0.2, ease: "back.out(2)" }, L(15.8));
           tl.fromTo("#benefits-hh", { opacity: 0, scale: 0.5, transformOrigin: "0% 60%" }, { opacity: 1, scale: 1, duration: 0.22, ease: "back.out(2)" }, L(15.96));
           tl.fromTo("#benefits-needed", { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.2, ease: "power3.out" }, L(16.56));
           // Two hands, fingertips touching; a gold slash cuts between them and they pull apart.
@@ -571,9 +572,11 @@
             L(15.96)
           );
           tl.fromTo("#benefits-slash", { opacity: 0 }, { opacity: 1, duration: 0.04, ease: "none" }, L(16.16));
-          tl.fromTo("#benefits-slash", { strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: 0.18, ease: "power2.out" }, L(16.16));
-          tl.fromTo("#benefits-hand-l", { x: 0, rotation: 0, svgOrigin: "14 83" }, { x: -8, rotation: -9, svgOrigin: "14 83", duration: 0.32, ease: "power3.out" }, L(16.3));
-          tl.fromTo("#benefits-hand-r", { x: 0, rotation: 0, svgOrigin: "146 83" }, { x: 8, rotation: 9, svgOrigin: "146 83", duration: 0.32, ease: "power3.out" }, L(16.3));
+          // autoRound:false: CSSPlugin rounds px values to integers by default, which snaps a
+          // pathLength=1 dash offset from 1 to 0 halfway through instead of drawing it.
+          tl.fromTo("#benefits-slash", { strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: 0.18, ease: "power2.out", autoRound: false }, L(16.16));
+          tl.fromTo("#benefits-hand-l", { x: 0, rotation: 0, svgOrigin: "14 83" }, { x: -8, rotation: -9, svgOrigin: "14 83", duration: 0.32, ease: "power3.out" }, L(16.32));
+          tl.fromTo("#benefits-hand-r", { x: 0, rotation: 0, svgOrigin: "146 83" }, { x: 8, rotation: 9, svgOrigin: "146 83", duration: 0.32, ease: "power3.out" }, L(16.32));
 
           // Exit 17.00-17.08 (camera hard-steps to 1.12x at 17.05).
           tl.to("#benefits-indep", { y: -30, opacity: 0, duration: 0.08, ease: "power2.in" }, L(17.0));
@@ -588,36 +591,37 @@
             L(17.04)
           );
           tl.fromTo("#benefits-stamp", { opacity: 0 }, { opacity: 1, duration: 0.04, ease: "none" }, L(17.04));
-          tl.fromTo("#benefits-stamp", { scale: 1.12, rotation: -6 }, { scale: 1, rotation: -6, duration: 0.24, ease: "back.out(2.2)" }, L(17.08));
+          tl.fromTo("#benefits-stamp", { scale: 1.12, rotation: -6 }, { scale: 1, rotation: -6, duration: 0.2, ease: "back.out(2.2)" }, L(17.04));
           tl.fromTo("#benefits-chip", { y: 0 }, { y: 4, duration: 0.04, ease: "power2.out", immediateRender: false }, L(17.12));
           tl.to("#benefits-chip", { y: 0, duration: 0.2, ease: "back.out(2)" }, L(17.16));
 
           // ZERO HASSLE with a drawn gold check (round caps: hidden until the draw starts).
           tl.fromTo("#benefits-zero", { opacity: 0, y: 22, scale: 0.9 }, { opacity: 1, y: 0, scale: 1, duration: 0.2, ease: "power3.out" }, L(18.72));
           tl.fromTo("#benefits-check", { opacity: 0 }, { opacity: 1, duration: 0.04, ease: "none" }, L(18.84));
-          tl.fromTo("#benefits-check", { strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: 0.2, ease: "power2.out" }, L(18.84));
+          tl.fromTo("#benefits-check", { strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: 0.2, ease: "power2.out", autoRound: false }, L(18.84));
           tl.fromTo("#benefits-hassle", { opacity: 0, y: 22, scale: 0.9 }, { opacity: 1, y: 0, scale: 1, duration: 0.2, ease: "power3.out" }, L(18.96));
 
           // Exit 19.56-19.64 (camera back to 1.00x at 19.60).
           tl.to("#benefits-call", { y: -30, opacity: 0, duration: 0.08, ease: "power2.in" }, L(19.56));
 
           // ---------- Beat 9: outcome (19.68-22.50) ----------
-          tl.fromTo("#benefits-life", { opacity: 0, x: 70 }, { opacity: 1, x: 0, duration: 0.2, ease: "power3.out" }, L(19.62));
+          tl.fromTo("#benefits-life", { opacity: 0, x: 70 }, { opacity: 1, x: 0, duration: 0.2, ease: "power3.out" }, L(19.6));
           tl.fromTo("#benefits-rockwood", { opacity: 0, x: 90 }, { opacity: 1, x: 0, duration: 0.22, ease: "power3.out" }, L(19.64));
           // Gold underline sweeps under "Rockwood" as she says it.
           tl.fromTo("#benefits-under", { opacity: 0 }, { opacity: 1, duration: 0.04, ease: "none" }, L(20.08));
-          tl.fromTo("#benefits-under", { strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: 0.32, ease: "power2.inOut" }, L(20.08));
+          tl.fromTo("#benefits-under", { strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: 0.32, ease: "power2.inOut", autoRound: false }, L(20.08));
 
           // Lower-stage card.
-          tl.fromTo("#benefits-card", { opacity: 0, y: 70 }, { opacity: 1, y: 0, duration: 0.24, ease: "power3.out" }, L(20.84));
+          tl.fromTo("#benefits-card", { opacity: 0 }, { opacity: 1, duration: 0.08, ease: "none" }, L(20.84));
+          tl.fromTo("#benefits-card", { y: 70 }, { y: 0, duration: 0.24, ease: "power3.out" }, L(20.84));
           // Row 1 pops on the 20.93 pop; the taupe stress bar shrinks full -> short.
-          tl.fromTo("#benefits-r1", { opacity: 0, scale: 0.85, transformOrigin: "0% 50%" }, { opacity: 1, scale: 1, duration: 0.2, ease: "back.out(1.8)" }, L(20.9));
-          tl.fromTo("#benefits-bar-1", { width: 800 }, { width: 176, duration: 0.66, ease: "power2.inOut" }, L(21.02));
+          tl.fromTo("#benefits-r1", { opacity: 0, scale: 0.85, transformOrigin: "0% 50%" }, { opacity: 1, scale: 1, duration: 0.2, ease: "back.out(1.8)" }, L(20.88));
+          tl.fromTo("#benefits-bar-1", { width: 800 }, { width: 176, duration: 0.68, ease: "power2.inOut" }, L(21.0));
           tl.fromTo("#benefits-arrow-1", { y: 0 }, { y: 5, duration: 0.24, ease: "power2.out" }, L(21.04));
           tl.to("#benefits-arrow-1", { y: 0, duration: 0.3, ease: "power2.inOut" }, L(21.28));
           // Row 2 pops on the 21.69 pop; the gold savings bar grows short -> full.
-          tl.fromTo("#benefits-r2", { opacity: 0, scale: 0.85, transformOrigin: "0% 50%" }, { opacity: 1, scale: 1, duration: 0.2, ease: "back.out(1.8)" }, L(21.66));
-          tl.fromTo("#benefits-bar-2", { width: 176 }, { width: 800, duration: 0.62, ease: "power2.inOut" }, L(21.74));
+          tl.fromTo("#benefits-r2", { opacity: 0, scale: 0.85, transformOrigin: "0% 50%" }, { opacity: 1, scale: 1, duration: 0.2, ease: "back.out(1.8)" }, L(21.64));
+          tl.fromTo("#benefits-bar-2", { width: 176 }, { width: 800, duration: 0.64, ease: "power2.inOut" }, L(21.72));
           tl.fromTo("#benefits-arrow-2", { y: 0 }, { y: -5, duration: 0.24, ease: "power2.out" }, L(21.76));
           tl.to("#benefits-arrow-2", { y: 0, duration: 0.3, ease: "power2.inOut" }, L(22.0));
           tl.fromTo("#benefits-badge-2", { scale: 1, transformOrigin: "50% 50%" }, { scale: 1.12, duration: 0.08, ease: "power2.out" }, L(22.32));
@@ -625,7 +629,7 @@
 
           // Exit: header gone by 22.48 (the CTA split lifts her face at 22.50), card 22.45-22.57.
           tl.to("#benefits-outcome", { y: -30, opacity: 0, duration: 0.08, ease: "power2.in" }, L(22.4));
-          tl.to("#benefits-card", { y: 60, opacity: 0, duration: 0.12, ease: "power2.in" }, L(22.45));
+          tl.to("#benefits-card", { y: 60, opacity: 0, duration: 0.12, ease: "power2.in" }, L(22.44));
 
           window.__timelines["scene-benefits"] = tl;
         })();
