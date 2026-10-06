@@ -6,14 +6,348 @@
   <body>
     <template>
       <style>
+        @font-face { font-family: "Montserrat"; src: url("assets/fonts/montserrat-latin-700-normal.woff2") format("woff2"); font-weight: 700; font-display: block; }
+        @font-face { font-family: "Montserrat"; src: url("assets/fonts/montserrat-latin-800-normal.woff2") format("woff2"); font-weight: 800; font-display: block; }
+        @font-face { font-family: "Montserrat"; src: url("assets/fonts/montserrat-latin-900-normal.woff2") format("woff2"); font-weight: 900; font-display: block; }
+        @font-face { font-family: "Instrument Serif"; src: url("assets/fonts/instrument-serif-latin-400-normal.woff2") format("woff2"); font-weight: 400; font-style: normal; font-display: block; }
+        @font-face { font-family: "Instrument Serif"; src: url("assets/fonts/instrument-serif-latin-400-italic.woff2") format("woff2"); font-weight: 400; font-style: italic; font-display: block; }
+
         #root {
           position: absolute;
           inset: 0;
+          overflow: hidden;
+          font-family: "Montserrat", sans-serif;
+          color: #2a1714;
+        }
+
+        /* Cream split panel: canvas y 960-1920. Every child is positioned in panel space
+           (panel y = canvas y - 960), so the whole stack rides the panel in and out. */
+        #products-panel {
+          position: absolute;
+          left: 0;
+          top: 960px;
+          width: 1080px;
+          height: 960px;
+          background: #fff4e6;
+        }
+        #products-shade {
+          position: absolute;
+          left: 0;
+          top: -40px;
+          width: 1080px;
+          height: 40px;
+          background: linear-gradient(to top, rgba(0, 0, 0, 0.26), rgba(0, 0, 0, 0));
+        }
+        #products-accent {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 1080px;
+          height: 6px;
+          background: #d9ad6c;
+          transform-origin: 50% 50%;
+        }
+
+        /* Header wordmark: THE / Rockwood / METHOD, canvas y ~990-1040 */
+        #products-header {
+          position: absolute;
+          left: 60px;
+          top: 26px;
+          height: 56px;
+          display: flex;
+          align-items: baseline;
+          gap: 12px;
+          color: #2a1714;
+          white-space: nowrap;
+        }
+        .products-caps {
+          font-family: "Montserrat", sans-serif;
+          font-weight: 700;
+          font-size: 24px;
+          letter-spacing: 0.2em;
+          margin-right: -0.2em;
+          line-height: 1;
+        }
+        .products-serif {
+          font-family: "Instrument Serif", serif;
+          font-style: italic;
+          font-weight: 400;
+          line-height: 1;
+        }
+        #products-header .products-serif {
+          font-size: 50px;
+        }
+
+        /* Product cards: 880 x 112 at canvas x 60, y 1060 / 1186 / 1312 */
+        .products-card {
+          position: absolute;
+          left: 60px;
+          width: 880px;
+          height: 112px;
+          background: #ffffff;
+          border: 2px solid rgba(42, 23, 20, 0.12);
+          border-radius: 28px;
+          box-shadow: 0 12px 28px rgba(42, 23, 20, 0.14), 0 2px 6px rgba(42, 23, 20, 0.08);
+          overflow: hidden;
+        }
+        #products-card-1 { top: 100px; }
+        #products-card-2 { top: 226px; }
+        #products-card-3 { top: 352px; }
+
+        .products-sheen {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 200px;
+          height: 108px;
+          background: linear-gradient(100deg, rgba(217, 173, 108, 0) 0%, rgba(217, 173, 108, 0.42) 50%, rgba(217, 173, 108, 0) 100%);
+        }
+        .products-body {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 876px;
+          height: 108px;
+          display: flex;
+          align-items: center;
+          padding-left: 18px;
+          gap: 26px;
+        }
+        .products-tile {
+          flex: 0 0 auto;
+          width: 72px;
+          height: 72px;
+          border-radius: 20px;
+          background: #2a1714;
+        }
+        .products-tile svg {
+          display: block;
+          width: 72px;
+          height: 72px;
+          overflow: visible;
+        }
+        .products-text {
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          white-space: nowrap;
+        }
+        .products-over {
+          display: flex;
+          align-items: baseline;
+          gap: 10px;
+          height: 34px;
+        }
+        .products-over .products-caps {
+          font-size: 26px;
+          letter-spacing: 0.18em;
+          margin-right: -0.18em;
+        }
+        .products-over .products-serif {
+          font-size: 38px;
+        }
+        .products-title {
+          font-family: "Montserrat", sans-serif;
+          font-weight: 800;
+          font-size: 48px;
+          line-height: 1.04;
+          letter-spacing: -0.01em;
+        }
+        #products-title-1 {
+          font-size: 52px;
+          line-height: 1;
+          margin-top: 4px;
+        }
+
+        /* GAME CHANGER stamp: gold plate, inset ink rule, rotated -6deg by GSAP.
+           Centre at canvas (740, 1040); sits over the header gap and card 1's empty
+           top-right corner, clear of every title. */
+        #products-stamp {
+          position: absolute;
+          left: 563px;
+          top: 45px;
+          width: 354px;
+          height: 70px;
+          border-radius: 14px;
+          background: #d9ad6c;
+          box-shadow: 0 10px 24px rgba(42, 23, 20, 0.3);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+        #products-stamp-rule {
+          position: absolute;
+          left: 6px;
+          top: 6px;
+          width: 342px;
+          height: 58px;
+          border: 2px solid rgba(42, 23, 20, 0.85);
+          border-radius: 9px;
+        }
+        #products-stamp-text {
+          position: relative;
+          font-family: "Montserrat", sans-serif;
+          font-weight: 900;
+          font-size: 34px;
+          line-height: 1;
+          letter-spacing: 0.04em;
+          padding-left: 0.04em;
+          color: #2a1714;
+          white-space: nowrap;
         }
       </style>
-      <div id="root" data-composition-id="scene-products" data-width="1080" data-height="1920"></div>
+
+      <div id="root" data-composition-id="scene-products" data-width="1080" data-height="1920">
+        <div id="products-panel">
+          <div id="products-shade"></div>
+          <div id="products-accent"></div>
+
+          <div id="products-header">
+            <span class="products-caps">THE</span>
+            <span class="products-serif">Rockwood</span>
+            <span class="products-caps">METHOD</span>
+          </div>
+
+          <!-- Card 1: The Rockwood Financial Playbook (book icon, one page flip) -->
+          <div id="products-card-1" class="products-card">
+            <div id="products-sheen-1" class="products-sheen"></div>
+            <div class="products-body">
+              <div id="products-tile-1" class="products-tile">
+                <svg viewBox="0 0 72 72" aria-hidden="true">
+                  <g fill="none" stroke="#D9AD6C" stroke-width="3" stroke-linejoin="round" stroke-linecap="round">
+                    <path id="products-book-left" d="M36 25 C31 21 24 20 16 21 L16 50 C24 49 31 50 36 54 Z" fill="#2A1714" />
+                    <path id="products-book-right" d="M36 25 C41 21 48 20 56 21 L56 50 C48 49 41 50 36 54 Z" fill="#2A1714" />
+                    <path id="products-book-flip" d="M36 25 C41 21 48 20 56 21 L56 50 C48 49 41 50 36 54 Z" fill="#2A1714" />
+                  </g>
+                </svg>
+              </div>
+              <div id="products-text-1" class="products-text">
+                <div class="products-over">
+                  <span class="products-caps">THE</span>
+                  <span class="products-serif">Rockwood</span>
+                </div>
+                <div id="products-title-1" class="products-title">Financial Playbook</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 2: Printable Planner Bundle (stacked pages fan out) -->
+          <div id="products-card-2" class="products-card">
+            <div id="products-sheen-2" class="products-sheen"></div>
+            <div class="products-body">
+              <div id="products-tile-2" class="products-tile">
+                <svg viewBox="0 0 72 72" aria-hidden="true">
+                  <g fill="#2A1714" stroke="#D9AD6C" stroke-width="3" stroke-linejoin="round" stroke-linecap="round">
+                    <rect id="products-page-3" x="28" y="14" width="26" height="34" rx="4" />
+                    <rect id="products-page-2" x="23" y="19" width="26" height="34" rx="4" />
+                    <g id="products-page-1">
+                      <rect x="18" y="24" width="26" height="34" rx="4" />
+                      <path d="M24 34 H38 M24 41 H38 M24 48 H32" fill="none" />
+                    </g>
+                  </g>
+                </svg>
+              </div>
+              <div id="products-text-2" class="products-text">
+                <div id="products-title-2" class="products-title">Printable Planner Bundle</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 3: AI Income Optimizer (neutral sliders: no $, arrows or charts) -->
+          <div id="products-card-3" class="products-card">
+            <div id="products-sheen-3" class="products-sheen"></div>
+            <div class="products-body">
+              <div id="products-tile-3" class="products-tile">
+                <svg viewBox="0 0 72 72" aria-hidden="true">
+                  <g fill="none" stroke="#D9AD6C" stroke-width="3" stroke-linecap="round">
+                    <path d="M17 24 H55 M17 36 H55 M17 48 H55" />
+                  </g>
+                  <g fill="#2A1714" stroke="#D9AD6C" stroke-width="3">
+                    <circle id="products-knob-1" cx="28" cy="24" r="5.5" />
+                    <circle id="products-knob-2" cx="46" cy="36" r="5.5" />
+                    <circle id="products-knob-3" cx="35" cy="48" r="5.5" />
+                  </g>
+                </svg>
+              </div>
+              <div id="products-text-3" class="products-text">
+                <div id="products-title-3" class="products-title">AI Income Optimizer</div>
+              </div>
+            </div>
+          </div>
+
+          <div id="products-stamp">
+            <div id="products-stamp-rule"></div>
+            <div id="products-stamp-text">GAME CHANGER</div>
+          </div>
+        </div>
+      </div>
+
       <script>
-        window.__timelines["scene-products"] = gsap.timeline({ paused: true });
+        // Local time = global - 7.95 (host data-start). Panel timing mirrors the camera
+        // lift in index.html exactly (7.99 / 0.31 s in, 13.52 / 0.28 s out, power3.inOut).
+        const tl = gsap.timeline({ paused: true });
+        const HOST = 7.95;
+        // Cue times are written in global seconds; at() converts to local and quantizes
+        // to 1/25 s. The panel uses exact() so it matches the root camera tween to the ms.
+        const at = (g) => Math.round((g - HOST) * 25) / 25;
+        const exact = (g) => Math.round((g - HOST) * 1000) / 1000;
+
+        // Panel in (7.99) and out (13.52), same distance as its height so it always
+        // tops the lifted footage's bottom edge: no black gap.
+        tl.fromTo("#products-panel", { y: 960 }, { y: 0, duration: 0.31, ease: "power3.inOut" }, exact(7.99));
+        tl.fromTo("#products-shade", { opacity: 0 }, { opacity: 1, duration: 0.2, ease: "power2.out" }, exact(7.99));
+        tl.fromTo("#products-accent", { scaleX: 0 }, { scaleX: 1, duration: 0.36, ease: "power3.out" }, at(8.03));
+        tl.fromTo("#products-header", { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.12, ease: "power3.out" }, at(7.99));
+
+        // Card entrance: slide up 30 px + fade, icon tile pops, text slides in a beat later.
+        function cardIn(n, t) {
+          const card = "#products-card-" + n;
+          tl.fromTo(card, { opacity: 0 }, { opacity: 1, duration: 0.2, ease: "power3.out" }, t);
+          tl.fromTo(card, { y: 30 }, { y: 0, duration: 0.24, ease: "back.out(1.6)" }, t);
+          tl.fromTo("#products-tile-" + n, { scale: 0.6 }, { scale: 1, duration: 0.24, ease: "back.out(2)" }, t + 0.04);
+          tl.fromTo("#products-text-" + n, { opacity: 0, x: 16 }, { opacity: 1, x: 0, duration: 0.2, ease: "power3.out" }, t + 0.04);
+        }
+        function dim(n, t, from, to) {
+          tl.fromTo("#products-card-" + n, { opacity: from }, { opacity: to, duration: 0.2, ease: "power2.out", immediateRender: false }, t);
+        }
+
+        // Card 1: pop 8.06, "The Rockwood Financial Playbook" 8.13-9.60
+        cardIn(1, at(8.03));
+        tl.fromTo("#products-book-flip", { scaleX: 1, svgOrigin: "36 37" }, { scaleX: -1, svgOrigin: "36 37", duration: 0.48, ease: "power2.inOut" }, at(8.43));
+
+        // Card 2: pop 9.62, "Printable Planner Bundle" 9.68-10.81
+        cardIn(2, at(9.58));
+        dim(1, at(9.62), 1, 0.7);
+        tl.fromTo("#products-page-2", { x: -5, y: 5 }, { x: 0, y: 0, duration: 0.3, ease: "back.out(2)" }, at(9.72));
+        tl.fromTo("#products-page-3", { x: -10, y: 10 }, { x: 0, y: 0, duration: 0.3, ease: "back.out(2)" }, at(9.78));
+
+        // Card 3: pop 11.00, "AI Income Optimizer" 11.04-12.57
+        cardIn(3, at(10.96));
+        dim(2, at(11.0), 1, 0.7);
+        tl.fromTo("#products-knob-1", { x: 16 }, { x: 0, duration: 0.4, ease: "power3.out" }, at(11.1));
+        tl.fromTo("#products-knob-2", { x: -18 }, { x: 0, duration: 0.4, ease: "power3.out" }, at(11.16));
+        tl.fromTo("#products-knob-3", { x: 12 }, { x: 0, duration: 0.4, ease: "power3.out" }, at(11.22));
+
+        // 12.50 (ping ~12.51): all three back to full, one gold sheen pass, tiles nudge.
+        dim(1, at(12.5), 0.7, 1);
+        dim(2, at(12.5), 0.7, 1);
+        [1, 2, 3].forEach((n, i) => {
+          tl.fromTo("#products-sheen-" + n, { x: -240 }, { x: 900, duration: 0.36, ease: "power2.inOut" }, at(12.48) + i * 0.04);
+          tl.fromTo("#products-tile-" + n, { scale: 1 }, { scale: 1.1, duration: 0.1, ease: "power2.out", immediateRender: false }, at(12.5) + i * 0.06);
+          tl.fromTo("#products-tile-" + n, { scale: 1.1 }, { scale: 1, duration: 0.2, ease: "power2.inOut", immediateRender: false }, at(12.6) + i * 0.06);
+        });
+
+        // 12.80: GAME CHANGER stamp ("game" 12.85), card 1 takes a small hit.
+        tl.fromTo("#products-stamp", { opacity: 0 }, { opacity: 1, duration: 0.08, ease: "none" }, at(12.8));
+        tl.fromTo("#products-stamp", { scale: 0.5, rotation: -16 }, { scale: 1, rotation: -6, duration: 0.3, ease: "back.out(1.8)" }, at(12.8));
+        tl.fromTo("#products-card-1", { y: 0 }, { y: 4, duration: 0.06, ease: "power2.out", immediateRender: false }, at(12.88));
+        tl.fromTo("#products-card-1", { y: 4 }, { y: 0, duration: 0.16, ease: "power2.inOut", immediateRender: false }, at(12.94));
+
+        // Exit with the camera drop (13.52, 0.28 s): the whole panel slides down.
+        tl.fromTo("#products-panel", { y: 0 }, { y: 960, duration: 0.28, ease: "power3.inOut", immediateRender: false }, exact(13.52));
+        tl.fromTo("#products-shade", { opacity: 1 }, { opacity: 0, duration: 0.28, ease: "power2.in", immediateRender: false }, exact(13.52));
+
+        window.__timelines["scene-products"] = tl;
       </script>
     </template>
   </body>

@@ -6,14 +6,495 @@
   <body>
     <template>
       <style>
+        @font-face { font-family: "Montserrat"; src: url("assets/fonts/montserrat-latin-700-normal.woff2") format("woff2"); font-weight: 700; font-display: block; }
+        @font-face { font-family: "Montserrat"; src: url("assets/fonts/montserrat-latin-800-normal.woff2") format("woff2"); font-weight: 800; font-display: block; }
+        @font-face { font-family: "Montserrat"; src: url("assets/fonts/montserrat-latin-900-normal.woff2") format("woff2"); font-weight: 900; font-display: block; }
+        @font-face { font-family: "Instrument Serif"; src: url("assets/fonts/instrument-serif-latin-400-normal.woff2") format("woff2"); font-weight: 400; font-style: normal; font-display: block; }
+        @font-face { font-family: "Instrument Serif"; src: url("assets/fonts/instrument-serif-latin-400-italic.woff2") format("woff2"); font-weight: 400; font-style: italic; font-display: block; }
+
         #root {
           position: absolute;
           inset: 0;
+          overflow: hidden;
+        }
+
+        /* Every top-band group is a 1080 x 400 layer in canvas coordinates. */
+        #hook-hook,
+        #hook-joke,
+        #hook-mark,
+        #hook-chips {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 1080px;
+          height: 400px;
+        }
+
+        /* Type on the wall: cream or gold, soft shadow only. */
+        .hook-wall {
+          color: #fff4e6;
+          text-shadow: 0 2px 12px rgba(0, 0, 0, 0.35);
+          white-space: nowrap;
+        }
+
+        /* ---- Beat 1: hook (visible on frame 0) ---- */
+        #hook-l1 {
+          position: absolute;
+          left: 0;
+          top: 190px;
+          width: 1080px;
+          text-align: center;
+          font-family: "Montserrat";
+          font-weight: 800;
+          font-size: 44px;
+          line-height: 44px;
+        }
+        #hook-l2 {
+          position: absolute;
+          left: 0;
+          top: 246px;
+          width: 1080px;
+          text-align: center;
+          font-family: "Montserrat";
+          font-weight: 900;
+          font-size: 78px;
+          line-height: 78px;
+          letter-spacing: -0.015em;
+        }
+        .hook-word {
+          display: inline-block;
+          transform-origin: 50% 60%;
+        }
+        #hook-strike-svg {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 1080px;
+          height: 400px;
+          overflow: visible;
+          filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.3));
+        }
+        #hook-strike {
+          fill: none;
+          stroke: #fff4e6;
+          stroke-width: 13;
+          stroke-linecap: round;
+          stroke-linejoin: round;
+          stroke-dasharray: 1 1;
+          stroke-dashoffset: 1;
+          opacity: 0;
+        }
+
+        /* ---- Beat 2: joke ---- */
+        #hook-j1 {
+          position: absolute;
+          left: 0;
+          top: 186px;
+          width: 1080px;
+          text-align: center;
+          font-family: "Montserrat";
+          font-weight: 800;
+          font-size: 40px;
+          line-height: 40px;
+        }
+        #hook-j2 {
+          position: absolute;
+          left: 0;
+          top: 235px;
+          width: 1080px;
+          text-align: center;
+          font-family: "Montserrat";
+          font-weight: 900;
+          font-size: 64px;
+          line-height: 84px;
+        }
+        #hook-potato-word {
+          display: inline-block;
+          font-family: "Instrument Serif";
+          font-style: italic;
+          font-weight: 400;
+          font-size: 84px;
+          line-height: 84px;
+          color: #d9ad6c;
+          transform-origin: 50% 70%;
+        }
+        #hook-card {
+          position: absolute;
+          left: 330px;
+          top: 1130px;
+          width: 420px;
+          height: 290px;
+          background: #fff4e6;
+          border-radius: 32px;
+          box-shadow: 0 14px 40px rgba(0, 0, 0, 0.28);
+          transform-origin: 50% 100%;
+          opacity: 0;
+        }
+        #hook-card-svg {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 420px;
+          height: 290px;
+          overflow: visible;
+        }
+        .hook-wire {
+          fill: none;
+          stroke-width: 5;
+          stroke-linecap: round;
+          stroke-dasharray: 1 1;
+          stroke-dashoffset: 1;
+          opacity: 0;
+        }
+        .hook-tick {
+          fill: none;
+          stroke: #2a1714;
+          stroke-width: 4;
+          stroke-linecap: round;
+        }
+
+        /* ---- Beat 3: wordmark ---- */
+        #hook-the {
+          position: absolute;
+          left: 150px;
+          top: 172px;
+          font-family: "Montserrat";
+          font-weight: 700;
+          font-size: 30px;
+          line-height: 30px;
+          letter-spacing: 0.2em;
+        }
+        #hook-rock {
+          position: absolute;
+          left: 101px;
+          top: 188px;
+          padding: 10px 24px;
+          font-family: "Instrument Serif";
+          font-style: italic;
+          font-weight: 400;
+          font-size: 140px;
+          line-height: 140px;
+          transform-origin: 0% 80%;
+          clip-path: polygon(0% 0%, 4% 0%, -4% 100%, 0% 100%);
+        }
+        #hook-method {
+          position: absolute;
+          left: 658px;
+          top: 272px;
+          font-family: "Montserrat";
+          font-weight: 700;
+          font-size: 52px;
+          line-height: 52px;
+          letter-spacing: 0.2em;
+        }
+        #hook-edge {
+          position: absolute;
+          left: 0;
+          top: 200px;
+          width: 5px;
+          height: 128px;
+          border-radius: 3px;
+          background: #d9ad6c;
+          box-shadow: 0 0 14px rgba(217, 173, 108, 0.55);
+          opacity: 0;
+        }
+
+        /* ---- Beat 4: format chips (shared CHIP style) ---- */
+        .hook-row {
+          position: absolute;
+          left: 0;
+          width: 1080px;
+          height: 64px;
+          display: flex;
+          justify-content: center;
+          gap: 20px;
+        }
+        #hook-row1 {
+          top: 172px;
+        }
+        #hook-row2 {
+          top: 252px;
+        }
+        .hook-chip {
+          flex: none;
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          height: 64px;
+          padding: 0 26px;
+          border-radius: 999px;
+          background: #fff4e6;
+          color: #2a1714;
+          font-family: "Montserrat";
+          font-weight: 800;
+          font-size: 30px;
+          line-height: 30px;
+          letter-spacing: 0.06em;
+          text-transform: uppercase;
+          white-space: nowrap;
+          box-shadow: 0 10px 28px rgba(0, 0, 0, 0.28);
+          opacity: 0;
+        }
+        .hook-chip-label {
+          display: block;
+          margin-right: -0.06em;
+        }
+        .hook-ico {
+          flex: none;
+          display: block;
+          width: 30px;
+          height: 30px;
+          overflow: visible;
+        }
+        .hook-star {
+          position: absolute;
+          display: block;
+          overflow: visible;
+          filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.3));
+          opacity: 0;
         }
       </style>
-      <div id="root" data-composition-id="scene-hook" data-width="1080" data-height="1920"></div>
+
+      <div id="root" data-composition-id="scene-hook" data-width="1080" data-height="1920">
+        <!-- Beat 1 (0.00-2.29): hook, the thumbnail frame -->
+        <div id="hook-hook">
+          <div id="hook-l1" class="hook-wall">Think finance tools are just for</div>
+          <div id="hook-l2" class="hook-wall"><span id="hook-w-wall" class="hook-word">WALL</span> <span id="hook-w-street" class="hook-word">STREET</span> <span id="hook-w-bros" class="hook-word">BROS?</span></div>
+          <svg id="hook-strike-svg" viewBox="0 0 1080 400" aria-hidden="true">
+            <path id="hook-strike" d="M92 297 C 234 287, 362 300, 512 289 C 662 278, 790 290, 930 279" pathLength="1" />
+          </svg>
+        </div>
+
+        <!-- Beat 2 (2.29-4.15): joke -->
+        <div id="hook-joke">
+          <div id="hook-j1" class="hook-wall">Imagine</div>
+          <div id="hook-j2" class="hook-wall">budgeting with a <span id="hook-potato-word">potato.</span></div>
+        </div>
+        <div id="hook-card">
+          <svg id="hook-card-svg" viewBox="0 0 420 290" aria-hidden="true">
+            <!-- wires: outer (ink) pin A -> right terminal, inner (taupe) pin B -> left terminal -->
+            <path id="hook-wire-a" class="hook-wire" d="M118 76 C 122 22, 340 14, 356 90" pathLength="1" stroke="#2A1714" />
+            <path id="hook-wire-b" class="hook-wire" d="M176 70 C 184 42, 298 38, 312 90" pathLength="1" stroke="#9C8579" />
+            <!-- electrodes -->
+            <rect x="113" y="72" width="10" height="48" rx="3" fill="#2A1714" />
+            <rect x="171" y="66" width="10" height="46" rx="3" fill="#9C8579" stroke="#2A1714" stroke-width="3" />
+            <!-- potato -->
+            <g id="hook-spud">
+              <path d="M50 174 C 46 130, 90 106, 140 110 C 170 112, 186 99, 214 104 C 248 111, 260 150, 250 186 C 240 224, 198 248, 142 246 C 86 244, 54 214, 50 174 Z" fill="#D9AD6C" stroke="#2A1714" stroke-width="5" stroke-linejoin="round" />
+              <ellipse cx="86" cy="152" rx="7" ry="4.5" fill="#9C8579" />
+              <ellipse cx="226" cy="134" rx="4.5" ry="3" fill="#9C8579" />
+              <ellipse cx="216" cy="218" rx="6" ry="4" fill="#9C8579" />
+              <ellipse cx="112" cy="228" rx="4.5" ry="3" fill="#9C8579" />
+              <ellipse cx="110" cy="194" rx="11" ry="6" fill="#9C8579" opacity="0.45" />
+              <ellipse cx="200" cy="192" rx="11" ry="6" fill="#9C8579" opacity="0.45" />
+              <g id="hook-eyes">
+                <circle cx="130" cy="170" r="8" fill="#2A1714" />
+                <circle cx="180" cy="168" r="8" fill="#2A1714" />
+                <circle cx="132.5" cy="167" r="2.6" fill="#FFF4E6" />
+                <circle cx="182.5" cy="165" r="2.6" fill="#FFF4E6" />
+              </g>
+              <path d="M136 194 Q 155 211 174 193" fill="none" stroke="#2A1714" stroke-width="5" stroke-linecap="round" />
+            </g>
+            <!-- calculator -->
+            <g id="hook-calc">
+              <rect x="306" y="84" width="12" height="12" rx="3" fill="#2A1714" />
+              <rect x="350" y="84" width="12" height="12" rx="3" fill="#2A1714" />
+              <rect x="284" y="92" width="108" height="156" rx="18" fill="#2A1714" />
+              <rect x="298" y="106" width="80" height="38" rx="7" fill="#9C8579" />
+              <g id="hook-screen-on">
+                <rect x="298" y="106" width="80" height="38" rx="7" fill="#D9AD6C" />
+                <circle cx="328" cy="118" r="2.8" fill="#2A1714" />
+                <circle cx="348" cy="118" r="2.8" fill="#2A1714" />
+                <path d="M326 126 Q 338 136 350 126" fill="none" stroke="#2A1714" stroke-width="3.5" stroke-linecap="round" />
+              </g>
+              <rect x="300" y="158" width="20" height="18" rx="5" fill="#FFF4E6" opacity="0.92" />
+              <rect x="328" y="158" width="20" height="18" rx="5" fill="#FFF4E6" opacity="0.92" />
+              <rect x="356" y="158" width="20" height="18" rx="5" fill="#FFF4E6" opacity="0.92" />
+              <rect x="300" y="184" width="20" height="18" rx="5" fill="#FFF4E6" opacity="0.92" />
+              <rect x="328" y="184" width="20" height="18" rx="5" fill="#FFF4E6" opacity="0.92" />
+              <rect x="356" y="184" width="20" height="18" rx="5" fill="#FFF4E6" opacity="0.92" />
+              <rect x="300" y="210" width="20" height="18" rx="5" fill="#FFF4E6" opacity="0.92" />
+              <rect x="328" y="210" width="20" height="18" rx="5" fill="#FFF4E6" opacity="0.92" />
+              <rect x="356" y="210" width="20" height="18" rx="5" fill="#D9AD6C" />
+            </g>
+            <!-- "it's on" ticks -->
+            <g id="hook-ticks">
+              <path class="hook-tick" d="M398 98 L 410 86" />
+              <path class="hook-tick" d="M403 122 L 417 121" />
+              <path class="hook-tick" d="M388 80 L 393 66" />
+            </g>
+          </svg>
+        </div>
+
+        <!-- Beat 3 (4.15-5.57): wordmark reveal -->
+        <div id="hook-mark">
+          <div id="hook-the" class="hook-wall">THE</div>
+          <div id="hook-rock" class="hook-wall">Rockwood</div>
+          <div id="hook-edge"></div>
+          <div id="hook-method" class="hook-wall">METHOD</div>
+        </div>
+
+        <!-- Beat 4 (5.57-7.99): format chips -->
+        <div id="hook-chips">
+          <div id="hook-row1" class="hook-row">
+            <div id="hook-chip-self" class="hook-chip"><span class="hook-chip-label">Self-guided</span></div>
+            <div id="hook-chip-dl" class="hook-chip">
+              <svg class="hook-ico" viewBox="0 0 30 30" aria-hidden="true">
+                <defs>
+                  <clipPath id="hook-dl-clip"><rect x="0" y="0" width="30" height="30" /></clipPath>
+                </defs>
+                <g clip-path="url(#hook-dl-clip)">
+                  <g id="hook-dl-arrow">
+                    <path d="M15 3 V 17" fill="none" stroke="#2A1714" stroke-width="3.6" stroke-linecap="round" />
+                    <path d="M9 11.5 L 15 17.5 L 21 11.5" fill="none" stroke="#2A1714" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round" />
+                  </g>
+                </g>
+                <path id="hook-dl-tray" d="M4 18 V 25.5 H 26 V 18" fill="none" stroke="#2A1714" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+              <span class="hook-chip-label">Downloadable</span>
+            </div>
+          </div>
+          <div id="hook-row2" class="hook-row">
+            <div id="hook-chip-magic" class="hook-chip">
+              <svg class="hook-ico" viewBox="0 0 30 30" aria-hidden="true">
+                <path id="hook-mg-star" d="M13 2.5 C 14 10, 16.5 12.5, 24 13.5 C 16.5 14.5, 14 17, 13 24.5 C 12 17, 9.5 14.5, 2 13.5 C 9.5 12.5, 12 10, 13 2.5 Z" fill="#D9AD6C" stroke="#2A1714" stroke-width="1.8" stroke-linejoin="round" />
+                <path id="hook-mg-star2" d="M24 18 C 24.4 21, 25 21.6, 28 22 C 25 22.4, 24.4 23, 24 26 C 23.6 23, 23 22.4, 20 22 C 23 21.6, 23.6 21, 24 18 Z" fill="#2A1714" />
+              </svg>
+              <span class="hook-chip-label">Finance magic</span>
+            </div>
+          </div>
+          <!-- sparkle burst around FINANCE MAGIC (fixed positions, no randomness) -->
+          <svg id="hook-star-1" class="hook-star" viewBox="0 0 40 40" style="left: 288px; top: 240px; width: 44px; height: 44px" aria-hidden="true"><path d="M20 0 C 21.6 13.4, 26.6 18.4, 40 20 C 26.6 21.6, 21.6 26.6, 20 40 C 18.4 26.6, 13.4 21.6, 0 20 C 13.4 18.4, 18.4 13.4, 20 0 Z" fill="#D9AD6C" /></svg>
+          <svg id="hook-star-2" class="hook-star" viewBox="0 0 40 40" style="left: 277px; top: 288px; width: 26px; height: 26px" aria-hidden="true"><path d="M20 0 C 21.6 13.4, 26.6 18.4, 40 20 C 26.6 21.6, 21.6 26.6, 20 40 C 18.4 26.6, 13.4 21.6, 0 20 C 13.4 18.4, 18.4 13.4, 20 0 Z" fill="#FFF4E6" /></svg>
+          <svg id="hook-star-3" class="hook-star" viewBox="0 0 40 40" style="left: 320px; top: 324px; width: 18px; height: 18px" aria-hidden="true"><path d="M20 0 C 21.6 13.4, 26.6 18.4, 40 20 C 26.6 21.6, 21.6 26.6, 20 40 C 18.4 26.6, 13.4 21.6, 0 20 C 13.4 18.4, 18.4 13.4, 20 0 Z" fill="#D9AD6C" /></svg>
+          <svg id="hook-star-4" class="hook-star" viewBox="0 0 40 40" style="left: 748px; top: 238px; width: 44px; height: 44px" aria-hidden="true"><path d="M20 0 C 21.6 13.4, 26.6 18.4, 40 20 C 26.6 21.6, 21.6 26.6, 20 40 C 18.4 26.6, 13.4 21.6, 0 20 C 13.4 18.4, 18.4 13.4, 20 0 Z" fill="#D9AD6C" /></svg>
+          <svg id="hook-star-5" class="hook-star" viewBox="0 0 40 40" style="left: 777px; top: 286px; width: 26px; height: 26px" aria-hidden="true"><path d="M20 0 C 21.6 13.4, 26.6 18.4, 40 20 C 26.6 21.6, 21.6 26.6, 20 40 C 18.4 26.6, 13.4 21.6, 0 20 C 13.4 18.4, 18.4 13.4, 20 0 Z" fill="#FFF4E6" /></svg>
+          <svg id="hook-star-6" class="hook-star" viewBox="0 0 40 40" style="left: 740px; top: 324px; width: 18px; height: 18px" aria-hidden="true"><path d="M20 0 C 21.6 13.4, 26.6 18.4, 40 20 C 26.6 21.6, 21.6 26.6, 20 40 C 18.4 26.6, 13.4 21.6, 0 20 C 13.4 18.4, 18.4 13.4, 20 0 Z" fill="#D9AD6C" /></svg>
+        </div>
+      </div>
+
       <script>
-        window.__timelines["scene-hook"] = gsap.timeline({ paused: true });
+        (function () {
+          // Local time = global time (host data-start 0). Every time sits on the 25 fps grid.
+          const q = (t) => Math.round(t * 25) / 25;
+          const CREAM = "#FFF4E6";
+          const GOLD = "#D9AD6C";
+          const tl = gsap.timeline({ paused: true });
+
+          // ---------- Beat 1: hook (fully visible on frame 0) ----------
+          // Each word pulses to gold with a small pop, peaking on its spoken onset, and stays gold.
+          [
+            ["#hook-w-wall", 1.4],
+            ["#hook-w-street", 1.6],
+            ["#hook-w-bros", 1.88],
+          ].forEach(function (pair) {
+            const sel = pair[0];
+            const hit = pair[1];
+            tl.fromTo(sel, { scale: 1, color: CREAM }, { scale: 1.08, color: GOLD, duration: 0.08, ease: "power3.out" }, q(hit - 0.08));
+            tl.to(sel, { scale: 1, duration: 0.16, ease: "power2.out" }, q(hit));
+          });
+          // Marker strike across WALL STREET BROS (round caps: opacity 0 until the draw starts).
+          tl.fromTo("#hook-strike", { opacity: 0 }, { opacity: 1, duration: 0.04, ease: "none" }, q(2.04));
+          tl.fromTo("#hook-strike", { strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: 0.2, ease: "power2.inOut" }, q(2.04));
+          // Whip out left.
+          tl.to("#hook-hook", { x: -60, opacity: 0, duration: 0.12, ease: "power2.in" }, q(2.28));
+
+          // ---------- Beat 2: joke ----------
+          tl.fromTo("#hook-j1", { x: 60, opacity: 0 }, { x: 0, opacity: 1, duration: 0.2, ease: "power3.out" }, q(2.4));
+          tl.fromTo("#hook-j2", { x: 60, opacity: 0 }, { x: 0, opacity: 1, duration: 0.2, ease: "power3.out" }, q(2.44));
+          // "potato." nudges as the card lands.
+          tl.fromTo("#hook-potato-word", { scale: 1 }, { scale: 1.1, duration: 0.08, ease: "power3.out" }, q(3.52));
+          tl.to("#hook-potato-word", { scale: 1, duration: 0.16, ease: "power2.out" }, q(3.6));
+
+          // Potato card drops into the lower stage: stretch on the fall, squash on impact (3.60), settle.
+          tl.fromTo("#hook-card", { opacity: 0 }, { opacity: 1, duration: 0.04, ease: "none" }, q(3.48));
+          tl.fromTo(
+            "#hook-card",
+            { y: -170, scaleX: 0.92, scaleY: 1.12, rotation: -4 },
+            { y: 0, scaleX: 0.94, scaleY: 1.08, rotation: 0, duration: 0.12, ease: "power2.in" },
+            q(3.48)
+          );
+          tl.to("#hook-card", { scaleX: 1.1, scaleY: 0.86, duration: 0.08, ease: "power2.out" }, q(3.6));
+          tl.to("#hook-card", { scaleX: 1, scaleY: 1, duration: 0.32, ease: "back.out(2.2)" }, q(3.68));
+          // Wires zip in, then the calculator wakes up.
+          tl.fromTo(".hook-wire", { opacity: 0 }, { opacity: 1, duration: 0.04, ease: "none", stagger: 0.04 }, q(3.64));
+          tl.fromTo(".hook-wire", { strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: 0.16, ease: "power2.out", stagger: 0.04 }, q(3.64));
+          tl.fromTo("#hook-screen-on", { opacity: 0 }, { opacity: 1, duration: 0.08, ease: "power2.out" }, q(3.84));
+          tl.fromTo("#hook-ticks", { opacity: 0, scale: 0.4, transformOrigin: "0% 100%" }, { opacity: 1, scale: 1, duration: 0.16, ease: "back.out(2)" }, q(3.84));
+          tl.to("#hook-ticks", { opacity: 0, duration: 0.08, ease: "power2.in" }, q(4.0));
+          // One friendly blink.
+          tl.fromTo("#hook-eyes", { scaleY: 1, transformOrigin: "50% 50%" }, { scaleY: 0.12, duration: 0.04, ease: "power2.in" }, q(3.92));
+          tl.to("#hook-eyes", { scaleY: 1, duration: 0.08, ease: "power2.out" }, q(3.96));
+          // Whip out (whoosh peaks ~4.16).
+          tl.to(["#hook-j1", "#hook-j2"], { x: -60, opacity: 0, duration: 0.12, ease: "power2.in" }, q(4.08));
+          tl.to("#hook-card", { x: -90, rotation: -8, opacity: 0, duration: 0.12, ease: "power2.in" }, q(4.08));
+
+          // ---------- Beat 3: wordmark reveal ----------
+          tl.fromTo("#hook-the", { x: -16, opacity: 0 }, { x: 0, opacity: 1, duration: 0.2, ease: "power3.out" }, q(4.44));
+          // "Rockwood" slanted mask wipe, left to right, 4.60-5.00 (bass impact at 4.60).
+          tl.fromTo(
+            "#hook-rock",
+            { clipPath: "polygon(0% 0%, 4% 0%, -4% 100%, 0% 100%)" },
+            { clipPath: "polygon(0% 0%, 108% 0%, 100% 100%, 0% 100%)", duration: 0.4, ease: "power2.out" },
+            q(4.6)
+          );
+          tl.fromTo("#hook-rock", { scale: 1.05 }, { scale: 1, duration: 0.48, ease: "power2.out" }, q(4.6));
+          // Gold edge rides the wipe's leading edge.
+          tl.fromTo("#hook-edge", { x: 98, rotation: 15 }, { x: 676, rotation: 15, duration: 0.4, ease: "power2.out" }, q(4.6));
+          tl.fromTo("#hook-edge", { opacity: 0 }, { opacity: 1, duration: 0.04, ease: "none" }, q(4.6));
+          tl.to("#hook-edge", { opacity: 0, duration: 0.12, ease: "power2.in" }, q(4.84));
+          // "METHOD" lands on 5.02.
+          tl.fromTo("#hook-method", { y: -28, scale: 1.25, opacity: 0 }, { y: 0, scale: 1, opacity: 1, duration: 0.24, ease: "back.out(1.8)" }, q(4.96));
+          tl.to("#hook-mark", { x: -60, opacity: 0, duration: 0.12, ease: "power2.in" }, q(5.44));
+
+          // ---------- Beat 4: format chips ----------
+          // SELF-GUIDED pops centred, then slides left as DOWNLOADABLE grows out beside it.
+          tl.fromTo("#hook-chip-self", { x: 210, scale: 0.5, opacity: 0 }, { x: 210, scale: 1, opacity: 1, duration: 0.24, ease: "back.out(2)" }, q(5.52));
+          tl.to("#hook-chip-self", { x: 0, duration: 0.24, ease: "power3.out" }, q(6.4));
+          tl.fromTo("#hook-chip-dl", { x: 210 }, { x: 0, duration: 0.24, ease: "power3.out" }, q(6.4));
+          tl.fromTo(
+            "#hook-chip-dl",
+            { scale: 0.5, opacity: 0, transformOrigin: "0% 50%" },
+            { scale: 1, opacity: 1, duration: 0.24, ease: "back.out(2)" },
+            q(6.4)
+          );
+          // Download arrow drops into the tray.
+          tl.fromTo("#hook-dl-arrow", { y: -20 }, { y: 2, duration: 0.16, ease: "power2.in" }, q(6.48));
+          tl.to("#hook-dl-arrow", { y: 0, duration: 0.12, ease: "power2.out" }, q(6.64));
+          tl.fromTo("#hook-dl-tray", { y: 0 }, { y: 2, duration: 0.04, ease: "power2.out" }, q(6.64));
+          tl.to("#hook-dl-tray", { y: 0, duration: 0.12, ease: "power2.out" }, q(6.68));
+          // FINANCE MAGIC with its sparkle icon.
+          tl.fromTo("#hook-chip-magic", { scale: 0.5, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.24, ease: "back.out(2)" }, q(7.04));
+          tl.fromTo(
+            "#hook-mg-star",
+            { rotation: -90, scale: 0.2, transformOrigin: "50% 50%" },
+            { rotation: 0, scale: 1, duration: 0.28, ease: "back.out(2)" },
+            q(7.08)
+          );
+          // Sparkle burst on "magic" (SFX 7.55).
+          tl.to("#hook-mg-star", { rotation: 45, scale: 1.3, duration: 0.12, ease: "power2.out" }, q(7.56));
+          tl.to("#hook-mg-star", { rotation: 90, scale: 1, duration: 0.2, ease: "power2.inOut" }, q(7.68));
+          [
+            ["#hook-star-1", 40, 16, 7.56],
+            ["#hook-star-4", -40, 18, 7.56],
+            ["#hook-star-2", 56, -6, 7.56],
+            ["#hook-star-5", -56, -4, 7.56],
+            ["#hook-star-3", 30, -18, 7.6],
+            ["#hook-star-6", -30, -18, 7.6],
+          ].forEach(function (s) {
+            tl.fromTo(
+              s[0],
+              { x: s[1], y: s[2], scale: 0, rotation: -60, opacity: 0, transformOrigin: "50% 50%" },
+              { x: 0, y: 0, scale: 1, rotation: 0, opacity: 1, duration: 0.24, ease: "power3.out" },
+              q(s[3])
+            );
+            tl.to(s[0], { scale: 0.4, opacity: 0, duration: 0.12, ease: "power2.in" }, q(7.8));
+          });
+          // Clear the top band before the products split (7.99).
+          tl.to("#hook-chips", { y: -40, opacity: 0, duration: 0.12, ease: "power2.in" }, q(7.88));
+
+          window.__timelines["scene-hook"] = tl;
+        })();
       </script>
     </template>
   </body>
