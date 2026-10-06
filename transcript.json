@@ -1,0 +1,260 @@
+[
+  {
+    "text": "You",
+    "start": 0,
+    "end": 0.32,
+    "id": "w0"
+  },
+  {
+    "text": "are",
+    "start": 0.32,
+    "end": 0.48,
+    "id": "w1"
+  },
+  {
+    "text": "allowed",
+    "start": 0.48,
+    "end": 0.72,
+    "id": "w2"
+  },
+  {
+    "text": "to",
+    "start": 0.72,
+    "end": 0.88,
+    "id": "w3"
+  },
+  {
+    "text": "reinvent",
+    "start": 0.88,
+    "end": 1.52,
+    "id": "w4"
+  },
+  {
+    "text": "yourself,",
+    "start": 1.52,
+    "end": 2.32,
+    "id": "w5"
+  },
+  {
+    "text": "you",
+    "start": 2.32,
+    "end": 2.48,
+    "id": "w6"
+  },
+  {
+    "text": "are",
+    "start": 2.48,
+    "end": 2.72,
+    "id": "w7"
+  },
+  {
+    "text": "allowed",
+    "start": 2.72,
+    "end": 3.12,
+    "id": "w8"
+  },
+  {
+    "text": "to",
+    "start": 3.12,
+    "end": 3.36,
+    "id": "w9"
+  },
+  {
+    "text": "outgrow",
+    "start": 3.36,
+    "end": 4.16,
+    "id": "w10"
+  },
+  {
+    "text": "old",
+    "start": 4.16,
+    "end": 4.64,
+    "id": "w11"
+  },
+  {
+    "text": "patterns,",
+    "start": 4.64,
+    "end": 5.76,
+    "id": "w12"
+  },
+  {
+    "text": "and",
+    "start": 5.76,
+    "end": 5.92,
+    "id": "w13"
+  },
+  {
+    "text": "you",
+    "start": 5.92,
+    "end": 6.08,
+    "id": "w14"
+  },
+  {
+    "text": "are",
+    "start": 6.08,
+    "end": 6.32,
+    "id": "w15"
+  },
+  {
+    "text": "allowed",
+    "start": 6.32,
+    "end": 6.64,
+    "id": "w16"
+  },
+  {
+    "text": "to",
+    "start": 6.64,
+    "end": 6.8,
+    "id": "w17"
+  },
+  {
+    "text": "become",
+    "start": 6.8,
+    "end": 7.2,
+    "id": "w18"
+  },
+  {
+    "text": "more",
+    "start": 7.2,
+    "end": 7.44,
+    "id": "w19"
+  },
+  {
+    "text": "confident",
+    "start": 7.44,
+    "end": 8.08,
+    "id": "w20"
+  },
+  {
+    "text": "than",
+    "start": 8.08,
+    "end": 8.32,
+    "id": "w21"
+  },
+  {
+    "text": "you",
+    "start": 8.32,
+    "end": 8.56,
+    "id": "w22"
+  },
+  {
+    "text": "used",
+    "start": 8.56,
+    "end": 8.8,
+    "id": "w23"
+  },
+  {
+    "text": "to",
+    "start": 8.8,
+    "end": 8.96,
+    "id": "w24"
+  },
+  {
+    "text": "be.",
+    "start": 8.96,
+    "end": 9.52,
+    "id": "w25"
+  },
+  {
+    "text": "Your",
+    "start": 9.52,
+    "end": 9.92,
+    "id": "w26"
+  },
+  {
+    "text": "past",
+    "start": 9.92,
+    "end": 10.4,
+    "id": "w27"
+  },
+  {
+    "text": "does",
+    "start": 10.4,
+    "end": 10.72,
+    "id": "w28"
+  },
+  {
+    "text": "not",
+    "start": 10.72,
+    "end": 10.96,
+    "id": "w29"
+  },
+  {
+    "text": "have",
+    "start": 10.96,
+    "end": 11.12,
+    "id": "w30"
+  },
+  {
+    "text": "to",
+    "start": 11.12,
+    "end": 11.28,
+    "id": "w31"
+  },
+  {
+    "text": "define",
+    "start": 11.28,
+    "end": 11.76,
+    "id": "w32"
+  },
+  {
+    "text": "your",
+    "start": 11.76,
+    "end": 12,
+    "id": "w33"
+  },
+  {
+    "text": "future.",
+    "start": 12,
+    "end": 12.88,
+    "id": "w34"
+  },
+  {
+    "text": "Growth",
+    "start": 12.88,
+    "end": 13.52,
+    "id": "w35"
+  },
+  {
+    "text": "is",
+    "start": 13.52,
+    "end": 13.76,
+    "id": "w36"
+  },
+  {
+    "text": "possible",
+    "start": 13.76,
+    "end": 14.64,
+    "id": "w37"
+  },
+  {
+    "text": "at",
+    "start": 14.64,
+    "end": 14.96,
+    "id": "w38"
+  },
+  {
+    "text": "any",
+    "start": 14.96,
+    "end": 15.28,
+    "id": "w39"
+  },
+  {
+    "text": "stage",
+    "start": 15.28,
+    "end": 15.84,
+    "id": "w40"
+  },
+  {
+    "text": "of",
+    "start": 15.84,
+    "end": 16.08,
+    "id": "w41"
+  },
+  {
+    "text": "life.",
+    "start": 16.08,
+    "end": 16.4,
+    "id": "w42"
+  }
+]

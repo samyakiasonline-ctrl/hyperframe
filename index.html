@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=1920, height=1080" />
+    <meta name="viewport" content="width=1080, height=1920" />
     <script src="assets/vendor/gsap.min.js"></script>
     <style>
       * {
@@ -12,25 +12,54 @@
       }
       html,
       body {
-        margin: 0;
-        width: 1920px;
-        height: 1080px;
+        width: 1080px;
+        height: 1920px;
         overflow: hidden;
-        background: #0a0a0a;
+        background: #000;
       }
       #root {
+        position: relative;
         width: 100%;
         height: 100%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+        overflow: hidden;
       }
-      #title {
-        color: #f4f4f5;
-        font-size: 72px;
-        font-weight: 600;
-        letter-spacing: -0.03em;
+      .full {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+      #captions {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 520px;
+        height: 240px;
+        z-index: 10;
+      }
+      .cg {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        flex-wrap: wrap;
+        align-content: center;
+        justify-content: center;
+        gap: 4px 30px;
+        padding: 0 70px;
+        opacity: 0;
+        font-family: Montserrat, sans-serif;
+        font-weight: 800;
+        font-size: 84px;
+        line-height: 1.12;
+        text-align: center;
+      }
+      .w {
+        display: inline-block;
+        color: #ffffff;
+        text-shadow:
+          0 4px 18px rgba(0, 0, 0, 0.85),
+          0 0 3px rgba(0, 0, 0, 0.9);
       }
     </style>
   </head>
@@ -39,18 +68,70 @@
       id="root"
       data-composition-id="main"
       data-start="0"
-      data-duration="10"
-      data-width="1920"
-      data-height="1080"
+      data-duration="16.49"
+      data-width="1080"
+      data-height="1920"
     >
-      <h1 id="title" class="clip" data-start="0" data-duration="10" data-track-index="0">Hello, HyperFrames</h1>
+      <video
+        id="speaker"
+        class="clip full"
+        src="assets/source.mp4"
+        data-start="0"
+        data-duration="16.49"
+        data-has-audio="true"
+        data-track-index="0"
+      ></video>
+      <div id="captions"></div>
     </div>
     <script>
+      // Word timings from transcript.json (Parakeet ASR).
+      const WORDS = [["You", 0, 0.32], ["are", 0.32, 0.48], ["allowed", 0.48, 0.72], ["to", 0.72, 0.88], ["reinvent", 0.88, 1.52], ["yourself,", 1.52, 2.32], ["you", 2.32, 2.48], ["are", 2.48, 2.72], ["allowed", 2.72, 3.12], ["to", 3.12, 3.36], ["outgrow", 3.36, 4.16], ["old", 4.16, 4.64], ["patterns,", 4.64, 5.76], ["and", 5.76, 5.92], ["you", 5.92, 6.08], ["are", 6.08, 6.32], ["allowed", 6.32, 6.64], ["to", 6.64, 6.8], ["become", 6.8, 7.2], ["more", 7.2, 7.44], ["confident", 7.44, 8.08], ["than", 8.08, 8.32], ["you", 8.32, 8.56], ["used", 8.56, 8.8], ["to", 8.8, 8.96], ["be.", 8.96, 9.52], ["Your", 9.52, 9.92], ["past", 9.92, 10.4], ["does", 10.4, 10.72], ["not", 10.72, 10.96], ["have", 10.96, 11.12], ["to", 11.12, 11.28], ["define", 11.28, 11.76], ["your", 11.76, 12], ["future.", 12, 12.88], ["Growth", 12.88, 13.52], ["is", 13.52, 13.76], ["possible", 13.76, 14.64], ["at", 14.64, 14.96], ["any", 14.96, 15.28], ["stage", 15.28, 15.84], ["of", 15.84, 16.08], ["life.", 16.08, 16.4]];
+      // Caption groups as [firstWordIndex, lastWordIndex], broken on phrases.
+      const GROUPS = [
+        [0, 2], [3, 5], [6, 8], [9, 12], [13, 16], [17, 20],
+        [21, 25], [26, 29], [30, 34], [35, 37], [38, 42],
+      ];
+      const EMPHASIS = new Set([4, 10, 20, 34, 35]);
+      const GOLD = "#ffc94a";
+
       const tl = gsap.timeline({ paused: true });
-      tl.fromTo("#title", { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.6 }, 0);
-      tl.to("#title", { opacity: 0, y: -24, duration: 0.6 }, 9.4);
+      const host = document.getElementById("captions");
+
+      GROUPS.forEach(([a, b], gi) => {
+        const g = document.createElement("div");
+        g.className = "cg";
+        g.id = "cg-" + gi;
+        for (let i = a; i <= b; i++) {
+          const s = document.createElement("span");
+          s.className = "w";
+          s.id = "w-" + i;
+          s.textContent = WORDS[i][0];
+          g.appendChild(s);
+        }
+        host.appendChild(g);
+
+        const start = WORDS[a][1];
+        const end = gi + 1 < GROUPS.length ? WORDS[GROUPS[gi + 1][0]][1] : 16.49;
+        tl.fromTo(g, { opacity: 0, y: 24, scale: 0.96 }, { opacity: 1, y: 0, scale: 1, duration: 0.18, ease: "power2.out" }, start);
+
+        for (let i = a; i <= b; i++) {
+          const el = document.getElementById("w-" + i);
+          const ws = WORDS[i][1];
+          const we = Math.min(WORDS[i][2], end);
+          const peak = EMPHASIS.has(i) ? 1.06 : 1.03;
+          tl.fromTo(el, { color: "#ffffff", scale: 1 }, { color: GOLD, scale: peak, duration: 0.08, ease: "power1.out", immediateRender: false }, ws);
+          if (!EMPHASIS.has(i)) {
+            tl.fromTo(el, { color: GOLD, scale: peak }, { color: "#ffffff", scale: 1, duration: 0.1, ease: "power1.in", immediateRender: false }, Math.max(ws + 0.08, we - 0.02));
+          }
+        }
+
+        if (gi + 1 < GROUPS.length) {
+          tl.to(g, { opacity: 0, duration: 0.08, ease: "power2.in" }, end - 0.08);
+          tl.set(g, { opacity: 0, visibility: "hidden" }, end);
+        }
+      });
+
       window.__timelines["main"] = tl;
-      tl.seek(0);
     </script>
   </body>
 </html>
