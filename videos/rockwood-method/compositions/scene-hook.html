@@ -110,6 +110,12 @@
           font-size: 64px;
           line-height: 84px;
         }
+        /* Lead words and the punchline enter separately (opacity/scale only), so the
+           centred line keeps its final layout from the first frame. */
+        #hook-j2-lead {
+          display: inline-block;
+          transform-origin: 50% 70%;
+        }
         #hook-potato-word {
           display: inline-block;
           font-family: "Instrument Serif";
@@ -206,31 +212,32 @@
           position: absolute;
           left: 0;
           width: 1080px;
-          height: 64px;
+          height: 72px;
           display: flex;
           justify-content: center;
           gap: 20px;
         }
+        /* Rows span y 172-328 (head top ~348 at the 1.06x camera). Row 1 is ~840 px wide. */
         #hook-row1 {
           top: 172px;
         }
         #hook-row2 {
-          top: 252px;
+          top: 256px;
         }
         .hook-chip {
           flex: none;
           display: flex;
           align-items: center;
-          gap: 12px;
-          height: 64px;
-          padding: 0 26px;
+          gap: 14px;
+          height: 72px;
+          padding: 0 31px;
           border-radius: 999px;
           background: #fff4e6;
           color: #2a1714;
           font-family: "Montserrat";
           font-weight: 800;
-          font-size: 30px;
-          line-height: 30px;
+          font-size: 36px;
+          line-height: 36px;
           letter-spacing: 0.06em;
           text-transform: uppercase;
           white-space: nowrap;
@@ -244,8 +251,8 @@
         .hook-ico {
           flex: none;
           display: block;
-          width: 30px;
-          height: 30px;
+          width: 36px;
+          height: 36px;
           overflow: visible;
         }
         .hook-star {
@@ -270,7 +277,7 @@
         <!-- Beat 2 (2.29-4.15): joke -->
         <div id="hook-joke">
           <div id="hook-j1" class="hook-wall">Imagine</div>
-          <div id="hook-j2" class="hook-wall">budgeting with a <span id="hook-potato-word">potato.</span></div>
+          <div id="hook-j2" class="hook-wall"><span id="hook-j2-lead">budgeting with a</span> <span id="hook-potato-word">potato.</span></div>
         </div>
         <div id="hook-card">
           <svg id="hook-card-svg" viewBox="0 0 420 290" aria-hidden="true">
@@ -366,12 +373,12 @@
             </div>
           </div>
           <!-- sparkle burst around FINANCE MAGIC (fixed positions, no randomness) -->
-          <svg id="hook-star-1" class="hook-star" viewBox="0 0 40 40" style="left: 288px; top: 240px; width: 44px; height: 44px" aria-hidden="true"><path d="M20 0 C 21.6 13.4, 26.6 18.4, 40 20 C 26.6 21.6, 21.6 26.6, 20 40 C 18.4 26.6, 13.4 21.6, 0 20 C 13.4 18.4, 18.4 13.4, 20 0 Z" fill="#D9AD6C" /></svg>
-          <svg id="hook-star-2" class="hook-star" viewBox="0 0 40 40" style="left: 277px; top: 288px; width: 26px; height: 26px" aria-hidden="true"><path d="M20 0 C 21.6 13.4, 26.6 18.4, 40 20 C 26.6 21.6, 21.6 26.6, 20 40 C 18.4 26.6, 13.4 21.6, 0 20 C 13.4 18.4, 18.4 13.4, 20 0 Z" fill="#FFF4E6" /></svg>
-          <svg id="hook-star-3" class="hook-star" viewBox="0 0 40 40" style="left: 320px; top: 324px; width: 18px; height: 18px" aria-hidden="true"><path d="M20 0 C 21.6 13.4, 26.6 18.4, 40 20 C 26.6 21.6, 21.6 26.6, 20 40 C 18.4 26.6, 13.4 21.6, 0 20 C 13.4 18.4, 18.4 13.4, 20 0 Z" fill="#D9AD6C" /></svg>
-          <svg id="hook-star-4" class="hook-star" viewBox="0 0 40 40" style="left: 748px; top: 238px; width: 44px; height: 44px" aria-hidden="true"><path d="M20 0 C 21.6 13.4, 26.6 18.4, 40 20 C 26.6 21.6, 21.6 26.6, 20 40 C 18.4 26.6, 13.4 21.6, 0 20 C 13.4 18.4, 18.4 13.4, 20 0 Z" fill="#D9AD6C" /></svg>
-          <svg id="hook-star-5" class="hook-star" viewBox="0 0 40 40" style="left: 777px; top: 286px; width: 26px; height: 26px" aria-hidden="true"><path d="M20 0 C 21.6 13.4, 26.6 18.4, 40 20 C 26.6 21.6, 21.6 26.6, 20 40 C 18.4 26.6, 13.4 21.6, 0 20 C 13.4 18.4, 18.4 13.4, 20 0 Z" fill="#FFF4E6" /></svg>
-          <svg id="hook-star-6" class="hook-star" viewBox="0 0 40 40" style="left: 740px; top: 324px; width: 18px; height: 18px" aria-hidden="true"><path d="M20 0 C 21.6 13.4, 26.6 18.4, 40 20 C 26.6 21.6, 21.6 26.6, 20 40 C 18.4 26.6, 13.4 21.6, 0 20 C 13.4 18.4, 18.4 13.4, 20 0 Z" fill="#D9AD6C" /></svg>
+          <svg id="hook-star-1" class="hook-star" viewBox="0 0 40 40" style="left: 252px; top: 246px; width: 44px; height: 44px" aria-hidden="true"><path d="M20 0 C 21.6 13.4, 26.6 18.4, 40 20 C 26.6 21.6, 21.6 26.6, 20 40 C 18.4 26.6, 13.4 21.6, 0 20 C 13.4 18.4, 18.4 13.4, 20 0 Z" fill="#D9AD6C" /></svg>
+          <svg id="hook-star-2" class="hook-star" viewBox="0 0 40 40" style="left: 241px; top: 300px; width: 26px; height: 26px" aria-hidden="true"><path d="M20 0 C 21.6 13.4, 26.6 18.4, 40 20 C 26.6 21.6, 21.6 26.6, 20 40 C 18.4 26.6, 13.4 21.6, 0 20 C 13.4 18.4, 18.4 13.4, 20 0 Z" fill="#FFF4E6" /></svg>
+          <svg id="hook-star-3" class="hook-star" viewBox="0 0 40 40" style="left: 290px; top: 306px; width: 18px; height: 18px" aria-hidden="true"><path d="M20 0 C 21.6 13.4, 26.6 18.4, 40 20 C 26.6 21.6, 21.6 26.6, 20 40 C 18.4 26.6, 13.4 21.6, 0 20 C 13.4 18.4, 18.4 13.4, 20 0 Z" fill="#D9AD6C" /></svg>
+          <svg id="hook-star-4" class="hook-star" viewBox="0 0 40 40" style="left: 784px; top: 244px; width: 44px; height: 44px" aria-hidden="true"><path d="M20 0 C 21.6 13.4, 26.6 18.4, 40 20 C 26.6 21.6, 21.6 26.6, 20 40 C 18.4 26.6, 13.4 21.6, 0 20 C 13.4 18.4, 18.4 13.4, 20 0 Z" fill="#D9AD6C" /></svg>
+          <svg id="hook-star-5" class="hook-star" viewBox="0 0 40 40" style="left: 813px; top: 298px; width: 26px; height: 26px" aria-hidden="true"><path d="M20 0 C 21.6 13.4, 26.6 18.4, 40 20 C 26.6 21.6, 21.6 26.6, 20 40 C 18.4 26.6, 13.4 21.6, 0 20 C 13.4 18.4, 18.4 13.4, 20 0 Z" fill="#FFF4E6" /></svg>
+          <svg id="hook-star-6" class="hook-star" viewBox="0 0 40 40" style="left: 772px; top: 306px; width: 18px; height: 18px" aria-hidden="true"><path d="M20 0 C 21.6 13.4, 26.6 18.4, 40 20 C 26.6 21.6, 21.6 26.6, 20 40 C 18.4 26.6, 13.4 21.6, 0 20 C 13.4 18.4, 18.4 13.4, 20 0 Z" fill="#D9AD6C" /></svg>
         </div>
       </div>
 
@@ -405,10 +412,11 @@
 
           // ---------- Beat 2: joke ----------
           tl.fromTo("#hook-j1", { x: 60, opacity: 0 }, { x: 0, opacity: 1, duration: 0.2, ease: "power3.out" }, q(2.4));
-          tl.fromTo("#hook-j2", { x: 60, opacity: 0 }, { x: 0, opacity: 1, duration: 0.2, ease: "power3.out" }, q(2.44));
-          // "potato." nudges as the card lands.
-          tl.fromTo("#hook-potato-word", { scale: 1 }, { scale: 1.1, duration: 0.08, ease: "power3.out" }, q(3.52));
-          tl.to("#hook-potato-word", { scale: 1, duration: 0.16, ease: "power2.out" }, q(3.6));
+          // "budgeting with a" leads "budgeting" (2.95).
+          tl.fromTo("#hook-j2-lead", { scale: 0.9, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.2, ease: "power3.out" }, q(2.88));
+          // "potato." pops in with the card drop: the back.out overshoot peaks ~3.59, on the pop
+          // SFX and the spoken "potato" (3.56).
+          tl.fromTo("#hook-potato-word", { scale: 0.6, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.2, ease: "back.out(2)" }, q(3.48));
 
           // Potato card drops into the lower stage: stretch on the fall, squash on impact (3.60), settle.
           tl.fromTo("#hook-card", { opacity: 0 }, { opacity: 1, duration: 0.04, ease: "none" }, q(3.48));
@@ -458,9 +466,11 @@
 
           // ---------- Beat 4: format chips ----------
           // SELF-GUIDED pops centred, then slides left as DOWNLOADABLE grows out beside it.
-          tl.fromTo("#hook-chip-self", { x: 210, scale: 0.5, opacity: 0 }, { x: 210, scale: 1, opacity: 1, duration: 0.24, ease: "back.out(2)" }, q(5.52));
+          // Centring offset = (DOWNLOADABLE chip width ~478 + row gap 20) / 2.
+          const SELF_SHIFT = 249;
+          tl.fromTo("#hook-chip-self", { x: SELF_SHIFT, scale: 0.5, opacity: 0 }, { x: SELF_SHIFT, scale: 1, opacity: 1, duration: 0.24, ease: "back.out(2)" }, q(5.52));
           tl.to("#hook-chip-self", { x: 0, duration: 0.24, ease: "power3.out" }, q(6.4));
-          tl.fromTo("#hook-chip-dl", { x: 210 }, { x: 0, duration: 0.24, ease: "power3.out" }, q(6.4));
+          tl.fromTo("#hook-chip-dl", { x: SELF_SHIFT }, { x: 0, duration: 0.24, ease: "power3.out" }, q(6.4));
           tl.fromTo(
             "#hook-chip-dl",
             { scale: 0.5, opacity: 0, transformOrigin: "0% 50%" },

@@ -20,15 +20,27 @@
           color: #2a1714;
         }
 
-        /* Cream split panel: canvas y 960-1920. Every child is positioned in panel space
-           (panel y = canvas y - 960), so the whole stack rides the panel in and out. */
+        /* Split panel: canvas y 960-1920. Every child is positioned in panel space
+           (panel y = canvas y - 960), so the whole stack rides the panel in and out.
+           Fill: cream to canvas y 1450, a 100 px blend, then an ink footer from y 1550
+           to the bottom, so the platform's white caption and username stay readable
+           (same footer recipe as scene-cta). */
         #products-panel {
           position: absolute;
           left: 0;
           top: 960px;
           width: 1080px;
           height: 960px;
-          background: #fff4e6;
+          background: linear-gradient(to bottom, #fff4e6 0, #fff4e6 490px, #2a1714 590px, #2a1714 100%);
+        }
+        /* Thin gold rule where the blend meets the ink footer (canvas y 1550-1553). */
+        #products-footer-rule {
+          position: absolute;
+          left: 0;
+          top: 590px;
+          width: 1080px;
+          height: 3px;
+          background: #d9ad6c;
         }
         #products-shade {
           position: absolute;
@@ -132,24 +144,6 @@
           justify-content: center;
           white-space: nowrap;
         }
-        /* Card 1 kicker + title use line-height: normal so each line box equals its glyph
-           content area: the kicker and title stack without their text boxes overlapping
-           (42 + 63 px, centred in the 108 px card body). */
-        .products-over {
-          display: flex;
-          align-items: baseline;
-          gap: 10px;
-        }
-        .products-over .products-caps {
-          font-size: 26px;
-          letter-spacing: 0.18em;
-          margin-right: -0.18em;
-          line-height: normal;
-        }
-        .products-over .products-serif {
-          font-size: 32px;
-          line-height: normal;
-        }
         .products-title {
           font-family: "Montserrat", sans-serif;
           font-weight: 800;
@@ -157,23 +151,19 @@
           line-height: 1.04;
           letter-spacing: -0.01em;
         }
-        #products-title-1 {
-          font-size: 52px;
-          line-height: normal;
-        }
 
         /* GAME CHANGER stamp: gold plate, inset ink rule, rotated -6deg by GSAP.
-           Centre at canvas (740, 1040); sits over the header gap and card 1's empty
-           top-right corner, clear of every title. */
+           Header row, right of the wordmark: centre at canvas (740, 1012). At -6deg its
+           box spans canvas y ~966-1058 (x ~588-892), between the accent and card 1. */
         #products-stamp {
           position: absolute;
-          left: 563px;
-          top: 45px;
-          width: 354px;
-          height: 70px;
-          border-radius: 14px;
+          left: 585px;
+          top: 22px;
+          width: 310px;
+          height: 60px;
+          border-radius: 12px;
           background: #d9ad6c;
-          box-shadow: 0 10px 24px rgba(42, 23, 20, 0.3);
+          box-shadow: 0 6px 16px rgba(42, 23, 20, 0.28);
           display: flex;
           align-items: center;
           justify-content: center;
@@ -182,16 +172,16 @@
           position: absolute;
           left: 6px;
           top: 6px;
-          width: 342px;
-          height: 58px;
+          width: 298px;
+          height: 48px;
           border: 2px solid rgba(42, 23, 20, 0.85);
-          border-radius: 9px;
+          border-radius: 8px;
         }
         #products-stamp-text {
           position: relative;
           font-family: "Montserrat", sans-serif;
           font-weight: 900;
-          font-size: 34px;
+          font-size: 30px;
           line-height: 1;
           letter-spacing: 0.04em;
           padding-left: 0.04em;
@@ -204,6 +194,7 @@
         <div id="products-panel">
           <div id="products-shade"></div>
           <div id="products-accent"></div>
+          <div id="products-footer-rule"></div>
 
           <div id="products-header">
             <span class="products-caps">THE</span>
@@ -225,10 +216,6 @@
                 </svg>
               </div>
               <div id="products-text-1" class="products-text">
-                <div class="products-over">
-                  <span class="products-caps">THE</span>
-                  <span class="products-serif">Rockwood</span>
-                </div>
                 <div id="products-title-1" class="products-title">Financial Playbook</div>
               </div>
             </div>
@@ -314,7 +301,8 @@
           tl.fromTo("#products-card-" + n, { opacity: from }, { opacity: to, duration: 0.2, ease: "power2.out", immediateRender: false }, t);
         }
 
-        // Card 1: pop 8.06, "The Rockwood Financial Playbook" 8.13-9.60
+        // Card 1: pop 8.06, "The Rockwood Financial Playbook" 8.13-9.60 (title only: the
+        // header already carries the wordmark)
         cardIn(1, at(8.03));
         tl.fromTo("#products-book-flip", { scaleX: 1, svgOrigin: "36 37" }, { scaleX: -1, svgOrigin: "36 37", duration: 0.48, ease: "power2.inOut" }, at(8.43));
 
@@ -341,11 +329,9 @@
           tl.fromTo("#products-tile-" + n, { scale: 1.1 }, { scale: 1, duration: 0.2, ease: "power2.inOut", immediateRender: false }, at(12.6) + i * 0.06);
         });
 
-        // 12.80: GAME CHANGER stamp ("game" 12.85), card 1 takes a small hit.
+        // 12.80: GAME CHANGER stamp ("game" 12.85) lands in the header row.
         tl.fromTo("#products-stamp", { opacity: 0 }, { opacity: 1, duration: 0.08, ease: "none" }, at(12.8));
         tl.fromTo("#products-stamp", { scale: 0.5, rotation: -16 }, { scale: 1, rotation: -6, duration: 0.24, ease: "back.out(1.8)" }, at(12.8));
-        tl.fromTo("#products-card-1", { y: 0 }, { y: 4, duration: 0.06, ease: "power2.out", immediateRender: false }, at(12.88));
-        tl.fromTo("#products-card-1", { y: 4 }, { y: 0, duration: 0.16, ease: "power2.inOut", immediateRender: false }, at(12.94));
 
         // Exit with the camera drop (13.52, 0.28 s): the whole panel slides down.
         tl.fromTo("#products-panel", { y: 0 }, { y: 960, duration: 0.28, ease: "power3.inOut", immediateRender: false }, exact(13.52));
