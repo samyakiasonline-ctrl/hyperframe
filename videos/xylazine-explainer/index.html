@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1080, height=1920" />
+    <script src="assets/vendor/gsap.min.js"></script>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        width: 1080px;
+        height: 1920px;
+        overflow: hidden;
+        background: #000;
+      }
+      #root {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        background: #000;
+      }
+      /* Camera wrapper: every punch-in scales this, never a timed <video>.
+         Origin is her face (canvas 565, 870). */
+      #cam {
+        position: absolute;
+        inset: 0;
+        z-index: 0;
+        transform-origin: 565px 870px;
+      }
+      #speaker,
+      #hold {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+      #plate {
+        z-index: 2;
+      }
+      #captions {
+        z-index: 3;
+      }
+    </style>
+  </head>
+  <body>
+    <div
+      id="root"
+      data-composition-id="main"
+      data-start="0"
+      data-duration="8.2"
+      data-fps="30"
+      data-width="1080"
+      data-height="1920"
+    >
+      <div id="cam">
+        <!-- A-roll: 1620x2880 30 fps proxy of assets/source.mp4. It ends at 7.42 so the
+             one-frame flash cut to another take (frame 223, 7.433 s) never renders.
+             -6.4 dB static gain brings the over-limited voice from -7.6 to -14 LUFS;
+             the lane fades the tail 7.37-7.42. -->
+        <video
+          id="speaker"
+          src="assets/speaker.mp4"
+          playsinline
+          data-start="0"
+          data-duration="7.42"
+          data-track-index="0"
+          data-has-audio="true"
+          data-fx-chain="{&quot;version&quot;:1,&quot;nodes&quot;:[{&quot;type&quot;:&quot;gain&quot;,&quot;id&quot;:&quot;n1&quot;,&quot;label&quot;:&quot;Loudness -7.6 to -14 LUFS&quot;,&quot;params&quot;:{&quot;gain&quot;:-6.4}}]}"
+          data-automation="{&quot;version&quot;:1,&quot;lanes&quot;:[{&quot;target&quot;:&quot;volume&quot;,&quot;points&quot;:[{&quot;t&quot;:0,&quot;v&quot;:1},{&quot;t&quot;:7.37,&quot;v&quot;:1},{&quot;t&quot;:7.42,&quot;v&quot;:0}]}]}"
+        ></video>
+        <!-- End hold: frame 222 (last clean frame) encoded as a short video so its colour
+             path matches the A-roll exactly. -->
+        <video
+          id="hold"
+          src="assets/hold-f222.mp4"
+          playsinline
+          muted
+          data-start="7.42"
+          data-duration="0.78"
+          data-track-index="1"
+        ></video>
+      </div>
+
+      <!-- Graphics: one plate in the headroom above her head; one caption track. -->
+      <div
+        id="plate"
+        class="clip"
+        data-composition-id="plate"
+        data-composition-src="compositions/plate.html"
+        data-start="0"
+        data-duration="8.2"
+        data-track-index="2"
+        data-track-kind="graphics"
+        data-width="1080"
+        data-height="1920"
+      ></div>
+      <div
+        id="captions"
+        class="clip"
+        data-composition-id="captions"
+        data-composition-src="compositions/captions.html"
+        data-start="0"
+        data-duration="8.2"
+        data-track-index="3"
+        data-track-kind="captions"
+        data-width="1080"
+        data-height="1920"
+      ></div>
+
+      <!-- Sound effects: bundled Pixabay library (assets/sfx/CREDITS.md), restrained neutral UI
+           sounds for an educational topic. data-start = moment - the file's measured hit offset.
+           Levels are per cue (the files differ by ~37 LU); a cue with a lane carries its level in it. -->
+      <hf-audio-group
+        id="sfx"
+        data-label="SFX"
+        data-fx-chain="{&quot;version&quot;:1,&quot;nodes&quot;:[{&quot;type&quot;:&quot;limiter&quot;,&quot;id&quot;:&quot;g1&quot;,&quot;label&quot;:&quot;SFX ceiling&quot;,&quot;params&quot;:{&quot;limit&quot;:-1,&quot;attack&quot;:5,&quot;release&quot;:50,&quot;level_out&quot;:0}}]}"
+      ></hf-audio-group>
+      <!-- Plate settles; the swell peaks before "Lekin" (0.11) -->
+      <audio
+        id="sfx-whoosh-in"
+        data-audio-group="sfx"
+        src="assets/sfx/whoosh.mp3"
+        data-start="0.0"
+        data-media-start="0.1"
+        data-duration="0.36"
+        data-track-index="11"
+        data-automation="{&quot;version&quot;:1,&quot;lanes&quot;:[{&quot;target&quot;:&quot;volume&quot;,&quot;points&quot;:[{&quot;t&quot;:0,&quot;v&quot;:0.224},{&quot;t&quot;:0.31,&quot;v&quot;:0.224},{&quot;t&quot;:0.36,&quot;v&quot;:0}]}]}"
+      ></audio>
+      <!-- Name slots flash in the only pause (hit 1.733) -->
+      <audio
+        id="sfx-pop-question"
+        data-audio-group="sfx"
+        src="assets/sfx/pop.mp3"
+        data-start="1.615"
+        data-duration="0.35"
+        data-track-index="10"
+        data-volume="0.398"
+      ></audio>
+      <!-- XYLAZINE types in + punch-in (hit 2.56) -->
+      <audio
+        id="sfx-sub-name"
+        data-audio-group="sfx"
+        src="assets/sfx/impact-bass-1.mp3"
+        data-start="2.5"
+        data-duration="0.7"
+        data-track-index="12"
+        data-fx-chain="{&quot;version&quot;:1,&quot;nodes&quot;:[{&quot;type&quot;:&quot;saturate&quot;,&quot;id&quot;:&quot;n1&quot;,&quot;label&quot;:&quot;Phone-speaker bite&quot;,&quot;params&quot;:{&quot;type&quot;:&quot;tanh&quot;,&quot;threshold&quot;:-18,&quot;output&quot;:6,&quot;oversample&quot;:4}}]}"
+        data-automation="{&quot;version&quot;:1,&quot;lanes&quot;:[{&quot;target&quot;:&quot;volume&quot;,&quot;points&quot;:[{&quot;t&quot;:0,&quot;v&quot;:0.25},{&quot;t&quot;:0.11,&quot;v&quot;:0.25},{&quot;t&quot;:0.26,&quot;v&quot;:0.092},{&quot;t&quot;:0.41,&quot;v&quot;:0.034},{&quot;t&quot;:0.56,&quot;v&quot;:0.012},{&quot;t&quot;:0.7,&quot;v&quot;:0}]}]}"
+      ></audio>
+      <!-- Paw + ANIMALS (hit 3.37, in the gap) -->
+      <audio
+        id="sfx-pop-animals"
+        data-audio-group="sfx"
+        src="assets/sfx/pop.mp3"
+        data-start="3.252"
+        data-duration="0.35"
+        data-track-index="10"
+        data-volume="0.316"
+      ></audio>
+      <!-- UNCONSCIOUS chip (hit 3.98) -->
+      <audio
+        id="sfx-tick-behosh"
+        data-audio-group="sfx"
+        src="assets/sfx/key-press.mp3"
+        data-start="3.906"
+        data-duration="0.2"
+        data-track-index="10"
+        data-volume="1.259"
+      ></audio>
+      <!-- CALM chip (hit 4.60; never later or it masks "sh") -->
+      <audio
+        id="sfx-tick-shaant"
+        data-audio-group="sfx"
+        src="assets/sfx/key-press.mp3"
+        data-start="4.526"
+        data-duration="0.2"
+        data-track-index="10"
+        data-volume="1.259"
+      ></audio>
+      <!-- VETERINARY DRUG stamp (hit 6.32, in the k-closure of "ek") -->
+      <audio
+        id="sfx-click-vet"
+        data-audio-group="sfx"
+        src="assets/sfx/click.mp3"
+        data-start="6.27"
+        data-duration="0.105"
+        data-track-index="10"
+        data-automation="{&quot;version&quot;:1,&quot;lanes&quot;:[{&quot;target&quot;:&quot;volume&quot;,&quot;points&quot;:[{&quot;t&quot;:0,&quot;v&quot;:0.708},{&quot;t&quot;:0.095,&quot;v&quot;:0.708},{&quot;t&quot;:0.105,&quot;v&quot;:0}]}]}"
+      ></audio>
+      <!-- End hold (hit ~7.47, after "hai.") -->
+      <audio
+        id="sfx-end-button"
+        data-audio-group="sfx"
+        src="assets/sfx/impact-bass-1.mp3"
+        data-start="7.415"
+        data-duration="0.75"
+        data-track-index="12"
+        data-fx-chain="{&quot;version&quot;:1,&quot;nodes&quot;:[{&quot;type&quot;:&quot;saturate&quot;,&quot;id&quot;:&quot;n1&quot;,&quot;label&quot;:&quot;Phone-speaker bite&quot;,&quot;params&quot;:{&quot;type&quot;:&quot;tanh&quot;,&quot;threshold&quot;:-18,&quot;output&quot;:6,&quot;oversample&quot;:4}}]}"
+        data-automation="{&quot;version&quot;:1,&quot;lanes&quot;:[{&quot;target&quot;:&quot;volume&quot;,&quot;points&quot;:[{&quot;t&quot;:0,&quot;v&quot;:0.25},{&quot;t&quot;:0.1,&quot;v&quot;:0.25},{&quot;t&quot;:0.28,&quot;v&quot;:0.092},{&quot;t&quot;:0.46,&quot;v&quot;:0.034},{&quot;t&quot;:0.64,&quot;v&quot;:0.012},{&quot;t&quot;:0.75,&quot;v&quot;:0}]}]}"
+      ></audio>
+    </div>
+
+    <script>
+      // Camera (scale only, origin at her face): a small lean-in before the name, a punch on
+      // "Xylazine", a drift, ease back for the rest beat, a second punch on "veterinary drug",
+      // and back to 1.0 over the end hold so the loop seam matches frame 0.
+      const tl = gsap.timeline({ paused: true });
+      tl.fromTo("#cam", { scale: 1 }, { scale: 1.03, duration: 0.615, ease: "sine.in" }, 1.93);
+      tl.to("#cam", { scale: 1.15, duration: 0.255, ease: "expo.out" }, 2.545);
+      tl.to("#cam", { scale: 1.16, duration: 2.3, ease: "none" }, 2.8);
+      tl.to("#cam", { scale: 1.06, duration: 1.05, ease: "sine.inOut" }, 5.1);
+      tl.to("#cam", { scale: 1.12, duration: 0.35, ease: "power3.out" }, 6.32);
+      tl.to("#cam", { scale: 1.13, duration: 0.75, ease: "none" }, 6.67);
+      tl.to("#cam", { scale: 1, duration: 0.78, ease: "sine.inOut" }, 7.42);
+
+      window.__timelines["main"] = tl;
+    </script>
+  </body>
+</html>
