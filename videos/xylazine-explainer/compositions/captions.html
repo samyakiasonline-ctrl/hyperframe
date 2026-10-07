@@ -6,14 +6,205 @@
   <body>
     <template>
       <style>
+        @font-face {
+          font-family: "Montserrat";
+          src: url("assets/fonts/montserrat-latin-800-normal.woff2") format("woff2");
+          font-weight: 800;
+          font-display: block;
+        }
         #root {
           position: absolute;
           inset: 0;
+          pointer-events: none;
+        }
+        /* Caption band: centred on x 540 inside x 120-940, over the black sweater.
+           One line sits in y 1400-1490; the two-line C4 chunk uses y 1380-1510. */
+        .cap-chunk {
+          position: absolute;
+          left: 120px;
+          width: 820px;
+          top: 1400px;
+          height: 90px;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          opacity: 0;
+          font-family: "Montserrat", sans-serif;
+          font-weight: 800;
+          font-size: 60px;
+          letter-spacing: 0;
+          line-height: 72px;
+          color: #f7f5f0;
+          text-align: center;
+          white-space: nowrap;
+          /* Hands cross the band at 1.80-1.95 s and 4.47-4.65 s. */
+          text-shadow:
+            0 0 2px rgba(0, 0, 0, 0.9),
+            0 2px 12px rgba(0, 0, 0, 0.6);
+        }
+        #cap-c4 {
+          top: 1380px;
+          height: 130px;
+        }
+        .cap-line {
+          display: block;
+          height: 72px;
+        }
+        #cap-c4 .cap-line {
+          height: 64px;
+          line-height: 64px;
+        }
+        /* Words rest at 78%; the active word goes to 100% and 1.05 about its bottom centre. */
+        .cap-w {
+          display: inline-block;
+          opacity: 0.78;
+          transform-origin: 50% 100%;
+        }
+        .cap-key {
+          color: #f2a33a;
         }
       </style>
-      <div id="root" data-composition-id="captions" data-width="1080" data-height="1920"></div>
+
+      <div id="root" data-composition-id="captions" data-width="1080" data-height="1920">
+        <!-- C1 1.900-2.545 -->
+        <div id="cap-c1" class="cap-chunk">
+          <div class="cap-line"><span id="cap-w7" class="cap-w">Iska</span> <span id="cap-w8" class="cap-w">naam</span> <span id="cap-w9" class="cap-w">hai</span></div>
+        </div>
+        <!-- C2 3.160-3.990 -->
+        <div id="cap-c2" class="cap-chunk">
+          <div class="cap-line"><span id="cap-w11" class="cap-w">jo</span> <span id="cap-w12" class="cap-w cap-key">animals</span> <span id="cap-w13" class="cap-w">ko</span></div>
+        </div>
+        <!-- C3 3.990-5.085 -->
+        <div id="cap-c3" class="cap-chunk">
+          <div class="cap-line"><span id="cap-w14" class="cap-w cap-key">behosh</span> <span id="cap-w15" class="cap-w">ya</span> <span id="cap-w16" class="cap-w cap-key">shaant</span></div>
+        </div>
+        <!-- C4 5.085-6.300, two lines -->
+        <div id="cap-c4" class="cap-chunk">
+          <div class="cap-line"><span id="cap-w17" class="cap-w">karne</span> <span id="cap-w18" class="cap-w">ke</span> <span id="cap-w19" class="cap-w">liye</span></div>
+          <div class="cap-line"><span id="cap-w20" class="cap-w">di</span> <span id="cap-w21" class="cap-w">jaane</span> <span id="cap-w22" class="cap-w">wali</span></div>
+        </div>
+      </div>
+
       <script>
-        window.__timelines["captions"] = gsap.timeline({ paused: true });
+        (function () {
+          // Word starts from transcript.json (corrected, verified). A word stays active until
+          // the next spoken word starts (`until`), which for the last word of a chunk is the
+          // first word after it (Xylazine 2.545, behosh 3.990, karne 5.085, ek 6.200).
+          var CHUNKS = [
+            {
+              id: "cap-c1",
+              start: 1.9,
+              end: 2.545,
+              enter: "fade",
+              exit: "fade",
+              words: [
+                { id: "cap-w7", start: 1.935, until: 2.145 },
+                { id: "cap-w8", start: 2.145, until: 2.42 },
+                { id: "cap-w9", start: 2.42, until: 2.545 },
+              ],
+            },
+            {
+              id: "cap-c2",
+              start: 3.16,
+              end: 3.99,
+              enter: "fade",
+              exit: "cut",
+              words: [
+                { id: "cap-w11", start: 3.19, until: 3.36 },
+                { id: "cap-w12", start: 3.36, until: 3.86 },
+                { id: "cap-w13", start: 3.86, until: 3.99 },
+              ],
+            },
+            {
+              id: "cap-c3",
+              start: 3.99,
+              end: 5.085,
+              enter: "cut",
+              exit: "cut",
+              words: [
+                { id: "cap-w14", start: 3.99, until: 4.54 },
+                { id: "cap-w15", start: 4.54, until: 4.645 },
+                { id: "cap-w16", start: 4.645, until: 5.085 },
+              ],
+            },
+            {
+              id: "cap-c4",
+              start: 5.085,
+              end: 6.3,
+              enter: "cut",
+              exit: "fade",
+              words: [
+                { id: "cap-w17", start: 5.085, until: 5.33 },
+                { id: "cap-w18", start: 5.33, until: 5.395 },
+                { id: "cap-w19", start: 5.395, until: 5.505 },
+                { id: "cap-w20", start: 5.505, until: 5.655 },
+                { id: "cap-w21", start: 5.655, until: 5.92 },
+                { id: "cap-w22", start: 5.92, until: 6.2 },
+              ],
+            },
+          ];
+
+          var ENTER = 0.12; // fade in + rise 12 px after an empty band
+          var EXIT = 0.1; // fade out into an empty band
+          var ON = 0.06; // active-word lift (scale only)
+          var OFF = 0.08; // settle back to rest
+
+          var tl = gsap.timeline({ paused: true });
+
+          CHUNKS.forEach(function (c) {
+            var el = document.getElementById(c.id);
+
+            // Entrance
+            if (c.enter === "fade") {
+              tl.fromTo(
+                el,
+                { opacity: 0, y: 12 },
+                { opacity: 1, y: 0, duration: ENTER, ease: "power3.out" },
+                c.start,
+              );
+            } else {
+              tl.fromTo(el, { opacity: 0 }, { opacity: 1, duration: 0, immediateRender: false }, c.start);
+            }
+
+            // Exit, then a hard kill at the chunk end
+            if (c.exit === "fade") {
+              tl.fromTo(
+                el,
+                { opacity: 1 },
+                { opacity: 0, duration: EXIT, ease: "power2.in", immediateRender: false },
+                c.end - EXIT,
+              );
+            }
+            tl.set(el, { opacity: 0 }, c.end);
+
+            // Active word: 78% -> 100% and scale 1.05 from its start until the next word starts.
+            // The brightness flips on the word's first frame (exact sync at 3.7 words/s); the
+            // lift eases in over ~2 frames, except on a chunk that cuts in on its first word.
+            c.words.forEach(function (w) {
+              var wEl = document.getElementById(w.id);
+              var atCut = c.enter === "cut" && w.start === c.start;
+              tl.fromTo(wEl, { opacity: 0.78 }, { opacity: 1, duration: 0, immediateRender: false }, w.start);
+              tl.fromTo(
+                wEl,
+                { scale: 1 },
+                { scale: 1.05, duration: atCut ? 0 : ON, ease: "power2.out", immediateRender: false },
+                w.start,
+              );
+              if (w.until < c.end) {
+                tl.fromTo(
+                  wEl,
+                  { opacity: 1, scale: 1.05 },
+                  { opacity: 0.78, scale: 1, duration: OFF, ease: "power2.out", immediateRender: false },
+                  w.until,
+                );
+              }
+            });
+          });
+
+          // After 6.300 the timeline has ended and the slot holds an empty band to 8.2 s.
+          window.__timelines["captions"] = tl;
+        })();
       </script>
     </template>
   </body>
